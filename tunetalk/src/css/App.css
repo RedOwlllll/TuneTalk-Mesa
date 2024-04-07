@@ -1,0 +1,28 @@
+  /* for app.js file */
+  * {
+    font-family: Arial;
+}
+
+.App {
+    background-color: #fefefe;
+    height: 100vh;
+    width: 100%;
+}
+
+h1 {
+    font-size: 40px;
+}
+  
+/* div styling for the pages */
+.home-page, 
+.friends-page, 
+.community-page,
+.account-page {
+    font-family: "Arial";
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh; /* Minimum height of the page to fill the viewport */
+    text-align: center;
+}
