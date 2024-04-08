@@ -21,6 +21,7 @@ export const Navbar = () => {
             <li><NavLink to="/friends">Friends</NavLink></li>
             <li><NavLink to="/community">Community</NavLink></li>
             <li><NavLink to="/account">Acccount</NavLink></li>
+            <li><NavLink to="/login">Login</NavLink></li>
         </ul>
         </nav>
     );
