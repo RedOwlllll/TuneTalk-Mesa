@@ -26,3 +26,17 @@ h1 {
     min-height: 85vh; /* Minimum height of the page to fill the viewport */
     text-align: center;
 }
+
+
+button[type=submit] {
+    border-radius: 30px;
+    border: 1px solid #004d39;
+    background-color: #6D968F;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 12px 30px;
+    width: auto;
+    text-transform: uppercase;
+    
+  }
