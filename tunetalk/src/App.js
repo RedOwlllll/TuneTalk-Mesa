@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Friends from './pages/Friends';
 import Community from './pages/Community';
 import Account from './pages/Account';
+import Login from "./pages/Login";
 import { Navbar } from "./Navbar";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
             <Route path="/friends" element={<Friends />} />
             <Route path="/community" element={<Community />} />
             <Route path="/account" element={<Account />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
       </div>
     );

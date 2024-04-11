@@ -10,4 +10,5 @@ export const getTest = async () => {
 
         return await res.json();
     } catch (err) {}
+    
 };

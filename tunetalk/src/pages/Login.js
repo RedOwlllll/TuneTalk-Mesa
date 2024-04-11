@@ -1,15 +1,16 @@
 import React from "react";
 import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
-// test server
+// test API, two line below
 import { useState, useEffect } from "react";
-import {getTest} from "./functions/test";
+import {getTest} from "./../functions/test";
 
 function Login() {
+    // test API
     const [data, setData] = useState("Login");
 
     useEffect(() => {
         getTest()
-            .them((res) => {
+            .then((res) => {
             setData(res.message);
             })
             .catch(err => console.log(err));
