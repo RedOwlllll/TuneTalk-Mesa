@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false); // State variable that handles whether the menu is opened or closed. 
-    const userContext =useUser(); // Passing import of the UserState class into a new variable
+    const userContext = useUser(); // Passing import of the UserState class into a new variable
     const [user, setUserState] = userContext;
     const navigate = useNavigate();
 
@@ -36,7 +36,6 @@ export const Navbar = () => {
                 // First displays menu and login navlinks for when user is not logged in / authenticated
                 <>
                     <li><NavLink to="/menu">Menu</NavLink></li>
-                    <li><NavLink to="/login">Login</NavLink></li>
                 </>
             ) : (
                 // Otherwise, if user is logged in, the navlinks below will appear instead. 
