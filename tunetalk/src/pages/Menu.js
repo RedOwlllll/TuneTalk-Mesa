@@ -1,17 +1,10 @@
 import React from "react";
 import TuneTalkLogo from "../assets/TuneTalkLogoBlack.svg";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../css/App.css";
-import { SpotifyLogin } from "./SpotifyLogin";
-
-
-
 
 export const Menu = () => {
-    //const navigate = useNavigate();
-    
-
-  
+    const navigate = useNavigate();
 
     return (
         <div className="home-page">
@@ -22,7 +15,7 @@ export const Menu = () => {
             </p>
 
             <br></br>
-            <SpotifyLogin />
+            <button type="submit" onClick={() => navigate('/login')}>Login to Spotify </button>
         </div>
     );
 }
