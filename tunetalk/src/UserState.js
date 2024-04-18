@@ -2,19 +2,21 @@
 
 import React, { createContext, useContext, useState } from 'react';
 
-// Initial user object with default values
+// Object that represents the initial state of the user.
 const initialUser = {
-  spotifyLogin: '', // Assuming spotify login is a string
+  spotifyAccount: '',
+  password: '',
   isAuthenticated: false,
 };
 
-// Create a context with the initial user object
+/* Passing initialUser object as the default value - if user info 
+  is not inputted/not found, email and password remain empty and authentication is false.
+*/
 const UserContext = createContext(initialUser);
 
 // UserProvider component
 const UserProvider = ({ children }) => {
-  // State variable to manage user object
-  const [user, setUser] = useState(initialUser);
+  const [user, setUser] = useState(initialUser); // State variable to handle state of the initial user.
 
   // Wrap children components with the user context provider
   return (
