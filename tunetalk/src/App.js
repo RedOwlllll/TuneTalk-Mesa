@@ -21,6 +21,8 @@ import RNB from './pages/genres/RNB';
 import Classical from './pages/genres/Classical';
 
 function App() {
+  
+  
     return (
       <div className="App">
         <UserProvider>
