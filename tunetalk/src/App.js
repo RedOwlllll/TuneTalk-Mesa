@@ -35,6 +35,7 @@ function App() {
               <Route path="/friends" element={<Friends />} />
               <Route path="/community" element={<Community />} />
               <Route path="/account" element={<Account />} />
+
               <Route path="/pop" element={<Pop />} />
               <Route path="/rock" element={<Rock />} />
               <Route path="/Country" element={<Country />} />
