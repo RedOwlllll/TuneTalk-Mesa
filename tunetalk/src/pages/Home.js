@@ -2,8 +2,7 @@ import React from "react";
 import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
 import PostingButton from "../functions/PostingButton";
 
-
-function Home() {
+export const Home = () => {
     return (
         <div className="home">
             <div className="posting-feature-bar">
@@ -17,5 +16,3 @@ function Home() {
         
     );
 }
-
-export default Home;
