@@ -11,4 +11,4 @@ const NotificationTransporter = () => {
     return transporter;
 };
 
-module.exports = { createMailTransporter: NotificationTransporter };
+module.exports = { NotificationTransporter };

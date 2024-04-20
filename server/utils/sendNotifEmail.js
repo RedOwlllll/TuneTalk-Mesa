@@ -13,7 +13,7 @@ const sendNotifEmail = async () => {
 
     const mailOptions = {
         from: '"TuneTalk" <skk8822@autuni.ac.nz>',
-        to: user.email,
+        to: user,
         subject: "!TIME TO TUNE IN!",
         html: `<p>Hello ${user.username}! Click the link below to post your song whether it's currently playing or recently played!</p>
             <a href = 'http://192.168.1.68:3000'>Post your song of the day</a>
