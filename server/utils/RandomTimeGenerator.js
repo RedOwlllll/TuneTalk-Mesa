@@ -1,15 +1,22 @@
+const UserDetails = require("../models/UserDetails");
+const { sendNotifEmail } = require("./sendNotifEmail");
+
 function randomTimeGenerator()
 {
-    let startHour = 0; //12:00 AM
-    let endHour = 23; //11:00 PM
+    const startHour = 0; //12:00 AM
+    const endHour = 23; //11:00 
 
-    let hour = Math.floor(Math.random() * (endHour - startHour +1)) + startHour;
-    let min = Math.floor(Math.random() * 60);
-    let sec = Math.floor(Math.random() * 60);
+    const hour = Math.floor(Math.random() * (endHour - startHour +1)) + startHour;
+    const min = Math.floor(Math.random() * 60);
+    const sec = Math.floor(Math.random() * 60);
 
-    return hour + ':' + min + ':' + sec; // format for the generated random time
+    return { hour, min, sec };
 }
 
-//testing the function
-var randomTime = randomTimeGenerator();
-console.log(randomTime);
+const randomTime = randomTimeGenerator();
+const milliSec = (randomTime.hour * 60 * 60 + randomTime.min * 60 + randomTime.sec) * 1000;
+
+//schedule email sending
+setTimeout(() =>{
+    sendNotifEmail(UserDetails);
+}, milliSec);
