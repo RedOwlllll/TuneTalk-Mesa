@@ -1,17 +1,18 @@
-const UserDetails = require("../models/UserDetails");
+const express = require("express");
+const router = express.Router();
+const UserEmail = require("../models/UserDetails");
 const { NotificationTransporter } = require("./NotificationTransporter");
 
-const sendNotifEmail = async () => {
+router.post("/send-email", async (req, res) => {
     const transporter = NotificationTransporter(); //creating mail transporter object
 
     try {
-        const user = await UserDetails.findOne(); // fetch the user's details
-
-        console.log(`user: ${user}`)
+        let user = await UserEmail.findOne(); // fetch the user's details
 
         if (!user || !user.email) 
         {
             console.log('The user does not exist');
+            res.status(404).json({ message: "User not found or email not provided" });
             return; // Exit early if user or user email does not exist
         }
 
@@ -28,12 +29,14 @@ const sendNotifEmail = async () => {
         // Send the email
         const info = await transporter.sendMail(mailOptions);
         console.log("Notification Email sent", info);
+        res.status(200).json({ message: "Notification email sent successfully" });
     } 
     catch (error) 
     {
         console.log("Error sending notification email", error);
+        res.status(500).json({ message: "Internal server error" });
     }
 
-};
+});
 
-module.exports = { sendNotifEmail };
+module.exports = router;
