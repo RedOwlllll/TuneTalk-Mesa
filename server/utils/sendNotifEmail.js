@@ -4,32 +4,33 @@ const { NotificationTransporter } = require("./NotificationTransporter");
 const sendNotifEmail = async () => {
     const transporter = NotificationTransporter(); //creating mail transporter object
 
-    const user = await UserDetails.findOne({email}); //fetch the user's email address to send the email to
+    try {
+        const user = await UserDetails.findOne(); // fetch the user's details
 
-    if (!user)
+        if (!user || !user.email) 
+        {
+            console.log('The user does not exist');
+            return; // Exit early if user or user email does not exist
+        }
+
+        const mailOptions = 
+        {
+            from: '"TuneTalk" <skk8822@autuni.ac.nz>',
+            to: user.email,
+            subject: "!TIME TO TUNE IN!",
+            html: `<p>Hello ${user.email}! Click the link below to post your song whether it's currently playing or recently played!</p>
+                <a href='http://192.168.1.68:3000'>Post your song of the day</a>
+            `,
+        };
+
+        // Send the email
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Notification Email sent", info);
+    } 
+    catch (error) 
     {
-        console.log('The user does not exist');
+        console.log("Error sending notification email", error);
     }
-
-    const mailOptions = {
-        from: '"TuneTalk" <skk8822@autuni.ac.nz>',
-        to: user,
-        subject: "!TIME TO TUNE IN!",
-        html: `<p>Hello ${user.username}! Click the link below to post your song whether it's currently playing or recently played!</p>
-            <a href = 'http://192.168.1.68:3000'>Post your song of the day</a>
-        `,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if(error)
-        {
-            console.log("Error sending notification email", error);
-        }
-        else
-        {
-            console.log("Notification Email sent");
-        }
-    });
 };
 
 module.exports = { sendNotifEmail };
