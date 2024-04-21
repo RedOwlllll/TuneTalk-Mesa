@@ -5,7 +5,7 @@ const NotificationTransporter = () => {
     service: "hotmail",
     auth: {
         user: "skk8822@autuni.ac.nz",
-        pass: "*******",
+        pass: "tabitoyroom8",
         },
     });
     return transporter;
