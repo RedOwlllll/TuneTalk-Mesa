@@ -3,7 +3,7 @@ import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own 
 import '../css/Community.css';
 import { Link } from 'react-router-dom';
 
-function Community() {
+export const Community = () => {
     return (
         <div className="container-page">
             <h1 className="community-title">Music Genres</h1>
@@ -17,5 +17,3 @@ function Community() {
         </div>
     );
 }
-
-export default Community;

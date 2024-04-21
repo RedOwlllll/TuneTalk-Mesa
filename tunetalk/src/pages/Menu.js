@@ -3,7 +3,7 @@ import TuneTalkLogo from "../assets/TuneTalkLogoBlack.svg";
 import { useNavigate } from "react-router-dom";
 import "../css/App.css";
 
-function Menu() {
+export const Menu = () => {
     const navigate = useNavigate();
 
     return (
@@ -19,5 +19,3 @@ function Menu() {
         </div>
     );
 }
-
-export default Menu;
