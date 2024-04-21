@@ -13,6 +13,8 @@ const REDIRECT_URI = "http://localhost:3000/menu"; // uri after login successful
 // Endpoint to save Spotify user data
 router.post("/", async (req, res) => {
 
+    //const { spotifyAccount, password } = req.body;
+
     try {
         // Check if user already exists
         let user = await spotifyUser.findOne({ spotifyId: req.body.spotifyId });

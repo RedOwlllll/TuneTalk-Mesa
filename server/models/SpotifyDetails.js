@@ -1,46 +1,85 @@
 /* 
-Schema/model for user login info that defines the structure 
-and required properties of the data and their types.
+    Schema/model for all data needed from user's spotify
 */
 
 const mongoose = require("mongoose");
 
-/* 
-    Had to create a separate schema for the image schema as its an array object.
-    which will be called in the User Details schema below. 
-*/ 
-const ImageSchema = new mongoose.Schema({
-    url: {
+/* Model for Song */
+const songSchema = new mongoose.Schema({
+    songId: {
         type: String,
         required: true
     },
-    height: {
-        type: Number,
-        optional: true
-    },
-    width: {
-        type: Number,
-        optional: true
+    addedAt: {
+        type: Date,
+        required: true
     }
 });
 
-const UserDetailsSchema = new mongoose.Schema({
-    spotifyID: {
+/* Album */
+const AlbumSchema = new mongoose.Schema({
+    albumId: {
         type: String,
-        required: [true, "Must have a Spotify ID"]
+        required: true
+    },
+    addedAt: {
+        type: Date,
+        required: true
+    }
+});
+
+/* Song in a playlist on spotify */
+const PlaylistTrackSchema = new mongoose.Schema({
+    playlistTrackId: {
+        type: String,
+        required: true
+    },
+    addedAt: {
+        type: Date,
+        required: true
+    }
+});
+
+/* Spotify playlist */
+const PlaylistSchema = new mongoose.Schema({
+    playlistId: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String
+    },
+    tracks: [PlaylistTrackSchema] // Pass PlaylistTrackSchema
+});
+
+// Spotify Account
+const SpotifyAccountSchema = new mongoose.Schema({
+    username: {
+        type: String,
+        required: true
     },
     email: {
         type: String,
-        required: [true, "Must have an email associated to Spotify account"]
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
     },
     displayName: {
         type: String
     },
-    profileURL: {
+    profileImage: {
         type: String
     },
-    images: [ImageSchema] // Add this line to include an array of images
+    savedTracks: [songSchema],
+    savedAlbums: [AlbumSchema],
+    playlists: [PlaylistSchema]
 });
 
-const UserDetails = mongoose.model("UserDetails", UserDetailsSchema);
-module.exports = UserDetails;
+const SpotifyDetails = mongoose.model("SpotifyDetails", SpotifyAccountSchema);
+module.exports = SpotifyDetails;

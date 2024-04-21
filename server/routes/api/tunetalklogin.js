@@ -19,7 +19,10 @@ router.post("/", async(req,res) => {
 
         let existingUser;
 
-        // Check whether the login details are either a email or username and if they exist in mongodb
+        /*
+            Check whether the login details are either a email or username and if they exist in mongodb
+            - Using email regex as it will help identify that the input is an email address with the @ symbol.
+        */
         if(emailRegex(userLogin)) {
             existingUser = await user.findOne({ email: userLogin });
         }

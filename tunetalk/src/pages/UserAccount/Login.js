@@ -39,8 +39,7 @@ export const Login = () => {
                     email: data.user.email,
                     username: data.user.username
                 });
-                console.log("user login authenticated");
-                navigate('/home'); // Will redirect user to the home page. SHOULD BE CHANGED TO SPOTIFY LOGIN LATER
+                console.log("user login authenticated in TuneTalk");
             } 
             else if (data.error === "user_not_found") {
                 setAlertMessage("User not found. Please check your email address or username again.");
@@ -54,9 +53,10 @@ export const Login = () => {
         });
     }
 
+    // When user is authenticated, will prompt them to home page - NOTE: should already have their 
     useEffect (() => {
         if (user.isAuthenticated) {
-            navigate("/home"); // When user is authenticated, will open the home page. SHOULD BE CHANGED TO SPOTIFY LOGIN LATER
+            navigate("/account/home"); 
         }
     });
 
@@ -64,8 +64,10 @@ export const Login = () => {
         <div className="login-container">
             <form className="login-form" onSubmit={handleSubmit}>
                 <h1>Welcome back</h1>
-                <p>Please enter your details to sign in</p><br/>
+                <h4>Please enter your details to log in.</h4><br/><br/>
+                <label>Email or Username:</label><br/>
                 <input value={userLogin} onChange={(e) => setUserLogin(e.target.value)} id="userLogin" placeholder="email@gmail.com or username" required/><br/>
+                <label>Password:</label><br/>
                 <input value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} type="password" id="loginPassword" placeholder="********" required/>
                 <br/>
                 <br/><button type="submit">Log In</button><br/>

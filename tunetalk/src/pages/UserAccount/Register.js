@@ -16,7 +16,9 @@ export const Register = () => {
     // Variables to store pattern regex for password and email (dont add semicolon)
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()\-_=+{};:,<.>`~]{8,}$/
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/ 
-
+    ///^[a-zA-Z0-9_.]{1,15}$/
+    const usernameRegex = /^[a-zA-Z0-9]{1,15}$/ // Removed underscore and full stop for simplicity
+    
     // Vairiable to user import useNavigate 
     const navigate = useNavigate();
 
@@ -27,13 +29,17 @@ export const Register = () => {
 
         let incorrectMessage = "";
 
-        // First check the pattern for password and email is correct before making API call 
+        // Check the pattern regex for email, username and password is correct before making API call 
         if (!emailRegex.test(registerEmail)) {
-            incorrectMessage += "Invalid email address. \n" ;
+            incorrectMessage += "Invalid email address. (Ensure there are no spaces in your email address.) \n" ;
+        }
+        
+        if(!usernameRegex.test(registerUsername)) {
+            incorrectMessage += "Invalid username. (Ensure there are no spaces or special characters in your email address.) \n";
         }
 
         if (!passwordRegex.test(registerPassword)) {
-            incorrectMessage += "Password must contain a minimum of eight characters, at least one uppercase letter and one number.";
+            incorrectMessage += "Password must contain a minimum of eight characters, at least one uppercase letter and one number.\n";
         } 
 
         if (incorrectMessage) {
@@ -59,21 +65,21 @@ export const Register = () => {
                     email: data.email, // Refer to email object directly (since the email is being registered it should not be in mongodb yet)
                     username: data.username // Likewise w/ username
                 });
-                console.log("user registration authenticated");
+                console.log("user registration authenticated in TuneTalk");
             } 
             else if (data.error === "email_exists") {
-                setAlertMessage("Email is already in use. Please login instead.");
+                setAlertMessage("Email is registered already. Please login instead or choose another email.");
             } 
             else if (data.error === "username_exists") {
-                setAlertMessage("Username is already in use. Please choose another.");
+                setAlertMessage("Username is registered already. Please login instead or choose another username.");
             }
         });  
     }
 
-    // Navigates to home page once sign up is authenticated - SHOULD BE CHANGED TO SPOTIFY LOGIN LATER
+    // When user is authenticated, will prompt them to link their spotify account to their TuneTalk account.
     useEffect (() => {
         if (user.isAuthenticated) {
-            navigate("/home"); 
+            navigate("/account/spotify"); 
         }
     });
 
@@ -81,17 +87,18 @@ export const Register = () => {
 
         <div className="register-container">
             <br/>
-            <form className="signup-form" onSubmit={handleSubmit}>
+            <form className="register-form" onSubmit={handleSubmit}>
                 <br/><h1>Create an account</h1>
-                <p>Please enter your details to register</p>
-                <br/>
+                <h4>Please enter the required fields below to register.</h4><br/><br/>
+                <label>Email:</label><br/>
                 <input value={registerEmail} onChange={(e) => setRegisterEmail(e.target.value)} id="registerEmail" placeholder="email@gmail.com *" required/><br/>
-                <input value={registerUsername} onChange={(e) => setRegisterUsername (e.target.value)} id="setRegisterUsername" placeholder="Username *" required /><br/>
+                <label>Username:</label><br/>
+                <input value={registerUsername} onChange={(e) => setRegisterUsername (e.target.value)} id="setRegisterUsername" placeholder="username *" required /><br/>
+                <label>Password:</label><br/>
                 <input value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} type="password" id="registerPassword" placeholder="******** *" required/><br/>
                 <br/>
                 <button type="submit">register</button>
-                <div className= "required-text"> <br/> (* Required fields must be filled in to create an account)<br/> </div>
-                <br/>
+                <br/><br/>
                 { alertMessage && (
                     <div className="alert">{ alertMessage }</div>
                 )} <br/>
