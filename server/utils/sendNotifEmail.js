@@ -3,13 +3,16 @@ const router = express.Router();
 const UserEmail = require("../models/UserDetails");
 const { NotificationTransporter } = require("./NotificationTransporter");
 
-router.post("/send-email", async (req, res) => {
+router.use(express.json());
+
+router.post("/", async (req, res) => {
     const transporter = NotificationTransporter(); //creating mail transporter object
+    const {email} = req.body;
 
     try {
-        let user = await UserEmail.findOne(); // fetch the user's details
+        let userEmail = await UserEmail.findOne({ email }); // fetch the user's details
 
-        if (!user || !user.email) 
+        if (!userEmail || !userEmail.email) 
         {
             console.log('The user does not exist');
             res.status(404).json({ message: "User not found or email not provided" });
@@ -19,12 +22,16 @@ router.post("/send-email", async (req, res) => {
         const mailOptions = 
         {
             from: '"TuneTalk" <skk8822@autuni.ac.nz>',
-            to: user.email,
+            to: userEmail.email,
             subject: "!TIME TO TUNE IN!",
-            html: `<p>Hello ${user.email}! Click the link below to post your song whether it's currently playing or recently played!</p>
+            html: `<p>Hello ${userEmail.email}! Click the link below to post your song whether it's currently playing or recently played!</p>
                 <a href='http://192.168.1.68:3000'>Post your song of the day</a>
             `,
         };
+
+        const newEmail = await userEmail.create({ 
+            email
+        });
 
         // Send the email
         const info = await transporter.sendMail(mailOptions);
