@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const createMailTransporter = () => {
+const NotificationTransporter = () => {
     const transporter = nodemailer.createTransport({
     service: "hotmail",
     auth: {
@@ -11,4 +11,4 @@ const createMailTransporter = () => {
     return transporter;
 };
 
-module.exports = { createMailTransporter };
+module.exports = { NotificationTransporter };
