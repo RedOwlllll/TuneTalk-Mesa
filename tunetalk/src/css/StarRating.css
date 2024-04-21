@@ -1,0 +1,24 @@
+.star-rating {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .star-rating button {
+    background: transparent;
+    border: none;
+    font-size: 30px; /* Adjust the size of the stars */
+    cursor: pointer;
+    color: #ccc; /* Default empty star color */
+    margin: 0 5px; /* Space out the stars */
+  }
+  
+  .star-rating button.on {
+    color: #ffd055; /* Filled star color */
+  }
+  
+  .star-rating button.off:hover,
+  .star-rating button.off:hover ~ button.off {
+    color: #ffd055; /* Hover star color */
+  }
+  
