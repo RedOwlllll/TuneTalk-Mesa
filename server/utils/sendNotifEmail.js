@@ -7,6 +7,8 @@ const sendNotifEmail = async () => {
     try {
         const user = await UserDetails.findOne(); // fetch the user's details
 
+        console.log(`user: ${user}`)
+
         if (!user || !user.email) 
         {
             console.log('The user does not exist');
