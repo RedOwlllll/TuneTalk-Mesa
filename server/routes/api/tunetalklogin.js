@@ -5,7 +5,6 @@ const bcrypt = require("bcryptjs"); // using bycryptjs to encrypt passwords
 const JWT = require('jsonwebtoken') // using jsonwebtoken library
 const JWT_SECRET = "fghsdf123"; // secret key used to verify the json webtokens (note should be an env file, but because this is being marked, would be easier to not include in a env file). 
 const user = require("../../models/UserDetails"); // import user details model
-const sendNotifEmail = require("../../utils/sendNotifEmail");
 
 // Function to validate email format with the correct pattern regex
 function emailRegex(email) {
@@ -23,7 +22,6 @@ router.post("/", async(req,res) => {
         // Check whether the login details are either a email or username and if they exist in mongodb
         if(emailRegex(userLogin)) {
             existingUser = await user.findOne({ email: userLogin });
-            sendNotifEmail(email);
         }
         // Else if username does not match email regex its considered a username.
         else {
