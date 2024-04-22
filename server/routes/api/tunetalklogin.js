@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs"); // using bycryptjs to encrypt passwords
 const JWT = require('jsonwebtoken') // using jsonwebtoken library
 const JWT_SECRET = "fghsdf123"; // secret key used to verify the json webtokens (note should be an env file, but because this is being marked, would be easier to not include in a env file). 
 const user = require("../../models/UserDetails"); // import user details model
+const { SendNotificationEmail } = require("../../../tunetalk/src/pages/UserAccount/utils/SendNotificationEmail");
 
 // Function to validate email format with the correct pattern regex
 function emailRegex(email) {
@@ -35,10 +36,13 @@ router.post("/", async(req,res) => {
         if(await bcrypt.compare(password, existingUser.password)) {
             // will generate a token with the user id in mongodb as well as their email and pass the jwt_secret variable 
             const token = JWT.sign({ id: existingUser.id, email: existingUser.email}, JWT_SECRET); 
-            
+            console.log(`user: ${existingUser}`)
+            SendNotificationEmail(existingUser);
             // Return user's email along with token
             return res.json({status: "ok", user: {email: existingUser.email, username: existingUser.username}, token });
-        }
+        }   
+
+
         res.json({status: "error", error: "incorrect_password"});
     }
     catch (e) {
