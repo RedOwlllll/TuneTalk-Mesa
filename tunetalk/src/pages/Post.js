@@ -7,7 +7,7 @@ function Post() {
 
     //spotify api credentials and endpoints
     const CLIENT_ID = "8e2f1c8ec6e14de3b5117923af68adf7"
-    const REDIRECT_URI = "http://localhost:3000/home"
+    const REDIRECT_URI = "http://localhost:3000/login"
     const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
     const RESPONSE_TYPE = "token"
     const SCOPES = "user-read-recently-played";
@@ -82,7 +82,6 @@ function Post() {
     //component render
     return (
         <div className="home-page">
-            <h1>Home</h1>
             {!token ?
                 <a href={getLoginURL()}>Login to Spotify</a>
                 : <button onClick={logout}>Logout</button>}
