@@ -15,7 +15,7 @@ export const Menu = () => {
             </p>
 
             <br></br>
-            <button type="submit" onClick={() => navigate('/home')}>Login to Spotify </button>
+            <button type="submit" onClick={() => navigate('/login')}>Login to Spotify </button>
         </div>
     );
 }

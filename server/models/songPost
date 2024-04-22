@@ -1,0 +1,17 @@
+const mongoose = require('mongoose');
+
+const songPostschema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'UserDetails'},
+    song: {
+        title: { type: String, required: true},
+        artist: { type: String, required: true},
+        albumCover: { type: String, required: true}
+    },
+    comments: [{ body: String, date: Date}],
+    rating: Number,
+    postedAt: { type: Date, default: Date.now}
+});
+
+const SongPost = mongoose.model('SongPost', songPostschema);
+
+module.exports = SongPost;
