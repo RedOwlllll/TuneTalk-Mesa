@@ -9,7 +9,9 @@ import { Friends } from './pages/Friends';
 import { Community } from './pages/Community';
 import { Account } from './pages/Account';
 import { Login } from "./pages/Login";
-import { UserProvider } from "./UserState";
+import { Register } from './pages/UserAccount/Register'; // Adjusted path
+import { SpotifyLogin } from './pages/UserAccount/SpotifyLogin'; // Adjusted path
+
 //import genre
 import Pop from './pages/genres/Pop';
 import Rock from './pages/genres/Rock';
