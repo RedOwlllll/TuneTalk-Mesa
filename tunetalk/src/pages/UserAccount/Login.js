@@ -46,7 +46,7 @@ export const Login = () => {
                 
                 function showNotification() {
                     const notification = new Notification("!TIME TO TUNE IN!", {
-                        body: "POST YOUR CURRENT OR RECENTLY PLAYED SONG OR ELSE!!"
+                        body: "CLICK ON THIS TO POST YOUR CURRENT OR RECENTLY PLAYED SONG OR ELSE!!"
                     });
 
                     notification.onclick = function(event) {
@@ -60,19 +60,39 @@ export const Login = () => {
                     }
                 }
 
-                if(Notification.permission === "granted")
-                {
-                    showNotification();
-                }
-                else if(Notification.permission !== "denied")
-                {
-                    Notification.requestPermission().then(permission => {
-                        if(permission === "granted")
-                        {
-                            showNotification();
-                        }
-                    });
-                }
+                //Generates a randome time (in ms) within the day
+                const randomTimeGenerator = Math.floor(Math.random() * 24 * 60 * 60 * 1000);
+                console.log(randomTimeGenerator); //To test the randomTimeGenerator
+                setTimeout(() =>{
+                    if(Notification.permission === "granted") 
+                    {
+                        showNotification(); //Show notifition when random time is generated
+                    }
+                    else if (Notification.permission !== "denied") 
+                    {
+                        Notification.requestPermission().then(permission => { //Request permission to show notification
+                            if(permission === "granted") 
+                            {
+                                showNotification();
+                            }
+                        });
+                    }
+                }, randomTimeGenerator);
+                
+                // ****TO USE FOR DEMONSTRATION****
+                // if(Notification.permission === "granted")
+                // {
+                //     showNotification();
+                // }
+                // else if(Notification.permission !== "denied")
+                // {
+                //     Notification.requestPermission().then(permission => {
+                //         if(permission === "granted")
+                //         {
+                //             showNotification();
+                //         }
+                //     });
+                // }
             } 
             else if (data.error === "user_not_found") {
                 setAlertMessage("User not found. Please check your email address or username again.");
