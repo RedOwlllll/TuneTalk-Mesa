@@ -42,7 +42,7 @@ export const Login = () => {
                     username: data.user.username
                 });
                 console.log("user login authenticated");
-                SendNotificationEmail(user);
+                //SendNotificationEmail(user);
                 
                 navigate('/home'); // Will redirect user to the home page. SHOULD BE CHANGED TO SPOTIFY LOGIN LATER
             } 
