@@ -7,7 +7,6 @@ import { Menu } from "./pages/Menu";
 import { Home } from './pages/Home';
 import { Friends } from './pages/Friends';
 import { Community } from './pages/Community';
-import { Account } from './pages/Account';
 import { Login } from "./pages/Login";
 import { Register } from './pages/UserAccount/Register'; // Adjusted path
 import { SpotifyLogin } from './pages/UserAccount/SpotifyLogin'; // Adjusted path
@@ -43,7 +42,6 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/friends" element={<Friends />} />
               <Route path="/community" element={<Community />} />
-              <Route path="/account" element={<Account />} />
               <Route path="/login" element={<Login />} />
               <Route path="/pop" element={<Pop />} />
               <Route path="/rock" element={<Rock />} />
