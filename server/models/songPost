@@ -7,7 +7,7 @@ const songPostschema = new mongoose.Schema({
         artist: { type: String, required: true},
         albumCover: { type: String, required: true}
     },
-    comments: [{ body: String, date: Date}],
+    comments: [{ body: String, date: {type: Date, default: Date.now } }],
     rating: Number,
     postedAt: { type: Date, default: Date.now}
 });
