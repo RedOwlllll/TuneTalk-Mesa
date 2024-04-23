@@ -4,6 +4,8 @@ import React, { createContext, useContext, useState } from 'react';
 
 // Object that represents the initial state of the user.
 const initialUser = {
+  email: '',
+  username: '',
   spotifyAccount: '',
   password: '',
   isAuthenticated: false,

@@ -1,7 +1,12 @@
   /* for app.js file */
-  * {
+* {
     font-family: Arial;
+    font-style: normal;
+    font-size: 14px;
+    box-sizing: border-box;
+    margin: 0;
 }
+
 
 .App {
     background-color: #fefefe;
@@ -12,13 +17,24 @@
 h1 {
     font-size: 40px;
 }
+
+h2 {
+    font-size: 30px;
+}
+
+h3 {
+    font-size: 16px;
+}
   
 /* div styling for the pages */
-.home-page, 
+.menu-page, 
+.home-page,
 .friends-page, 
 .community-page,
-.account-page {
-    font-family: "Arial";
+.account-page,
+.login-container, 
+.register-container, 
+.spotify-login-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -38,5 +54,29 @@ button[type=submit] {
     padding: 12px 30px;
     width: auto;
     text-transform: uppercase;
-    
-  }
+}
+
+input {
+    background-color: #ccc;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    border-radius: 10px;
+    width: 300px;
+}
+
+
+/* For alert message when user either signups or logs in */
+.alert {
+    font-size: 15px; 
+    color: red;
+}
+  
+/* For login and signup pages */
+.link-btn {
+    background: none;
+    text-decoration: underline;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}

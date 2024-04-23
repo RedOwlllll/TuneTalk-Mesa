@@ -1,5 +1,7 @@
 import "./css/App.css";
 import { Route, Routes } from "react-router-dom";
+//import { useState } from "react";
+import { UserProvider } from "./UserState";
 import { Navbar } from "./Navbar";
 import { Menu } from "./pages/Menu";
 import { Home } from './pages/Home';
@@ -21,15 +23,21 @@ import RNB from './pages/genres/RNB';
 import Classical from './pages/genres/Classical';
 
 function App() {
-  
-  
+
+    //const [userAccount, setUserAccount] = useState(""); // State to hold authenticated user's email
+    const loggedIn = window.localStorage.getItem("isLoggedIn");
+    console.log(loggedIn, "login");
+
     return (
       <div className="App">
         <UserProvider>
-          <Navbar/> 
+          <Navbar /> 
             <Routes>
               <Route path="/" element={<Menu />} />
               <Route path="/menu" element={<Menu />} />
+              <Route path="/account/login" element={<Login />} />
+              <Route path="/account/register" element={<Register />} />
+              <Route path="/account/spotify" element={<SpotifyLogin />} />
               <Route path="/home" element={<Home />} />
               <Route path="/friends" element={<Friends />} />
               <Route path="/community" element={<Community />} />
