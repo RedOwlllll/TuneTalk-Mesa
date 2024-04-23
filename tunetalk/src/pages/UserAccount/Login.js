@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from "../../UserState";
 import axios from "axios"; 
 import "../../css/App.css";
-import { SendNotificationEmail } from "./utils/SendNotificationEmail";
 
 
 export const Login = () => {
@@ -42,7 +41,6 @@ export const Login = () => {
                     username: data.user.username
                 });
                 console.log("user login authenticated");
-                //SendNotificationEmail(user);
                 
                 navigate('/home'); // Will redirect user to the home page. SHOULD BE CHANGED TO SPOTIFY LOGIN LATER
             } 
