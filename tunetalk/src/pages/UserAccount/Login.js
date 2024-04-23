@@ -43,6 +43,36 @@ export const Login = () => {
                 console.log("user login authenticated");
                 
                 navigate('/home'); // Will redirect user to the home page. SHOULD BE CHANGED TO SPOTIFY LOGIN LATER
+                
+                function showNotification() {
+                    const notification = new Notification("!TIME TO TUNE IN!", {
+                        body: "POST YOUR CURRENT OR RECENTLY PLAYED SONG OR ELSE!!"
+                    });
+
+                    notification.onclick = function(event) {
+                        event.preventDefault(); //prevents the browser from focusing on the Notifications related tab
+                        navigate('/friends'); //Should linked to the posting site when merged later
+                        window.focus(); // Brings the focus to the newly opened tab
+                        if (notification)
+                        {
+                            notification.close();
+                        }
+                    }
+                }
+
+                if(Notification.permission === "granted")
+                {
+                    showNotification();
+                }
+                else if(Notification.permission !== "denied")
+                {
+                    Notification.requestPermission().then(permission => {
+                        if(permission === "granted")
+                        {
+                            showNotification();
+                        }
+                    });
+                }
             } 
             else if (data.error === "user_not_found") {
                 setAlertMessage("User not found. Please check your email address or username again.");
