@@ -6,10 +6,10 @@ import PostingButton from "../functions/PostingButton";
    
 import StarRating from "./StarRating";
 
-function Home() {
+export function Home() {
 
     //spotify api credentials and endpoints
-    const CLIENT_ID = "8e2f1c8ec6e14de3b5117923af68adf7"
+    const CLIENT_ID = "82051e28a62540019c2de5c903d8bca1"
     const REDIRECT_URI = "http://localhost:3000/home"
     const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
     const RESPONSE_TYPE = "token"
@@ -86,13 +86,7 @@ function Home() {
     return (
         <div className="home-page">
         
-            <div className="posting-feature-bar">
-                <PostingButton id='posting-button-sequence'/>
-            </div>
-            <div className="home-page">
-                <h1>Home</h1> 
-            
-            </div>   
+               
             <h1>Home</h1>
             {!token ?
                 <a href={getLoginURL()}>Login to Spotify</a>
