@@ -10,7 +10,7 @@ router.post("/", async(req,res) => {
         // First, check if user's email already exists in the database
         const existingEmail = await user.findOne({email});
         if (existingEmail) {
-            return res.send({status: "error", error: "email_exists", message: "Email is registered already. Please login instead or choose another email."});
+            return res.send(400)({status: "error", error: "email_exists", message: "Email is registered already. Please login instead or choose another email."});
         }
         
         // Then check if username also exists in the database.
@@ -32,8 +32,8 @@ router.post("/", async(req,res) => {
         // Return the registered email and username along with the response
         return res.send({status: "ok", message: "User successfully registered.", email: newUser.email, username: newUser.username });
     } catch (e) {
-        console.log(e);
-        res.json({status: "error", message: e.message});
+        console.log("Error registering user to TuneTalk", e);
+        return res.status(500).json({status: "error", message: e.message});
     }
 });
 

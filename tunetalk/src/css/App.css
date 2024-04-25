@@ -33,8 +33,18 @@ h3 {
 .community-page,
 .account-page,
 .login-container, 
-.register-container, 
+.register-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh; /* Minimum height of the page to fill the viewport */
+    text-align: center;
+}
+
 .spotify-login-container {
+    color: white;
+    background: black;
     display: flex;
     flex-direction: column;
     justify-content: center;

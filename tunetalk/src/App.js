@@ -1,7 +1,7 @@
 import "./css/App.css";
 import { Route, Routes } from "react-router-dom";
 //import { useState } from "react";
-import { UserProvider } from "./UserState";
+import { UserProvider } from "./authentication/UserState";
 import { Navbar } from "./Navbar";
 import { Menu } from "./pages/Menu";
 import { Login } from "./pages/UserAccount/Login";
@@ -11,11 +11,14 @@ import { Home } from "./pages/Home";
 import { Friends } from './pages/Friends';
 import { Community } from './pages/Community';
 
-function App() {
+
+
+export const App = () => {
 
     //const [userAccount, setUserAccount] = useState(""); // State to hold authenticated user's email
     const loggedIn = window.localStorage.getItem("isLoggedIn");
     console.log(loggedIn, "login");
+
 
     return (
       <div className="App">
@@ -35,5 +38,3 @@ function App() {
       </div>
     );
 }
-
-export default App;

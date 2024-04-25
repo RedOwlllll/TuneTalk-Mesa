@@ -4,71 +4,72 @@
 
 const mongoose = require("mongoose");
 
-/* Model for Song */
 const songSchema = new mongoose.Schema({
     songId: {
-        type: String,
-        required: true
+        type: String
     },
-    addedAt: {
-        type: Date,
-        required: true
+    addedAt: { 
+        type: Date, 
+        default: Date.now 
     }
 });
 
-/* Album */
 const AlbumSchema = new mongoose.Schema({
     albumId: {
-        type: String,
-        required: true
+        type: String
     },
-    addedAt: {
-        type: Date,
-        required: true
+    addedAt: { 
+        type: Date, 
+        default: Date.now 
     }
 });
 
-/* Song in a playlist on spotify */
 const PlaylistTrackSchema = new mongoose.Schema({
     playlistTrackId: {
-        type: String,
-        required: true
+        type: String
     },
-    addedAt: {
-        type: Date,
-        required: true
+    addedAt: { 
+        type: Date, 
+        default: Date.now 
     }
 });
 
-/* Spotify playlist */
 const PlaylistSchema = new mongoose.Schema({
     playlistId: {
-        type: String,
-        required: true
+        type: String
     },
     name: {
-        type: String,
-        required: true
+        type: String
     },
     description: {
         type: String
     },
-    tracks: [PlaylistTrackSchema] // Pass PlaylistTrackSchema
+    tracks: [PlaylistTrackSchema]
 });
 
-// Spotify Account
 const SpotifyAccountSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        required: true
+    spotifyUsername: { 
+        type: String, 
+        required: [true, "Must have a username for the Spotify Account."]
     },
-    email: {
-        type: String,
-        required: true
+    spotifyEmail: {
+        type: String, 
+        required: [true, "Must have a email for the Spotify Account."]
     },
-    password: {
-        type: String,
-        required: true
+    accessToken: { 
+        type: String, 
+        required: [true, "Must have an access token for the Spotify Account."]
+    },
+    refreshToken: { 
+        type: String, 
+        required: [true, "Must have a refresh token for the Spotify Account."]
+    },
+    tokenExpiresIn: { 
+        type: Date 
+    },
+    addedAt: { 
+        type: Date, 
+        default: Date.now 
     },
     displayName: {
         type: String

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useUser } from "../../UserState";
+import { useUser } from "../../authentication/UserState";
 import axios from "axios"; 
 import "../../css/App.css"; 
 
@@ -56,7 +56,7 @@ export const Login = () => {
     // When user is authenticated, will prompt them to home page - NOTE: should already have their 
     useEffect (() => {
         if (user.isAuthenticated) {
-            navigate("/account/home"); 
+            navigate("/account/spotify"); 
         }
     });
 

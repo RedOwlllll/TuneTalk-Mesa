@@ -3,7 +3,7 @@ import "./css/App.css";
 import "./css/Navbar.css";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import TuneTalkLogo from "./assets/TuneTalkTextWhite.svg";
-import { useUser } from "./UserState";
+import { useUser } from "./authentication/UserState";
 import AccountLogo from "./assets/AccountLogo.svg";
 
 export const Navbar = () => {
@@ -86,7 +86,7 @@ export const Navbar = () => {
                                     <NavLink to="/account/user" className="dropdown-link">
                                     <div>
                                         {/* Will display both the user email and username in one div/navlink */}
-                                        Email: {user.email} <br/> Username: {user.username}
+                                        Email: {user.email} <br/> Username: {user.username} <br/> Spotify: {user.spotifyAccount}
                                     </div>
                                     </NavLink>
                                     <button className="logout-btn" onClick={handleLogout}><h3>Log Out</h3></button>

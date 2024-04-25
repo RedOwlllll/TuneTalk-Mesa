@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useUser } from "../../UserState";
+import { useUser } from "../../authentication/UserState";
 import "../../css/App.css"; 
 import axios from "axios";
 
@@ -16,7 +16,6 @@ export const Register = () => {
     // Variables to store pattern regex for password and email (dont add semicolon)
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()\-_=+{};:,<.>`~]{8,}$/
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/ 
-    ///^[a-zA-Z0-9_.]{1,15}$/
     const usernameRegex = /^[a-zA-Z0-9]{1,15}$/ // Removed underscore and full stop for simplicity
     
     // Vairiable to user import useNavigate 
@@ -48,7 +47,7 @@ export const Register = () => {
         }
 
          // Connect to tunetalksignup api
-        axios.post("http://localhost:8082/api/tunetalksignup", {
+        axios.post("http://localhost:8082/api/tunetalkregister", {
             email: registerEmail,
             username: registerUsername,
             password: registerPassword,
@@ -56,7 +55,7 @@ export const Register = () => {
             
         .then((res) => {
             const data = res.data;
-            console.log(data, "userSignup");
+            console.log(data, "userRegister");
             
             if (data.status === "ok") {
                 setAlertMessage("You are now registered with TuneTalk!");

@@ -1,40 +1,66 @@
 const express = require("express");
 const router = express.Router();
-const spotifyUser = require("../../models/UserDetails"); // import user details model
+const axios = require('axios');
+const SpotifyDetails = require('../../models/SpotifyDetails'); // Assuming this is where you define your Mongoose model
 
-// Spotify api variables
-const CLIENT_ID = "82051e28a62540019c2de5c903d8bca1";
-const CLIENT_SECRET = "857d95768293440d9e1190b69916396a";
-const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"; // Base url where we make the authorization request
-const REDIRECT_URI = "http://localhost:3000/menu"; // uri after login successful
-
-
-
-// Endpoint to save Spotify user data
+// Function to fetch user information from Spotify
 router.post("/", async (req, res) => {
+    const tokenUrl = 'https://accounts.spotify.com/api/token';
+    const userUrl = 'https://api.spotify.com/v1/me';
+    const SPOTIFY_SECRET = '857d95768293440d9e1190b69916396a';
+    
 
-    //const { spotifyAccount, password } = req.body;
 
+
+    /*
+        Following Spotify authorization code 
+    */
+    const params = new URLSearchParams({
+        grant_type: 'authorization_code',
+        code: req.body.code,
+        redirect_uri: req.body.redirectUri
+    });
+    
+    const headers = {
+        'Authorization': 'Basic ' + Buffer.from(req.body.clientId + ':' + SPOTIFY_SECRET).toString('base64'),
+        'Content-Type': 'application/x-www-form-urlencoded'
+    };
+    
     try {
-        // Check if user already exists
-        let user = await spotifyUser.findOne({ spotifyId: req.body.spotifyId });
+        // Request access token from Spotify
+        const tokenResponse = await axios.get(tokenUrl, {
+            params: params.toString(),
+            headers: headers
+        });
 
-        if (user) {
-            res.status(200).json(user);
-        } else {
-            // Create a new user on Spotify and save their data 
-            user = new spotifyUser({
-                spotifyId: req.body.spotifyId,
-                email: req.body.email,
-                displayName: req.body.displayName,
-                profileUrl: req.body.profileUrl
+        const { access_token } = tokenResponse.data;
+
+        // If username exists, proceed to fetch user information from Spotify
+        if (username) {
+            // Request user information from Spotify
+            const getProfile = await axios.get(userUrl, {
+                headers: { 
+                    Authorization: `Bearer ${access_token}` 
+                }
             });
+            const profile = getProfile.data;
 
-            await user.save();
-            res.status(201).json(user);
+            // Save user information to MongoDB
+            const spotifyUser = await SpotifyDetails.add({
+                spotifyUsername: profile.id,
+                accessToken: access_token,
+                displayName: profile.display_name || profile.id,
+                profileImage: profile.images.length > 0 ? profile.images[0].url : ''
+            });
+            
+            console.log("Spotify user registered successfully");
+            return res.status(201).json({ status: "success", message: "Spotify user registered successfully", user: spotifyUser });
+        } else {
+            return res.status(400).json({ status: "error", message: "Username is required" });
         }
     } catch (error) {
-        res.status(500).json({ message: "Error saving user", error });
+        console.error("Error registering Spotify user!:", error.message);
+        return res.status(500).json({ status: "error", message: error.message });
     }
 });
 
