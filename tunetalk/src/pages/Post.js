@@ -69,9 +69,11 @@ function Post() {
                 //prepare song to be saved
                 const songData = {
                     userId: userId,
+                    song:{
                     title: track.name,
                     artist: track.artists.map(artist => artist.name).join(', '),
                     albumCover: track.album.images[0].url,
+                    },
                     comments: [],
                     rating: StarRating,
                 }
@@ -84,7 +86,7 @@ function Post() {
     };
 
     const saveTrackToDatabase = (songData) => {
-        axios.post(`/api/songposts/${userId}`, songData)
+        axios.post("http://localhost:8082/api/songposts/", songData)
         .then(response => {
             console.log('Song post saved:', response.data);
         })

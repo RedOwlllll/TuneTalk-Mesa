@@ -4,10 +4,10 @@ const SongPost = require('../models/songPost');
 const UserDetails = require('../models/userDetails');
 
 //post endpoint to create a song post
-router.post('/:userId', async (req, res) => {
+router.post('/', async (req, res) => {
     try{
 
-    const { userId } = req.params;
+    const userId = "";
     const { title, artist, albumCover, comments, rating, postedAt } = req.body;
 
     //create a new songpost instance
@@ -26,7 +26,7 @@ router.post('/:userId', async (req, res) => {
     //save the new post to the songpost colletion
     const savedPost = await newSongPost.save();
 
-    const user = await UserDetails.findById(req.params.userId);
+    const user = await UserDetails.findById(userId);
 
     user.posts.push(savedPost._id);
 
