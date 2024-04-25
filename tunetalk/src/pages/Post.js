@@ -17,6 +17,7 @@ function Post() {
     const [recentTrack, setRecentTrack] = useState(null)
     const [comment, setComment] = useState('');
 
+    const userId = '6629d5a24bc4cc737042dca8';
     //hook to process the authentication token after login
     useEffect(() => {
         const hash = window.location.hash;
@@ -64,12 +65,33 @@ function Post() {
                     title: track.name, //title 
                     albumCover: track.album.images[0].url // URL of album image
                 });
+ 
+                //prepare song to be saved
+                const songData = {
+                    userId: userId,
+                    title: track.name,
+                    artist: track.artists.map(artist => artist.name).join(', '),
+                    albumCover: track.album.images[0].url,
+                    comments: [],
+                    rating: StarRating,
+                }
+
+                saveTrackToDatabase(songData);
             })
             .catch(error => {
                 console.log('Error fetching recent track:', error); //log any errors during the call
             });
     };
 
+    const saveTrackToDatabase = (songData) => {
+        axios.post(`/api/songposts/${userId}`, songData)
+        .then(response => {
+            console.log('Song post saved:', response.data);
+        })
+        .catch(error => {
+            console.error('Error saving the song post: ', error.response.data);
+        })
+    }
     const handleCommentSubmit = (e) => {
         e.preventDefault(); 
 

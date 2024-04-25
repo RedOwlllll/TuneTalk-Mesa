@@ -4,24 +4,38 @@ const SongPost = require('../models/songPost');
 const UserDetails = require('../models/userDetails');
 
 //post endpoint to create a song post
-router.post('/', async (req, res) => {
+router.post('/:userId', async (req, res) => {
     try{
-        //const { userId, title, artist, albumCover, comments, rating } = req.body;
-        // const newSongPost = await SongPost.create({
-        //     userId,
-        //     song: { title, artist, albumCover},
-        //     comments,
-        //     rating
-        const newSongPost = new SongPost(req.body);
-        const savedPost = await newSongPost.save();
-        res.status(201).json(newSongPost);
-        //});
 
-       // await newSongPost.save();
+    const { userId } = req.params;
+    const { title, artist, albumCover, comments, rating, postedAt } = req.body;
 
-        
-    } catch (err){
-        res.status(500).json({ message: 'Error creating song post', err});
+    //create a new songpost instance
+    const newSongPost = new SongPost({
+        userId,
+        song: {
+            title,
+            artist,
+            albumCover,
+        },
+        comments: comments || [],
+        rating: rating || 0,
+        postedAt,
+    });
+
+    //save the new post to the songpost colletion
+    const savedPost = await newSongPost.save();
+
+    const user = await UserDetails.findById(req.params.userId);
+
+    user.posts.push(savedPost._id);
+
+    await user.save();
+
+    // send back a successful response
+    res.status(201).json(savedPost);
+    }catch (error){
+        res.status(500).json({ message: 'Error creating song post', error: error.message});
     }
 });
 
@@ -35,3 +49,4 @@ router.get('/user/:userID', async (req, res) =>{
 })
 
 module.exports = router;
+

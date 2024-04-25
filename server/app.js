@@ -12,6 +12,7 @@ app.use(cors({ origin: true, credentials: true }));
 // Init middleware
 app.use(express.json({ extended: false })); // Allows Express to read data sent using a POST or PUT request. It is used for recognizing incoming objects as JSON objects. 
 
+//api 
 app.use('/api/songposts', routes);
 
 
