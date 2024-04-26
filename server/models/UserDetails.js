@@ -22,11 +22,6 @@ const UserDetailsSchema = new mongoose.Schema({
         type: String, 
         required: [true, "Must provide a password"]
     },
-    friends: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'UserDetails', // This should match the model name
-        default: []
-    }]
 });
 
 const UserDetails = mongoose.model("UserDetails", UserDetailsSchema);
