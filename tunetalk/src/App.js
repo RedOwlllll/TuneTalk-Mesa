@@ -7,7 +7,7 @@ import { Menu } from "./pages/Menu";
 import { Home } from './pages/Home';
 import { Friends } from './pages/Friends';
 import { Community } from './pages/Community';
-import { Login } from "./pages/Login";
+import { Login } from "./pages/UserAccount/Login";
 import { Register } from './pages/UserAccount/Register'; // Adjusted path
 import { SpotifyLogin } from './pages/UserAccount/SpotifyLogin'; // Adjusted path
 
