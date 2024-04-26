@@ -4,7 +4,7 @@ const SongPost = require('../models/songPost');
 const UserDetails = require('../models/userDetails');
 
 //post endpoint to create a song post
-router.post('/', async (req, res) => {
+router.post('/add-post', async (req, res) => {
     try{
 
     const userId = "";
@@ -39,6 +39,28 @@ router.post('/', async (req, res) => {
     }
 });
 
+//create user
+router.post('/add-user', async (req, res) => {
+    try{
+        //hardcode user details
+        const testUser = new UserDetails({
+            email: 'testuser@example.com',
+            username: 'testuser123',
+            password: 'testpassword',
+            posts: []
+        });
+
+        //save the test user
+        await testUser.save();
+
+        //send success response
+        res.status(201).json({ message: "test user created successfully", user: testUser});
+
+    } catch (error){
+        res.status(500).json({message: "error creating test user", error});
+    } 
+
+})
 router.get('/user/:userID', async (req, res) =>{
     try{
         const posts = await SongPost.find({ userId: req.params.userId}).sort({postedAt: -1})
@@ -49,4 +71,3 @@ router.get('/user/:userID', async (req, res) =>{
 })
 
 module.exports = router;
-

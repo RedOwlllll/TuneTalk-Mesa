@@ -16,7 +16,8 @@ app.use(cors({origin: true, credentials: true}));
 app.use(express.json({extended: false})); // Allows Express to read data sent using a POST or PUT request. It is used for recognizing incoming objects as JSON objects. 
 
 // middleware/routes
-app.use('/api/songposts', routes);
+//app.use('/api/songposts', routes);
+app.use('/api', routes);
 
 // print server is running when starting server - nodemon app
 app.listen(8082, () => {

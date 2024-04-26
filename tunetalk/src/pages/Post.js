@@ -70,9 +70,9 @@ function Post() {
                 const songData = {
                     userId: userId,
                     song:{
-                    title: track.name,
-                    artist: track.artists.map(artist => artist.name).join(', '),
-                    albumCover: track.album.images[0].url,
+                        title: track.name,
+                        artist: track.artists.map(artist => artist.name).join(', '),
+                        albumCover: track.album.images[0].url,
                     },
                     comments: [],
                     rating: StarRating,
@@ -94,6 +94,7 @@ function Post() {
             console.error('Error saving the song post: ', error.response.data);
         })
     }
+
     const handleCommentSubmit = (e) => {
         e.preventDefault(); 
 
