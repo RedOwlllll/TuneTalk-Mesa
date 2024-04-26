@@ -62,8 +62,8 @@ export const Navbar = () => {
                             </h3>
                             </button>
                             <div className="dropdown-content">
-                            <NavLink to="/account/login" className="dropdown-link"><h3>Login</h3></NavLink>
-                            <NavLink to="/account/register" className="dropdown-link"><h3>Register</h3></NavLink>
+                            <NavLink to="/account/login" className="dropdown-link"><h4>Login</h4></NavLink>
+                            <NavLink to="/account/register" className="dropdown-link"><h4>Register</h4></NavLink>
                             </div>
                         </div>
                     </li>
@@ -89,7 +89,7 @@ export const Navbar = () => {
                                         Email: {user.email} <br/> Username: {user.username} <br/> Spotify: {user.spotifyAccount}
                                     </div>
                                     </NavLink>
-                                    <button className="logout-btn" onClick={handleLogout}><h3>Log Out</h3></button>
+                                    <button className="logout-btn" onClick={handleLogout}><h4>Log Out</h4></button>
                                 </div>
                             </div>
                         </li>
