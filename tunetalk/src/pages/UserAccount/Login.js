@@ -35,11 +35,13 @@ export const Login = () => {
             if (data.status === "ok") {
                 setAlertMessage("Logged in successfully!");
                 setUser ({
-                    isAuthenticated: true,
+                    _id: data.user._id,
                     email: data.user.email,
-                    username: data.user.username
+                    username: data.user.username,
+                    isAuthenticated: true,
                 });
                 console.log("user login authenticated in TuneTalk");
+                navigate("/account/home");
             } 
             else if (data.error === "user_not_found") {
                 setAlertMessage("User not found. Please check your email address or username again.");
@@ -58,7 +60,7 @@ export const Login = () => {
         if (user.isAuthenticated) {
             navigate("/account/home"); 
         }
-    });
+    }, [user.isAuthenticated, navigate]);
 
     return (
         <div className="login-container">
