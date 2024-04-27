@@ -6,7 +6,7 @@ import StarRating from "./StarRating";
 function Post() {
 
     //spotify api credentials and endpoints
-    const CLIENT_ID = "8e2f1c8ec6e14de3b5117923af68adf7"
+    const CLIENT_ID = "82051e28a62540019c2de5c903d8bca1"
     const REDIRECT_URI = "http://localhost:3000/login"
     const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
     const RESPONSE_TYPE = "token"
@@ -17,7 +17,7 @@ function Post() {
     const [recentTrack, setRecentTrack] = useState(null)
     const [comment, setComment] = useState('');
 
-    const userId = '"662caa49c6fc63c563ee6001"';
+    
     //hook to process the authentication token after login
     useEffect(() => {
         const hash = window.location.hash;
@@ -51,14 +51,16 @@ function Post() {
             return;
         }
 
+        const userId = "662caa49c6fc63c563ee6001";
+
         //make a get request to the spotify api
         axios.get('https://api.spotify.com/v1/me/player/recently-played?limit=1', {
             headers: {
                 'Authorization': `Bearer ${token}` // set the autherization header with the token
             }
-        })
-            .then(response => {
+        }).then(response => {
                 const track = response.data.items[0].track; //extract track info from the response
+    
                 //update the recentTrack state with the track details
                 setRecentTrack({
                     artist: track.artists.map(artist => artist.name).join(', '), //join multiple artists the a comma
@@ -75,22 +77,21 @@ function Post() {
                     comments: [],
                     rating: StarRating,
                 }
-
-                saveTrackToDatabase(userId,songData);
-            })
-            .catch(error => {
+                
+                saveTrackToDatabase(userId, songData);
+            }).catch(error => {
                 console.log('Error fetching recent track:', error); //log any errors during the call
             });
     };
 
     const saveTrackToDatabase = (userId, songData) => {
-        axios.post(`http://localhost:8082/api/addPost/${userId}`, songData)
-            .then(response => {
-                console.log('Song post saved:', response.data);
-            })
-            .catch(error => {
-                console.error('Error saving the song post:', error.response.data);
-            });
+        axios.post(`http://localhost:8082/api/addPost/${userId}/addSong`, songData)
+        .then(response => {
+            console.log('Song post saved:', response.data);
+        })
+        .catch(error => {
+            console.error('Error saving the song post:', error.response.data);
+        });
     };
 
     const handleCommentSubmit = (e) => {

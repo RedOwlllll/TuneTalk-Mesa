@@ -3,33 +3,31 @@ const router = express.Router();
 const SongPost = require('../models/songPost');
 const UserDetails = require('../models/userDetails');
 
+
 //post endpoint to create a song post
-router.post('/addPost/:userId', async (req, res) => {
+router.post('/addPost/:userId/addSong', async (req, res) => {
     try{
 
-    const userId = req.params;
+    const { userId } = req.params.userId;
+    console.log("Extracted userId from params:", userId);
+
     const { title, artist, albumCover, comments, rating } = req.body;
 
     //create a new songpost instance
     const newSongPost = new SongPost({
         userId,
-        song: {
-            title,
-            artist,
-            albumCover,
-        },
+        title,
+        artist,
+        albumCover,       
         comments: comments || [],
-        rating: rating || 0,
-        postedAt: new Date(),
+        rating: rating || 0
     });
 
     //save the new post to the songpost colletion
     const savedPost = await newSongPost.save();
 
     const user = await UserDetails.findById(userId);
-
     user.posts.push(savedPost._id);
-
     await user.save();
 
     // send back a successful response
