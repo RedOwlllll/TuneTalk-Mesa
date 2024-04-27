@@ -101,7 +101,7 @@ export const SpotifyLogin = () => {
                             // Now, update the user state
                             setUser({
                                 isAuthenticated: true,
-                                spotifyAccount: spotifyUserInfo.displayName, 
+                                spotifyAccount: spotifyUserInfo.username, 
                             });
                             setAlertMessage("Spotify account connected!");
                             navigate("/account/spotify");
