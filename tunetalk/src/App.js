@@ -9,6 +9,7 @@ import { SpotifyLogin } from "./pages/UserAccount/SpotifyLogin";
 import { Home } from "./pages/Home";
 import { Friends } from './pages/Friends';
 import { Community } from './pages/Community';
+import { ProtectedRoute } from "./authentication/ProtectedRoute";
 
 export const App = () => {
   return (
@@ -21,9 +22,10 @@ export const App = () => {
             <Route path="/account/login" element={<Login />} />
             <Route path="/account/register" element={<Register />} />
             <Route path="/account/spotify" element={<SpotifyLogin />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/friends" element={<Friends />} />
-            <Route path="/community" element={<Community />} />
+            {/* Protected routes */}
+            <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path="/friends" element={<ProtectedRoute><Friends /></ProtectedRoute>} />
+            <Route path="/community" element={<ProtectedRoute><Community /></ProtectedRoute>} />
           </Routes>
       </UserProvider>
     </div>
