@@ -4,7 +4,7 @@ const connectDB = require("./config/db");
 const cors = require("cors");
 // routes / api
 const routes = require("./routes/routes"); 
-
+const registerRouter = require("./routes/register");
 
 connectDB(); // Call connectDB import so mongodb is connected
 
@@ -18,9 +18,17 @@ app.use(express.json({extended: false})); // Allows Express to read data sent us
 // middleware/routes
 //app.use('/api/songposts', routes);
 app.use('/api', routes);
+app.use("/api", registerRouter);
 
 // print server is running when starting server - nodemon app
 app.listen(8082, () => {
-    console.log("Server is running!");
+    console.log("Server is running on port 8082!");
     
 });
+
+
+
+
+
+
+

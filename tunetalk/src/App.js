@@ -7,6 +7,7 @@ import { Friends } from './pages/Friends';
 import { Community } from './pages/Community';
 import { Account } from './pages/Account';
 import { Login } from "./pages/Login";
+import { Register } from "./pages/UserSetup";
 import { UserProvider } from "./UserState";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
               <Route path="/community" element={<Community />} />
               <Route path="/account" element={<Account />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/usersetup" element= {<Register />}/>
             </Routes>
         </UserProvider>
       </div>
