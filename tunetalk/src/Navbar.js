@@ -16,10 +16,12 @@ export const Navbar = () => {
     // Function to handle user logout and initializing the state of the user
     const handleLogout = () => {
         setUserState({
-            isAuthenticated: false, 
             email: undefined, 
             password: undefined,
+            isAuthenticated: false, 
         });
+        // Remove the user data from localStorage
+        localStorage.removeItem('user');
         
         navigate("/");
     };
