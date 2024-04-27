@@ -42,4 +42,34 @@ router.get('/list/:email', async (req, res) => {
     }
 });
 
+// New route to list pending friend requests
+router.get('/requests/:email', async (req, res) => {
+    try {
+        const { email } = req.params;
+        const pendingRequests = await Friend.find({
+            recipientEmail: email,
+            status: 'pending'
+        });
+        res.json(pendingRequests);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Remove a friend relationship
+router.delete('/remove', async (req, res) => {
+    const { userId, friendId } = req.body;
+    try {
+        await Friend.findOneAndDelete({
+            $or: [
+                { requesterEmail: userId, recipientEmail: friendId },
+                { requesterEmail: friendId, recipientEmail: userId }
+            ]
+        });
+        res.status(200).send("Friendship removed");
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = router;
