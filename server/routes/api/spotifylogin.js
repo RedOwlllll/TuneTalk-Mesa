@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const axios = require('axios');
-const spotifyuser = require('../../models/SpotifyDetails'); // Assuming this is where you define your Mongoose model - NOTE: still unsure on whether to use UserDetails or SpotifyDetails. 
+const spotifyuser = require('../../models/SpotifyDetails');
 
-// Function to fetch user information from Spotify
+// Function to fetch spotify details then save into mongodb
 router.post("/", async (req, res) => {
     
     const { spotifyID, spotifyURL, displayName, spotifyEmail } = req.body;
 
     try {
+        
         const spotifyUser = await spotifyuser.create({
             spotifyID,
             spotifyURL,
@@ -16,7 +16,6 @@ router.post("/", async (req, res) => {
             spotifyEmail
         });
 
-        // Return the spotify account's details 
         return res.send({status: "ok", message: "Spotify account connected (to mongo).", 
         spotifyID: spotifyUser.spotifyID, spotifyURL: spotifyUser.spotifyURL, displayName: spotifyUser.displayName, spotifyEmail: spotifyUser.spotifyEmail });
     }
@@ -24,6 +23,7 @@ router.post("/", async (req, res) => {
         console.log("Error registering spotify account to TuneTalk", e);
         return res.status(500).json({status: "error", message: "Error registering spotify account to TuneTalk", errors: e.errors || e.message });
     }
+
 });
 
 module.exports = router;
