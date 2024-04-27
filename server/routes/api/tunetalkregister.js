@@ -10,7 +10,7 @@ router.post("/", async(req,res) => {
         // First, check if user's email already exists in the database
         const existingEmail = await user.findOne({email});
         if (existingEmail) {
-            return res.send(400)({status: "error", error: "email_exists", message: "Email is registered already. Please login instead or choose another email."});
+            return res.send({status: "error", error: "email_exists", message: "Email is registered already. Please login instead or choose another email."});
         }
         
         // Then check if username also exists in the database.

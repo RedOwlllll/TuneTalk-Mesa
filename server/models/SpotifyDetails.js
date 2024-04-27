@@ -48,21 +48,23 @@ const PlaylistSchema = new mongoose.Schema({
 });
 
 const SpotifyAccountSchema = new mongoose.Schema({
-    spotifyUsername: { 
+    spotifyID: { 
         type: String, 
-        required: [true, "Must have a username for the Spotify Account."]
+    },
+    spotifyURL: {
+        type: String,
+    },
+    displayName: {
+        type: String,
     },
     spotifyEmail: {
         type: String, 
-        required: [true, "Must have a email for the Spotify Account."]
     },
     accessToken: { 
         type: String, 
-        required: [true, "Must have an access token for the Spotify Account."]
     },
     refreshToken: { 
         type: String, 
-        required: [true, "Must have a refresh token for the Spotify Account."]
     },
     tokenExpiresIn: { 
         type: Date 
@@ -70,9 +72,6 @@ const SpotifyAccountSchema = new mongoose.Schema({
     addedAt: { 
         type: Date, 
         default: Date.now 
-    },
-    displayName: {
-        type: String
     },
     profileImage: {
         type: String

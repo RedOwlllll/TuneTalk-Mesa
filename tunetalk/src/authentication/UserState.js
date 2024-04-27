@@ -36,22 +36,3 @@ export const useUser = () => {
   }
   return context;
 };
-
-// Reducer function to handle state updates
-export const reducer = (state, action) => {
-  switch (action.type) {
-    case "SET_SPOTIFY_USERNAME":
-      return {
-        ...state,
-        user: action.user,
-      };
-    case "SET_PLAYING":
-      return {
-        ...state,
-        playing: action.playing,
-      };
-    // Handle other action types as needed
-    default:
-      return state;
-  }
-};

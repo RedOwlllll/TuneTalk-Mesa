@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../authentication/UserState";
 
 const SPOTIFY_AUTH = "https://accounts.spotify.com/authorize";
 //const REDIRECT_URI = "http://localhost:3000/home";
@@ -31,10 +32,13 @@ const getTokenAfterAuth = () => {
     }, {});
 };
 
+
+
+
 export const SpotifyLogin = () => {
     const [alertMessage, setAlertMessage] = useState("");
-    const [user, setUser] = useState({ isAuthenticated: false, spotifyAccount: '' });
-    const [userInfo, setUserInfo] = useState(null); // State variable to save user's spotify info
+    const [user, setUser] = useUser();
+    const [userInfo, setUserInfo] = useState(null); // State variable to save user's spotify info into teh userState
     const navigate = useNavigate();
 
     // Function that will display the page that asks the user to connect to their spotify acc for our application
@@ -43,10 +47,7 @@ export const SpotifyLogin = () => {
     };
 
     useEffect(() => {
-        console.log("inside useEffect");
-    
         const getUserSpotifyInfo = async () => {
-            console.log("After getUserSpotifyInfo");
     
             // Check if there's a hash in the URL - no hash, that means access token was not generated
             if (window.location.hash !== "") {
@@ -65,6 +66,13 @@ export const SpotifyLogin = () => {
                     });
 
                     const userInfo = userInfoResponse.data; // Needed to define 
+
+
+                    // Before proceeding, check that userInfo is not null or undefined
+                    if (!userInfo) {
+                        throw new Error("User information is not available.");
+                    }
+
                     
                     // Fetch spotify accounts details (can also check in console).
                     const spotifyUserInfo = {
@@ -77,28 +85,51 @@ export const SpotifyLogin = () => {
                     setUserInfo(spotifyUserInfo);
                     setAlertMessage("Spotify account connected!");
     
-                    // Update user state
-                    setUser({
-                        isAuthenticated: true,
-                        spotifyAccount: spotifyUserInfo.username, // Should save the user's Spotify username to the users state now. 
+             
+                    // Connect to spotify login api to store data into mongodb
+                    axios.post("http://localhost:8082/api/spotifylogin", {
+                        spotifyID: userInfo.id,
+                        spotifyURL: userInfo.external_urls.spotify,
+                        displayName: userInfo.display_name,
+                        spotifyEmail: userInfo.email
+                    })
+                    .then((res) => {
+                        const data = res.data;
+                        console.log(data, "spotifyUserLogin");
+
+                        if(data.status === "ok") {
+                            // Now, update the user state
+                            setUser({
+                                isAuthenticated: true,
+                                spotifyAccount: spotifyUserInfo.displayName, 
+                            });
+                            setAlertMessage("Spotify account connected!");
+                            navigate("/account/spotify");
+                        } else {
+                            // Handle errors like not being able to store the user info
+                            throw new Error("Unable to store spotify account into TuneTalk's database.");
+                        }
+                        
                     });
+
                 } catch (error) {
                     console.error("Error connecting to Spotify:", error.message);
                     setAlertMessage("Failed to connect to Spotify");
                 }
-            } else {
+            } 
+            else {
                 console.log("Hash / access token not found");
             }
         };
         getUserSpotifyInfo();
-    }, []); // Allows useEffect hook to render only once. 
+    }, [navigate, setUser]);
 
     useEffect(() => {
-        // Navigate back to account/spotify page, which should display users spotify details and then allow them to navigate to the home page (through the button)
-        if (user.isAuthenticated) {
-            navigate("/account/spotify");
+        const savedUser = localStorage.getItem('user');
+        if (savedUser) {
+            setUser(JSON.parse(savedUser));
         }
-    }, [user.isAuthenticated, navigate]);
+    }, []); // Allows useEffect hook to render only once. 
 
     return (
         <div className="spotify-login-container">
@@ -113,15 +144,18 @@ export const SpotifyLogin = () => {
             ) : (
                 // when User's spotify is authenticated, show alert message and Spotify user info
                 <>
-                    {alertMessage && <h3>{alertMessage}</h3>}
-                        {userInfo && (
-                            <div>
-                                <br/><br/>
-                                <h4>Spotify Details:</h4>
-                                <p><b>User ID:</b> {userInfo.userId}</p>
-                                <p><b>Username:</b> {userInfo.username}</p>
-                                <p><b>Email:</b> {userInfo.email}</p>
-                                <br/><br/><br/>
+                    {alertMessage && (
+                        <h3>{alertMessage}</h3>
+                    )}
+                    
+                    {userInfo && (
+                        <div>
+                            <br/><br/>
+                            <h4>Spotify Details:</h4>
+                            <p><b>User ID:</b> {userInfo.userId}</p>
+                            <p><b>Username:</b> {userInfo.username}</p>
+                            <p><b>Email:</b> {userInfo.email}</p>
+                            <br/><br/><br/>
                             <button type="submit" onClick={() => navigate('/home')}>Go to your Home Page!</button>
                         </div> 
                     )}

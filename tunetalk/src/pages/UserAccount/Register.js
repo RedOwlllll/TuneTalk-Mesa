@@ -52,7 +52,6 @@ export const Register = () => {
             username: registerUsername,
             password: registerPassword,
         })
-            
         .then((res) => {
             const data = res.data;
             console.log(data, "userRegister");
@@ -60,9 +59,9 @@ export const Register = () => {
             if (data.status === "ok") {
                 setAlertMessage("You are now registered with TuneTalk!");
                 setUser ({
-                    isAuthenticated: true,
                     email: data.email, // Refer to email object directly (since the email is being registered it should not be in mongodb yet)
-                    username: data.username // Likewise w/ username
+                    username: data.username, // Likewise w/ username
+                    isAuthenticated: true
                 });
                 console.log("user registration authenticated in TuneTalk");
             } 
@@ -75,9 +74,9 @@ export const Register = () => {
         });  
     }
 
-    // When user is authenticated, will prompt them to link their spotify account to their TuneTalk account.
+    // When user email and username is ok, will prompt them to the spotify account page
     useEffect (() => {
-        if (user.isAuthenticated) {
+        if (user.email && user.username) {
             navigate("/account/spotify"); 
         }
     });

@@ -11,9 +11,6 @@ export const Login = () => {
     const [alertMessage, setAlertMessage] = useState(""); // Variable that stores message at the bottom of page depending on whether user input.
     const [user, setUser] = useUser();
 
-    // Variable for email pattern regex
-    //const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-
     // Vairiable to store import useNavigate 
     const navigate = useNavigate();
 
@@ -27,7 +24,6 @@ export const Login = () => {
             userLogin: userLogin,
             password: loginPassword,
         })
-            
         .then((res) => {
             const data = res.data;
             console.log(data, "userLogin"); // when the user is logged in creates a variable called userLogin and sets the value to true
@@ -35,10 +31,11 @@ export const Login = () => {
             if (data.status === "ok") {
                 setAlertMessage("Logged in successfully!");
                 setUser ({
-                    isAuthenticated: true,
                     email: data.user.email,
-                    username: data.user.username
+                    username: data.user.username,
+                    isAuthenticated: true
                 });
+                localStorage.setItem('user', JSON.stringify(user));
                 console.log("user login authenticated in TuneTalk");
             } 
             else if (data.error === "user_not_found") {
@@ -53,9 +50,9 @@ export const Login = () => {
         });
     }
 
-    // When user is authenticated, will prompt them to home page - NOTE: should already have their 
+    // When user email and username is ok, will prompt them to the spotify account page
     useEffect (() => {
-        if (user.isAuthenticated) {
+        if (user.email && user.username) {
             navigate("/account/spotify"); 
         }
     });
