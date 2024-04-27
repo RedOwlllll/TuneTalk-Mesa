@@ -9,7 +9,6 @@ import { Friends } from './pages/Friends';
 import { Community } from './pages/Community';
 import { Login } from "./pages/UserAccount/Login";
 import { Register } from './pages/UserAccount/Register'; // Adjusted path
-import { SpotifyLogin } from './pages/UserAccount/SpotifyLogin'; // Adjusted path
 
 //import genre
 import Pop from './pages/genres/Pop';
@@ -38,7 +37,6 @@ function App() {
               <Route path="/menu" element={<Menu />} />
               <Route path="/account/login" element={<Login />} />
               <Route path="/account/register" element={<Register />} />
-              <Route path="/account/spotify" element={<SpotifyLogin />} />
               <Route path="/home" element={<Home />} />
               <Route path="/friends" element={<Friends />} />
               <Route path="/community" element={<Community />} />

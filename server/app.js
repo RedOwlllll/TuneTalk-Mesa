@@ -2,12 +2,9 @@ const express = require("express");
 const app = express();
 const connectDB = require("./config/db");
 const cors = require("cors");
-
 // Routes
 const loginRouter = require("./routes/api/tunetalklogin"); 
 const registerRouter = require("./routes/api/tunetalkregister");
-const spotifyRouter = require("./routes/api/spotifylogin");
-const addFriendRouter = require('./routes/api/addFriend');
 
 // Connect to database
 connectDB();
@@ -19,8 +16,6 @@ app.use(express.json()); // Use this only once
 // Use Routes
 app.use("/api/tunetalklogin", loginRouter);
 app.use("/api/tunetalksignup", registerRouter);
-app.use("/api/spotifylogin", spotifyRouter);
-app.use('/api/addFriend', addFriendRouter); // Specify the exact path for the addFriend route
 
 // Start the server
 app.listen(8082, () => {

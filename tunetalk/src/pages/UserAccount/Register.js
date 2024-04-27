@@ -95,7 +95,7 @@ export const Register = () => {
                 <label>Username:</label><br/>
                 <input value={registerUsername} onChange={(e) => setRegisterUsername (e.target.value)} id="setRegisterUsername" placeholder="username *" required /><br/>
                 <label>Password:</label><br/>
-                <input value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} type="password" id="registerPassword" placeholder="******** *" required/><br/>
+                <input value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} type="password" id="registerPassword" placeholder="*********" required/><br/>
                 <br/>
                 <button type="submit">register</button>
                 <br/><br/>
