@@ -129,7 +129,7 @@ export const SpotifyLogin = () => {
         if (savedUser) {
             setUser(JSON.parse(savedUser));
         }
-    }, []); // Allows useEffect hook to render only once. 
+    }, [setUser]); // Allows useEffect hook to render only once. 
 
     return (
         <div className="spotify-login-container">
