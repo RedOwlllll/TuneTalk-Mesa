@@ -4,11 +4,11 @@ const SongPost = require('../models/songPost');
 const UserDetails = require('../models/userDetails');
 
 //post endpoint to create a song post
-router.post('/add-post', async (req, res) => {
+router.post('/addPost/:userId', async (req, res) => {
     try{
 
-    const userId = "";
-    const { title, artist, albumCover, comments, rating, postedAt } = req.body;
+    const userId = req.params;
+    const { title, artist, albumCover, comments, rating } = req.body;
 
     //create a new songpost instance
     const newSongPost = new SongPost({
@@ -20,7 +20,7 @@ router.post('/add-post', async (req, res) => {
         },
         comments: comments || [],
         rating: rating || 0,
-        postedAt,
+        postedAt: new Date(),
     });
 
     //save the new post to the songpost colletion
@@ -40,34 +40,34 @@ router.post('/add-post', async (req, res) => {
 });
 
 //create user
-router.post('/add-user', async (req, res) => {
-    try{
-        //hardcode user details
-        const testUser = new UserDetails({
-            email: 'testuser@example.com',
-            username: 'testuser123',
-            password: 'testpassword',
-            posts: []
-        });
+// router.post('/add-user', async (req, res) => {
+//     try{
+//         //hardcode user details
+//         const testUser = new UserDetails({
+//             email: 'testuser@example.com',
+//             username: 'testuser123',
+//             password: 'testpassword',
+//             posts: []
+//         });
 
-        //save the test user
-        await testUser.save();
+//         //save the test user
+//         await testUser.save();
 
-        //send success response
-        res.status(201).json({ message: "test user created successfully", user: testUser});
+//         //send success response
+//         res.status(201).json({ message: "test user created successfully", user: testUser});
 
-    } catch (error){
-        res.status(500).json({message: "error creating test user", error});
-    } 
+//     } catch (error){
+//         res.status(500).json({message: "error creating test user", error});
+//     } 
 
-})
-router.get('/user/:userID', async (req, res) =>{
-    try{
-        const posts = await SongPost.find({ userId: req.params.userId}).sort({postedAt: -1})
-        res.status(200).json(posts);
-    } catch (err){
-        res.status(500).json({ message: 'Error fetching posts', err: err.message});
-    }
-})
+// })
+// router.get('/user/:userID', async (req, res) =>{
+//     try{
+//         const posts = await SongPost.find({ userId: req.params.userId}).sort({postedAt: -1})
+//         res.status(200).json(posts);
+//     } catch (err){
+//         res.status(500).json({ message: 'Error fetching posts', err: err.message});
+//     }
+// })
 
 module.exports = router;

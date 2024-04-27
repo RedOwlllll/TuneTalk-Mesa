@@ -2,9 +2,10 @@ const express = require("express");
 const app = express();
 const connectDB = require("./config/db");
 const cors = require("cors");
+
 // routes / api
-const routes = require("./routes/routes"); 
 const registerRouter = require("./routes/register");
+const addPost = require("./routes/routes")
 
 connectDB(); // Call connectDB import so mongodb is connected
 
@@ -17,7 +18,7 @@ app.use(express.json({extended: false})); // Allows Express to read data sent us
 
 // middleware/routes
 //app.use('/api/songposts', routes);
-app.use('/api', routes);
+app.use('/api', addPost);
 app.use("/api", registerRouter);
 
 // print server is running when starting server - nodemon app

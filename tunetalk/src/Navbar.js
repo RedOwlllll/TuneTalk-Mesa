@@ -17,7 +17,7 @@ export const Navbar = () => {
         </div>
         <ul className={menuOpen ? "open" : ""}>
             {/* NavLinks, which allow the user to navigate to different pages in the navbar */}
-            <li><NavLink to="/menu">Menu</NavLink></li>
+            <li><NavLink to="/register">Register</NavLink></li>
             <li><NavLink to="/home">Home</NavLink></li>
             <li><NavLink to="/friends">Friends</NavLink></li>
             <li><NavLink to="/community">Community</NavLink></li>

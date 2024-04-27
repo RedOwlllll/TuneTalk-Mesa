@@ -1,26 +1,34 @@
 const express = require('express');
 const router = require('express').Router();
 const user = require("../models/userDetails");
-
+//const bcrypt = require('bcryptjs');
 //const express = require('express');
 //const router = express.Router();
 // const SongPost = require('../models/songPost');
 // const UserDetails = require('../models/userDetails');
 
 router.post("/", async(req,res) => {
-    //const {email, username, password} = req.body;
+    const {email, username, password} = req.body;
     
     try {
 
         // Create a new user and store it in the MongoDB database
         const newUser = await user.create({ 
-            email: 'testuser@example.com', 
-            username: 'testuser123',
-            password: 'A12345678bb'
+            email,
+            username,
+            password: password,
         });
         
         // Return the registered email and username along with the response
-        return res.send({status: "ok", message: "User successfully registered.", email: 'testuser@example.com', username: 'testuser123' });
+        return res.status(201).json({
+            status: "ok",
+            message: "User successfully registered.",
+            user: {
+                id: newUser._id,
+                email: newUser.email,
+                username: newUser.username
+            }
+        });
     } catch (e) {
         console.log("Error registering user to TuneTalk", e);
         return res.status(500).json({status: "error", message: e.message});

@@ -17,7 +17,7 @@ function Post() {
     const [recentTrack, setRecentTrack] = useState(null)
     const [comment, setComment] = useState('');
 
-    const userId = '6629d5a24bc4cc737042dca8';
+    const userId = '"662caa49c6fc63c563ee6001"';
     //hook to process the authentication token after login
     useEffect(() => {
         const hash = window.location.hash;
@@ -69,31 +69,29 @@ function Post() {
                 //prepare song to be saved
                 const songData = {
                     userId: userId,
-                    song:{
-                        title: track.name,
-                        artist: track.artists.map(artist => artist.name).join(', '),
-                        albumCover: track.album.images[0].url,
-                    },
+                    title: track.name,
+                    artist: track.artists.map(artist => artist.name).join(', '),
+                    albumCover: track.album.images[0].url,                    
                     comments: [],
                     rating: StarRating,
                 }
 
-                saveTrackToDatabase(songData);
+                saveTrackToDatabase(userId,songData);
             })
             .catch(error => {
                 console.log('Error fetching recent track:', error); //log any errors during the call
             });
     };
 
-    const saveTrackToDatabase = (songData) => {
-        axios.post("http://localhost:8082/api/songposts/", songData)
-        .then(response => {
-            console.log('Song post saved:', response.data);
-        })
-        .catch(error => {
-            console.error('Error saving the song post: ', error.response.data);
-        })
-    }
+    const saveTrackToDatabase = (userId, songData) => {
+        axios.post(`http://localhost:8082/api/addPost/${userId}`, songData)
+            .then(response => {
+                console.log('Song post saved:', response.data);
+            })
+            .catch(error => {
+                console.error('Error saving the song post:', error.response.data);
+            });
+    };
 
     const handleCommentSubmit = (e) => {
         e.preventDefault(); 
