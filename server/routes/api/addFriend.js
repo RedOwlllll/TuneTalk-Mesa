@@ -25,8 +25,8 @@ router.post("/", async (req, res) => {
         }
 
         if (!requester) {
-            console.log('Recipient not found');
-            return res.status(404).json({ error: "Recipient user not found." });
+            console.log('Requester not found');
+            return res.status(404).json({ error: "Requester user not found." });
         }
 
         console.log('Attempting to create friendship');
@@ -45,6 +45,36 @@ router.post("/", async (req, res) => {
     } catch (error) {
         console.error('Error occurred:', error);
         res.status(500).json({ error: "An error occurred while adding a friend." });
+    }
+});
+
+router.get("/pending/:email", async (req, res) => {
+    const { email } = req.params;
+
+    try {
+        // Find the user by email
+        const user = await UserDetails.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found." });
+        }
+
+        // Find all pending friend requests for the user
+        const pendingRequests = await Friendship.find({
+            recipient: user._id,
+            status: "pending"
+        }).populate({
+            path: 'requester', // Select the 'name' field of the user
+            select: 'displayName',
+            model: 'UserDetails' // Explicitly stating the model to use for populating
+        });
+        // Log the populated data here
+        console.log("Populated Requester: ", pendingRequests.map(req => req.requester));
+
+        res.status(200).json({ pendingRequests });
+    } catch (error) {
+        console.error('Error fetching pending friend requests:', error);
+        res.status(500).json({ error: "An error occurred while fetching pending friend requests." });
     }
 });
 
