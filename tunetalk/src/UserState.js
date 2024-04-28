@@ -1,6 +1,6 @@
 /* File to check and handle user authentication - will be used for Navigation bar file */
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Object that represents the initial state of the user.
 const initialUser = {
@@ -24,9 +24,9 @@ const UserProvider = ({ children }) => {
   }); // State variable to handle state of the initial user.
 
   //Effect to sore user is localStorage whenever it changes
-  // useEffect(() => {
-  //   localStorage.setItem('user', JSON.stringify(user));
-  // }, [user]);
+  useEffect(() => {
+    localStorage.setItem('user', JSON.stringify(user));
+  }, [user]);
 
   // Wrap children components with the user context provider
   return (
