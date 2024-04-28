@@ -33,18 +33,16 @@ const getTokenAfterAuth = () => {
 };
 
 
-
+// Function that will display the page that asks the user to connect to their spotify acc for our application
+export const handleLogin = async () => {
+    window.location = `${SPOTIFY_AUTH}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=${SCOPES_URL_PARAM}&response_type=token&show_dialog=true`;
+};
 
 export const SpotifyLogin = () => {
     const [alertMessage, setAlertMessage] = useState("");
     const [user, setUser] = useUser();
     const [userInfo, setUserInfo] = useState(null); // State variable to save user's spotify info into teh userState
     const navigate = useNavigate();
-
-    // Function that will display the page that asks the user to connect to their spotify acc for our application
-    const handleLogin = async () => {
-        window.location = `${SPOTIFY_AUTH}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=${SCOPES_URL_PARAM}&response_type=token&show_dialog=true`;
-    };
 
     useEffect(() => {
         const getUserSpotifyInfo = async () => {
@@ -99,10 +97,11 @@ export const SpotifyLogin = () => {
 
                         if(data.status === "ok") {
                             // Now, update the user state
-                            setUser({
+                            setUser((prevUser) => ({
+                                ...prevUser,
                                 isAuthenticated: true,
                                 spotifyAccount: spotifyUserInfo.username, 
-                            });
+                            }));
                             setAlertMessage("Spotify account connected!");
                             navigate("/account/spotify");
                         } else {
@@ -122,45 +121,43 @@ export const SpotifyLogin = () => {
             }
         };
         getUserSpotifyInfo();
-    }, [navigate, setUser]);
+    }, []);
 
     useEffect(() => {
-        const savedUser = localStorage.getItem('user');
-        if (savedUser) {
-            setUser(JSON.parse(savedUser));
+        if (user.isAuthenticated) {
+            navigate("/account/spotify");
         }
-    }, [setUser]); // Allows useEffect hook to render only once. 
+    }, []); // Allows useEffect hook to render only once. 
+
 
     return (
         <div className="spotify-login-container">
-            {!user.isAuthenticated ? (
-                // Show the login button and header only if the user is not authenticated / hasn't gone through the window.location link yet
+            {user.isAuthenticated && userInfo ? (
+                // Render if authenticated and userInfo is available
                 <>
+                <div>
+                    <h3>{alertMessage}</h3>
+                    <div>
+                        < br/><br/>
+                        <h4>Spotify Details:</h4>
+                        <p><b>User ID:</b> {userInfo.userId}</p>
+                        <p><b>Username:</b> {userInfo.username}</p>
+                        <p><b>Email:</b> {userInfo.email}</p>
+                        <br/><br/><br/>
+                        <button type="submit" onClick={() => navigate('/home')}>Go to your Home Page!</button>
+                    </div>
+                </div>
+                </>
+            ) : (
+                <>
+                <div className="spotify-login-container">
                     <h3>Nearly there! <br/> You need to connect your Spotify Account with TuneTalk</h3>
                     <br/>
                     <button type="submit" onClick={handleLogin}>Login to your Spotify Account</button>
                     <br/><br/>
-                </>
-            ) : (
-                // when User's spotify is authenticated, show alert message and Spotify user info
-                <>
-                    {alertMessage && (
-                        <h3>{alertMessage}</h3>
-                    )}
-                    
-                    {userInfo && (
-                        <div>
-                            <br/><br/>
-                            <h4>Spotify Details:</h4>
-                            <p><b>User ID:</b> {userInfo.userId}</p>
-                            <p><b>Username:</b> {userInfo.username}</p>
-                            <p><b>Email:</b> {userInfo.email}</p>
-                            <br/><br/><br/>
-                            <button type="submit" onClick={() => navigate('/home')}>Go to your Home Page!</button>
-                        </div> 
-                    )}
+                </div>
                 </>
             )}
         </div>
-    );
+      );
 };

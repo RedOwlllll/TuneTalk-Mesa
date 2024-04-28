@@ -61,7 +61,7 @@ export const Register = () => {
                 setUser ({
                     email: data.email, // Refer to email object directly (since the email is being registered it should not be in mongodb yet)
                     username: data.username, // Likewise w/ username
-                    isAuthenticated: true
+                    // isAuthenticated: true - commented out so that when on the register page, protected routes are still protected (they need to connect to spotify).
                 });
                 console.log("user registration authenticated in TuneTalk");
             } 
@@ -82,7 +82,6 @@ export const Register = () => {
     });
 
     return (
-
         <div className="register-container">
             <br/>
             <form className="register-form" onSubmit={handleSubmit}>
@@ -100,7 +99,6 @@ export const Register = () => {
                 { alertMessage && (
                     <div className="alert">{ alertMessage }</div>
                 )} <br/>
-
                 <button className="link-btn" type ="button" onClick={() => navigate('/account/login')}>Already have an account? Sign in here.</button><br/><br/>
             </form>
             <br/>

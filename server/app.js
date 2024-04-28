@@ -6,6 +6,7 @@ const cors = require("cors");
 const loginRouter = require("./routes/api/tunetalklogin"); 
 const registerRouter = require("./routes/api/tunetalkregister");
 const spotifyRouter = require("./routes/api/spotifylogin");
+const friendRouter = require('./routes/api/friendRoutes');
 
 connectDB(); // Call connectDB import so mongodb is connected
 
@@ -19,7 +20,7 @@ app.use(express.json()); // Allows Express to read data sent using a POST or PUT
 app.use("/api/tunetalklogin", loginRouter);
 app.use("/api/tunetalkregister", registerRouter);
 app.use("/api/spotifylogin", spotifyRouter);
-
+app.use("/api/friends", friendRouter);
 
 // print server is running when starting server - nodemon app
 app.listen(8082, () => {

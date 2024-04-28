@@ -1,12 +1,12 @@
 /* File to check and handle user authentication - will be used for Navigation bar file */
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Object that represents the initial state of the user.
 const initialUser = {
+  _id: null, // Initialize _id as null
   email: '',
   username: '',
-  spotifyAccount: '',
   password: '',
   isAuthenticated: false,
 };
@@ -18,7 +18,16 @@ const UserContext = createContext(initialUser);
 
 // UserProvider component
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(initialUser); // State variable to handle state of the initial user.
+  const [user, setUser] = useState((initialUser) => {
+    // Retrieve the user from localStorage if it exists
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : initialUser;
+  });
+  // Effect to store user in localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('user', JSON.stringify(user));
+  }, [user]);
+
 
   // Wrap children components with the user context provider
   return (

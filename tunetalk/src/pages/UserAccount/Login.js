@@ -33,10 +33,11 @@ export const Login = () => {
                 setUser ({
                     email: data.user.email,
                     username: data.user.username,
-                    isAuthenticated: true
+                    // isAuthenticated: true - commented out so that when on the login page, protected routes are still protected (they need to connect to spotify).
                 });
                 localStorage.setItem('user', JSON.stringify(user));
                 console.log("user login authenticated in TuneTalk");
+                navigate("/account/spotify");
             } 
             else if (data.error === "user_not_found") {
                 setAlertMessage("User not found. Please check your email address or username again.");
@@ -55,7 +56,7 @@ export const Login = () => {
         if (user.email && user.username) {
             navigate("/account/spotify"); 
         }
-    });
+    }, [navigate, user.email, user.username]);
 
     return (
         <div className="login-container">
