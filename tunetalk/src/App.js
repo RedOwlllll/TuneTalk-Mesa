@@ -1,13 +1,15 @@
 import "./css/App.css";
 import { Route, Routes } from "react-router-dom";
+//import { useState } from "react";
+import { UserProvider } from "./UserState";
 import { Navbar } from "./Navbar";
 import { Menu } from "./pages/Menu";
 import { Home } from './pages/Home';
 import { Friends } from './pages/Friends';
 import { Community } from './pages/Community';
-import { Account } from './pages/Account';
-import { Login } from "./pages/Login";
-import { UserProvider } from "./UserState";
+import { Login } from "./pages/UserAccount/Login";
+import { Register } from './pages/UserAccount/Register'; // Adjusted path
+
 //import genre
 import Pop from './pages/genres/Pop';
 import Rock from './pages/genres/Rock';
@@ -21,19 +23,23 @@ import RNB from './pages/genres/RNB';
 import Classical from './pages/genres/Classical';
 
 function App() {
-  
-  
+
+    //const [userAccount, setUserAccount] = useState(""); // State to hold authenticated user's email
+    const loggedIn = window.localStorage.getItem("isLoggedIn");
+    console.log(loggedIn, "login");
+
     return (
       <div className="App">
         <UserProvider>
-          <Navbar/> 
+          <Navbar /> 
             <Routes>
               <Route path="/" element={<Menu />} />
               <Route path="/menu" element={<Menu />} />
+              <Route path="/account/login" element={<Login />} />
+              <Route path="/account/register" element={<Register />} />
               <Route path="/home" element={<Home />} />
               <Route path="/friends" element={<Friends />} />
               <Route path="/community" element={<Community />} />
-              <Route path="/account" element={<Account />} />
               <Route path="/login" element={<Login />} />
               <Route path="/pop" element={<Pop />} />
               <Route path="/rock" element={<Rock />} />

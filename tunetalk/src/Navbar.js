@@ -1,28 +1,105 @@
 import React, { useState } from "react";
+import "./css/App.css";
 import "./css/Navbar.css";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import TuneTalkLogo from "./assets/TuneTalkTextWhite.svg";
+import { useUser } from "./UserState";
+import AccountLogo from "./assets/AccountLogo.svg";
 
 export const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false); // State variable that handles whether the menu is opened or closed. 
+    const userContext = useUser(); // Passing import of the UserState class into a new variable
+    const [user, setUserState] = userContext;
+    const [buttonOpen, setButtonOpen] = useState(false); // State variable for the accounts dropdown menu.
+    const navigate = useNavigate();
+  
+    // Function to handle user logout and initializing the state of the user
+    const handleLogout = () => {
+        setUserState({
+            email: undefined, 
+            password: undefined,
+            isAuthenticated: false, 
+        });
+        // Remove the user data from localStorage
+        localStorage.removeItem('user');
+        
+        navigate("/");
+    };
 
+    // Function to toggle hamburger menu
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+    };
+
+    // Function to close hamburger menu
+    const closeMenu = () => {
+        setMenuOpen(false);
+    };
+
+    // For dropdown menu for the account page
+    const toggleDropdown = () => {
+        setButtonOpen(!buttonOpen);
+    };
+    
     return (
         <nav>
-        <Link to="/" className="title">
-            Tune Talk
-        </Link>
-        <div className="menu" onClick={() => setMenuOpen(!menuOpen)}>
+        <Link to ="/"><img src={TuneTalkLogo} className="account-logo" onClick={closeMenu} alt="TuneTalk"/></Link>
+        <div className="menu" onClick={toggleMenu}>
             <span></span>
             <span></span>
             <span></span>
         </div>
         <ul className={menuOpen ? "open" : ""}>
             {/* NavLinks, which allow the user to navigate to different pages in the navbar */}
-            <li><NavLink to="/menu">Menu</NavLink></li>
-            <li><NavLink to="/home">Home</NavLink></li>
-            <li><NavLink to="/friends">Friends</NavLink></li>
-            <li><NavLink to="/community">Community</NavLink></li>
-            <li><NavLink to="/account">Acccount</NavLink></li>
-            <li><NavLink to="/login">Login</NavLink></li>
+            
+            {!user.isAuthenticated ? (
+                // First displays menu and login navlinks for when user is not logged in / authenticated
+                <>
+                    <li><NavLink to="/menu">Menu</NavLink></li>
+                    <li>
+                        <div className="account-dropdown">
+                            <button className="account-button" onClick={toggleDropdown}>
+                            <h3 className="account-image"> 
+                                <img src={AccountLogo} className="account-logo" alt="Account" />
+                            </h3>
+                            </button>
+                            <div className="dropdown-content">
+                            <NavLink to="/account/login" className="dropdown-link"><h3>Login</h3></NavLink>
+                            <NavLink to="/account/register" className="dropdown-link"><h3>Register</h3></NavLink>
+                            </div>
+                        </div>
+                    </li>
+                </>
+            ) : (
+                // Otherwise, if user is logged in, the navlinks below will appear instead. 
+                <>
+                    <li><NavLink to="/home">Home</NavLink></li>
+                    <li><NavLink to="/friends">Friends</NavLink></li>
+                    <li><NavLink to="/community">Community</NavLink></li>
+                    {user.isAuthenticated && (
+                        <li>
+                            <div className="account-dropdown">
+                                <button className="account-button" onClick={toggleDropdown}>
+                                    <h3 className="account-image"> 
+                                    <img src={AccountLogo} className="account-logo" alt="Account" />
+                                    </h3>
+                                </button>
+                                <div className="dropdown-content">
+                                    <NavLink to="/account/user" className="dropdown-link">
+                                    <div>
+                                        {/* Will display both the user email and username in one div/navlink */}
+                                        Email: {user.email} <br/> Username: {user.username}
+                                    </div>
+                                    </NavLink>
+                                    <button className="logout-btn" onClick={handleLogout}><h3>Log Out</h3></button>
+                                </div>
+                            </div>
+                        </li>
+                    )}
+                </>
+                
+            )}
+            
         </ul>
         </nav>
     );
