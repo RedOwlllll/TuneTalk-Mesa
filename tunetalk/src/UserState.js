@@ -18,7 +18,15 @@ const UserContext = createContext(initialUser);
 
 // UserProvider component
 const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(initialUser); // State variable to handle state of the initial user.
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : initialUser;
+  }); // State variable to handle state of the initial user.
+
+  //Effect to sore user is localStorage whenever it changes
+  // useEffect(() => {
+  //   localStorage.setItem('user', JSON.stringify(user));
+  // }, [user]);
 
   // Wrap children components with the user context provider
   return (
