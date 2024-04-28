@@ -1,7 +1,12 @@
   /* for app.js file */
-  * {
+* {
       font-family: Arial;
+    font-style: normal;
+    font-size: 14px;
+    box-sizing: border-box;
+    margin: 0;
   }
+
 
   .App {
       background-color: #fefefe;
@@ -9,103 +14,83 @@
       width: 100%;
   }
 
-  h1 {
-      font-size: 40px;
-  }
+h1 {
+    font-size: 40px;
+}
 
-  /* div styling for the pages */
-  .home-page,
-  .friends-page,
-  .community-page,
-  .account-page {
-      font-family: "Arial";
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 85vh;
-      /* Minimum height of the page to fill the viewport */
-      text-align: center;
-  }
+h2 {
+    font-size: 30px;
+}
 
-  .button-container {
-      text-align: center;
-      /* Center the button */
-      margin-top: 20px;
-      /* Space below the navbar */
-  }
+h3 {
+    font-size: 22px;
+}
 
-  .button-box {
-      display: inline-block;
-      /* Only as wide as necessary */
-      padding: 10px 20px;
-      /* Padding inside the box */
-      margin: 0 auto;
-      /* Center the box */
-      border: 1px solid #ccc;
-      border-radius: 4px;
-  }
+h4 {
+    font-size: 18px;
+}
+  
+/* div styling for the pages */
+.menu-page, 
+.home-page,
+.friends-page, 
+.community-page,
+.account-page,
+.login-container, 
+.register-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh; /* Minimum height of the page to fill the viewport */
+    text-align: center;
+}
 
-  button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-  }
+.spotify-login-container {
+    color: white;
+    background: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh; /* Minimum height of the page to fill the viewport */
+    text-align: center;
+}
 
-  .post-card {
-      background-color: #fff;
-      max-width: 500px;
-      margin: 20px auto;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      border-radius: 10px;
-      overflow: hidden;
-      font-family: 'Arial', sans-serif;
-  }
 
-  .post-card-content {
-      text-align: center;
-      padding: 15px;
-      background-color: #f0f0f0;
-      border-bottom: 1px solid #ddd;
-  }
+button[type=submit] {
+    border-radius: 30px;
+    border: 1px solid #004d39;
+    background-color: #6D968F;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 12px 30px;
+    width: auto;
+    text-transform: uppercase;
+}
 
-  .song-title {
-      font-size: 24px;
-      margin-bottom: 8px;
-  }
+input {
+    background-color: #ccc;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    border-radius: 10px;
+    width: 300px;
+}
 
-  .artist-name {
-      font-size: 18px;
-      color: #555;
-  }
 
-  .post-card-image {
-      width: 100%;
-      display: block;
-      height: 500px;
-  }
-
-  .post-card-content .comment-input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 14px;
-  }
-
-  .post-card-content .submit-comment {
-      background-color: #0095f6;
-      color: white;
-      padding: 8px 16px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-  }
-
-  .comments-container {
-    max-height: 200px;
-    overflow-y: auto;
+/* For alert message when user either signups or logs in */
+.alert {
+    font-size: 15px; 
+    color: red;
+}
+  
+/* For login and signup pages */
+.link-btn {
+    background: none;
+    text-decoration: underline;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
 }
