@@ -14,7 +14,7 @@ app.use(cors());
 app.use(cors({origin: true, credentials: true}));
 
 // Init middleware
-app.use(express.json({extended: false})); // Allows Express to read data sent using a POST or PUT request. It is used for recognizing incoming objects as JSON objects. 
+app.use(express.json()); // Allows Express to read data sent using a POST or PUT request. It is used for recognizing incoming objects as JSON objects. 
 
 // middleware/routes
 //app.use('/api/songposts', routes);
@@ -22,8 +22,10 @@ app.use("/api", addPost);
 app.use("/api", registerRouter);
 
 // print server is running when starting server - nodemon app
-const port = process.env.PORT || 8802;
-app.listen(port, () => console.log(`Server running on port ${port}!`));
+app.listen(8802, () => {
+    console.log("Server is running on port 8082!");
+});
+
 
 /**
  * const express = require("express");

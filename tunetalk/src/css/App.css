@@ -104,3 +104,8 @@
       cursor: pointer;
       font-size: 14px;
   }
+
+  .comments-container {
+    max-height: 200px;
+    overflow-y: auto;
+}

@@ -6,15 +6,16 @@ import StarRating from "./StarRating";
 function Post() {
 
     //spotify api credentials and endpoints
-    const CLIENT_ID = "82051e28a62540019c2de5c903d8bca1"
+    const CLIENT_ID = "8e2f1c8ec6e14de3b5117923af68adf7"
     const REDIRECT_URI = "http://localhost:3000/login"
     const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
     const RESPONSE_TYPE = "token"
     const SCOPES = "user-read-recently-played";
 
     //state hooks to store the token and recent song info
-    const [token, setToken] = useState("")
-    const [recentTrack, setRecentTrack] = useState(null)
+    const [token, setToken] = useState("");
+    const [recentTrack, setRecentTrack] = useState(null);
+    const [comments, setComments] = useState([]);
     const [comment, setComment] = useState('');
 
     
@@ -51,7 +52,7 @@ function Post() {
             return;
         }
 
-        const userId = "662caa49c6fc63c563ee6001";
+        const email = "1@gmail.com";
 
         //make a get request to the spotify api
         axios.get('https://api.spotify.com/v1/me/player/recently-played?limit=1', {
@@ -70,7 +71,6 @@ function Post() {
  
                 //prepare song to be saved
                 const songData = {
-                    userId: userId,
                     title: track.name,
                     artist: track.artists.map(artist => artist.name).join(', '),
                     albumCover: track.album.images[0].url,                    
@@ -78,32 +78,43 @@ function Post() {
                     rating: StarRating,
                 }
                 
-                saveTrackToDatabase(userId, songData);
+                saveTrackToDatabase(email, songData);
+
             }).catch(error => {
                 console.log('Error fetching recent track:', error); //log any errors during the call
             });
     };
 
-    const saveTrackToDatabase = (userId, songData) => {
-        axios.post(`http://localhost:8082/api/addPost/${userId}/addSong`, songData)
-        .then(response => {
+    const saveTrackToDatabase = (email, songData) => {
+        console.log(songData);
+        axios.post(`http://localhost:8802/api/user/${email}/addPost`, songData )
+          .then(response => {
             console.log('Song post saved:', response.data);
-        })
-        .catch(error => {
+          })
+          .catch(error => {
             console.error('Error saving the song post:', error.response.data);
-        });
-    };
+          });
+      };
 
     const handleCommentSubmit = (e) => {
         e.preventDefault(); 
 
+        if(!comment) return;
+        // Create a new comment object
+        const newComment = {
+            id: comments.length + 1, // Simple way to assign a unique ID
+            body: comment,
+            date: new Date().toISOString(),
+        };
 
-        console.log(comment);
+        // Update comments state with the new comment
+        setComments([...comments, newComment]);
 
-        setComment(''); // Clear the comment input after submission
+        // Clear the comment input field
+        setComment('');
     };
 
-    //component render
+    // component render
     return (
         <div className="home-page">
             {!token ?
@@ -128,6 +139,15 @@ function Post() {
                         <StarRating onRating={(rate) => console.log(rate)} />
                     </div>
                     <div className="post-card-content">
+                        {/* Render existing comments */}
+                        <div className="comments-container">
+                        {comments.map((c) => (
+                            <div key={c.id} className="comment">
+                                <p>{c.body}</p>
+                                <small>{new Date(c.date).toLocaleString()}</small>
+                            </div>
+                        ))}
+                        </div>
                         {/* Comment form */}
                         <form onSubmit={handleCommentSubmit}>
                             <input
@@ -140,6 +160,7 @@ function Post() {
                             <button type="submit" className="submit-comment">Post</button>
                         </form>
                     </div>
+                
                 </div>
             )}
         </div>
