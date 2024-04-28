@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useUser } from "../../UserState";
 import axios from "axios"; 
-import "../../css/App.css";
-
+import "../../css/App.css"; 
 
 export const Login = () => {
 
@@ -40,59 +39,7 @@ export const Login = () => {
                     email: data.user.email,
                     username: data.user.username
                 });
-                console.log("user login authenticated");
-                
-                navigate('/home'); // Will redirect user to the home page. SHOULD BE CHANGED TO SPOTIFY LOGIN LATER
-                
-                function showNotification() {
-                    const notification = new Notification("!TIME TO TUNE IN!", {
-                        body: "CLICK ON THIS TO POST YOUR CURRENT OR RECENTLY PLAYED SONG OR ELSE!!"
-                    });
-
-                    notification.onclick = function(event) {
-                        event.preventDefault(); //prevents the browser from focusing on the Notifications related tab
-                        navigate('/friends'); //Should linked to the posting site when merged later
-                        window.focus(); // Brings the focus to the newly opened tab
-                        if (notification)
-                        {
-                            notification.close();
-                        }
-                    }
-                }
-
-                //Generates a randome time (in ms) within the day
-                const randomTimeGenerator = Math.floor(Math.random() * 24 * 60 * 60 * 1000);
-                console.log(randomTimeGenerator); //To test the randomTimeGenerator
-                setTimeout(() =>{
-                    if(Notification.permission === "granted") 
-                    {
-                        showNotification(); //Show notifition when random time is generated
-                    }
-                    else if (Notification.permission !== "denied") 
-                    {
-                        Notification.requestPermission().then(permission => { //Request permission to show notification
-                            if(permission === "granted") 
-                            {
-                                showNotification();
-                            }
-                        });
-                    }
-                }, randomTimeGenerator);
-                
-                // ****TO USE FOR DEMONSTRATION****
-                // if(Notification.permission === "granted")
-                // {
-                //     showNotification();
-                // }
-                // else if(Notification.permission !== "denied")
-                // {
-                //     Notification.requestPermission().then(permission => {
-                //         if(permission === "granted")
-                //         {
-                //             showNotification();
-                //         }
-                //     });
-                // }
+                console.log("user login authenticated in TuneTalk");
             } 
             else if (data.error === "user_not_found") {
                 setAlertMessage("User not found. Please check your email address or username again.");
@@ -106,9 +53,10 @@ export const Login = () => {
         });
     }
 
+    // When user is authenticated, will prompt them to home page - NOTE: should already have their 
     useEffect (() => {
         if (user.isAuthenticated) {
-            navigate("/home"); // When user is authenticated, will open the home page. SHOULD BE CHANGED TO SPOTIFY LOGIN LATER
+            navigate("/account/home"); 
         }
     });
 
@@ -116,8 +64,10 @@ export const Login = () => {
         <div className="login-container">
             <form className="login-form" onSubmit={handleSubmit}>
                 <h1>Welcome back</h1>
-                <p>Please enter your details to sign in</p><br/>
+                <h4>Please enter your details to log in.</h4><br/><br/>
+                <label>Email or Username:</label><br/>
                 <input value={userLogin} onChange={(e) => setUserLogin(e.target.value)} id="userLogin" placeholder="email@gmail.com or username" required/><br/>
+                <label>Password:</label><br/>
                 <input value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} type="password" id="loginPassword" placeholder="********" required/>
                 <br/>
                 <br/><button type="submit">Log In</button><br/>
