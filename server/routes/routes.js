@@ -1,17 +1,19 @@
 const express = require('express');
-const router = express.Router();
-const SongPost = require('../models/songPost');
+const router = require('express').Router();
+const {SongPost} = require('../models/songPost');
 const UserDetails = require('../models/userDetails');
+const { default: mongoose } = require('mongoose');
 
 
 //post endpoint to create a song post
-router.post('/user/:email/addPost', async (req, res) => {
+router.post('/user/:userId/addPost', async (req, res) => {
     try {
-      const { email } = req.params;
+      const { userId } = req.params;
+      const objectId = new mongoose.Types.ObjectId(userId);
       const songData = req.body;
   
       // Find the user by their unique email
-      const user = await UserDetails.findOne({ email: email });
+      const user = await UserDetails.findById(objectId);
   
       if (!user) {
         return res.status(404).send('User not found');

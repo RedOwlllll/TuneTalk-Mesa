@@ -16,9 +16,13 @@ function Post() {
     const [token, setToken] = useState("");
     const [recentTrack, setRecentTrack] = useState(null);
     const [comments, setComments] = useState([]);
-    const [comment, setComment] = useState('');
+    const [newComment, setNewComment] = useState('');
 
-    
+  // const email = "1@gmail.com";
+    const username = "blake";
+    const postId = "662cd6c7d67dfd6255ff744f";
+    const userId = "662c4a7c5de6fd5dccedfde6";
+
     //hook to process the authentication token after login
     useEffect(() => {
         const hash = window.location.hash;
@@ -52,8 +56,6 @@ function Post() {
             return;
         }
 
-        const email = "1@gmail.com";
-
         //make a get request to the spotify api
         axios.get('https://api.spotify.com/v1/me/player/recently-played?limit=1', {
             headers: {
@@ -78,40 +80,41 @@ function Post() {
                     rating: StarRating,
                 }
                 
-                saveTrackToDatabase(email, songData);
+                saveTrackToDatabase(userId, songData);
 
             }).catch(error => {
                 console.log('Error fetching recent track:', error); //log any errors during the call
             });
     };
 
-    const saveTrackToDatabase = (email, songData) => {
+    const saveTrackToDatabase = (userId, songData) => {
         console.log(songData);
-        axios.post(`http://localhost:8802/api/user/${email}/addPost`, songData )
+        axios.post(`http://localhost:8802/api/user/${userId}/addPost`, songData )
           .then(response => {
             console.log('Song post saved:', response.data);
           })
           .catch(error => {
             console.error('Error saving the song post:', error.response.data);
           });
-      };
-
-    const handleCommentSubmit = (e) => {
-        e.preventDefault(); 
-
-        if(!comment) return;
-        // Create a new comment object
-        const newComment = {
-            id: comments.length + 1, // Simple way to assign a unique ID
-            body: comment,
-            date: new Date().toISOString(),
         };
 
-        // Update comments state with the new comment
-        setComments([...comments, newComment]);
+    const handleCommentSubmit = (e) => {
 
-        // Clear the comment input field
-        setComment('');
+        e.preventDefault(); 
+
+        const commentData = {
+            text: newComment,
+            userId: username
+        };
+
+        axios.post(`http://localhost:8082/api/songpost/${postId}/comments`, commentData)
+            .then(response => {
+                setComments([...comments, response.data]);
+                setNewComment('');
+            })
+            .catch(error => {
+                console.error("Error adding comment:", error.response?.data || error.message);
+            })
     };
 
     // component render
@@ -154,8 +157,8 @@ function Post() {
                                 type="text"
                                 className="comment-input"
                                 placeholder="Add a comment..."
-                                value={comment}
-                                onChange={(e) => setComment(e.target.value)}
+                                value={newComment}
+                                onChange={(e) => setNewComment(e.target.value)}
                             />
                             <button type="submit" className="submit-comment">Post</button>
                         </form>
