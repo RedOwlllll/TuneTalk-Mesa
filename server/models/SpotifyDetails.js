@@ -1,4 +1,4 @@
-SpotifyDetails.js
+
 /* 
     Schema/model for all data needed from user's spotify
 */

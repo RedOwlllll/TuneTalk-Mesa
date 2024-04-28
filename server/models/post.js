@@ -3,15 +3,13 @@ const Schema = mongoose.Schema
 
 const postSchema = new Schema({
     username: {
-        type: String, unique: true,
-        required: [true, "Must provide a username."],
-        unique: [true, "Must be a unique username."]
+        type: String, 
+        required: true
     },
 
     email: {
-        type: String, unique: true, 
-        required: [true, "Must provide an email."],
-        unique: [true, "Must be a unique email."]
+        type: String, 
+        required: true
 
     },
 
@@ -33,5 +31,4 @@ const postSchema = new Schema({
 
 }, {timestamps:true})
 
-module.exports = mongoose.model('post', postSchema)
-postSchema.find()
+module.exports = mongoose.model('Post', postSchema)

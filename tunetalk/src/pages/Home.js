@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
-import PostingButton from "../functions/PostingButton";
+
 
    
 import StarRating from "./StarRating";

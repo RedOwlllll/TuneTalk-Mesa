@@ -8,8 +8,13 @@ import { Community } from './pages/Community';
 import { Account } from './pages/Account';
 import { Login } from "./pages/Login";
 import { UserProvider } from "./UserState";
+import { useEffect } from "react";
 
 function App() {
+  // const [data, setData] = useState("Hello World");
+  //   useEffect(() => {
+      
+  //   }, [])
     return (
       <div className="App">
         <UserProvider>

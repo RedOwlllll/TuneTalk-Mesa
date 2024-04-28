@@ -2,7 +2,9 @@ const express = require("express");
 const app = express();
 const connectDB = require("./config/db");
 const cors = require("cors");
-const postRoutes = require('./modules/postroutes.js')
+
+
+const postRoutes = require('./routes/posts')
 
 connectDB(); // Call connectDB import so mongodb is connected
 
@@ -11,6 +13,8 @@ app.use(express.json()); // allows the daat from frontend to be transferred to b
 app.use(cors());
 app.use(cors({origin: true, credentials: true}));
 
+//routes
+app.use('/api/posts', postRoutes)
 
 // Init middleware
 app.use(express.json({extended: false})); // Allows Express to read data sent using a POST or PUT request. It is used for recognizing incoming objects as JSON objects. 
