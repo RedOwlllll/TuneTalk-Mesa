@@ -19,7 +19,10 @@ function emailRegex(email) {
 function sendNotificationEmail(userEmail) {
     const notification = {
         to: userEmail,
-        from: '2024tunetalk@gmail.com',
+        from: {
+            name:'Tune Talk',
+            email: '2024tunetalk@gmail.com'
+        },
         subject: '!TIME TO TUNE IN',
         text: 'Hello! It is time to post your current/recently played song for your friends to see!'
     };
