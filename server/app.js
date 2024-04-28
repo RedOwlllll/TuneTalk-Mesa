@@ -23,7 +23,7 @@ app.use("/api", registerRouter);
 
 // print server is running when starting server - nodemon app
 app.listen(8802, () => {
-    console.log("Server is running on port 8082!");
+    console.log("Server is running on port 8802!");
 });
 
 
