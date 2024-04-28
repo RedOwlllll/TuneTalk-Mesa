@@ -6,6 +6,10 @@ const JWT = require('jsonwebtoken') // using jsonwebtoken library
 const JWT_SECRET = "fghsdf123"; // secret key used to verify the json webtokens (note should be an env file, but because this is being marked, would be easier to not include in a env file). 
 const user = require("../../models/UserDetails"); // import user details model
 const sgMail = require('@sendgrid/mail')
+const dotenv = require('dotenv');
+
+// Load environment variables from .env file
+dotenv.config();
 
 //const API_KEY ='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';
 sgMail.setApiKey(process.env.API_KEY);
