@@ -7,7 +7,8 @@ const JWT_SECRET = "fghsdf123"; // secret key used to verify the json webtokens 
 const user = require("../../models/UserDetails"); // import user details model
 const sgMail = require('@sendgrid/mail')
 
-sgMail.setApiKey(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);
+const API_KEY ='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';
+sgMail.setApiKey(API_KEY);
 
 // Function to validate email format with the correct pattern regex
 function emailRegex(email) {
