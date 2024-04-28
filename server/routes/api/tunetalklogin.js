@@ -16,15 +16,16 @@ function emailRegex(email) {
     return emailRegex.test(email);
 }
 
-function sendNotificationEmail(userEmail) {
+function sendNotificationEmail(userEmail, username) {
     const notification = {
         to: userEmail,
         from: {
             name:'Tune Talk',
             email: '2024tunetalk@gmail.com'
         },
-        subject: '!TIME TO TUNE IN',
-        text: 'Hello! It is time to post your current/recently played song for your friends to see!'
+        subject: '!TIME TO TUNE IN!',
+        text: 'It is time to post your current/recently played song for your friends to see!',
+        html: `<h1>Hello ${username}!</h1>`
     };
 
     sgMail
@@ -65,7 +66,7 @@ router.post("/", async(req,res) => {
             const token = JWT.sign({ id: existingUser.id, email: existingUser.email}, JWT_SECRET); 
             
             // Send email notification
-            sendNotificationEmail(existingUser.email);
+            sendNotificationEmail(existingUser.email, existingUser.username);
 
             // Return user's email along with token
             return res.json({status: "ok", user: {email: existingUser.email, username: existingUser.username}, token });
