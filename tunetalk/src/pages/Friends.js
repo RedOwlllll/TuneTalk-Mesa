@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useUser } from "../UserState";  // Import useUser from your UserState
+import { useUser } from "../authentication/UserState";
 import '../css/Friends.css';
 
 export const Friends = () => {

@@ -5,21 +5,26 @@ const cors = require("cors");
 // Routes
 const loginRouter = require("./routes/api/tunetalklogin"); 
 const registerRouter = require("./routes/api/tunetalkregister");
+const spotifyRouter = require("./routes/api/spotifylogin");
 const friendRouter = require('./routes/api/friendRoutes');
 
 // Connect to database
 connectDB();
 
-// Middleware
+app.use(express.json()); // allows the data from frontend to be transferred to backend/json file
 app.use(cors({origin: true, credentials: true}));
-app.use(express.json()); // Use this only once
 
-// Use Routes
+// Init middleware
+app.use(express.json()); // Allows Express to read data sent using a POST or PUT request. It is used for recognizing incoming objects as JSON objects. 
+
+// middleware/routes
 app.use("/api/tunetalklogin", loginRouter);
-app.use("/api/tunetalksignup", registerRouter);
-app.use('/api/friends', friendRouter);
+app.use("/api/tunetalkregister", registerRouter);
+app.use("/api/spotifylogin", spotifyRouter);
+app.use("/api/friends", friendRouter);
 
-// Start the server
+// print server is running when starting server - nodemon app
 app.listen(8082, () => {
-    console.log("Server is running!");
+    console.log("Server is running on port 8082!");
+    
 });

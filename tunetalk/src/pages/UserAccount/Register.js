@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useUser } from "../../UserState";
+import { useUser } from "../../authentication/UserState";
 import "../../css/App.css"; 
 import axios from "axios";
 
@@ -16,7 +16,6 @@ export const Register = () => {
     // Variables to store pattern regex for password and email (dont add semicolon)
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()\-_=+{};:,<.>`~]{8,}$/
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/ 
-    ///^[a-zA-Z0-9_.]{1,15}$/
     const usernameRegex = /^[a-zA-Z0-9]{1,15}$/ // Removed underscore and full stop for simplicity
     
     // Vairiable to user import useNavigate 
@@ -48,22 +47,21 @@ export const Register = () => {
         }
 
          // Connect to tunetalksignup api
-        axios.post("http://localhost:8082/api/tunetalksignup", {
+        axios.post("http://localhost:8082/api/tunetalkregister", {
             email: registerEmail,
             username: registerUsername,
             password: registerPassword,
         })
-            
         .then((res) => {
             const data = res.data;
-            console.log(data, "userSignup");
+            console.log(data, "userRegister");
             
             if (data.status === "ok") {
                 setAlertMessage("You are now registered with TuneTalk!");
                 setUser ({
-                    isAuthenticated: true,
                     email: data.email, // Refer to email object directly (since the email is being registered it should not be in mongodb yet)
-                    username: data.username // Likewise w/ username
+                    username: data.username, // Likewise w/ username
+                    // isAuthenticated: true - commented out so that when on the register page, protected routes are still protected (they need to connect to spotify).
                 });
                 console.log("user registration authenticated in TuneTalk");
             } 
@@ -76,15 +74,14 @@ export const Register = () => {
         });  
     }
 
-    // When user is authenticated, will prompt them to link their spotify account to their TuneTalk account.
+    // When user email and username is ok, will prompt them to the spotify account page
     useEffect (() => {
-        if (user.isAuthenticated) {
+        if (user.email && user.username) {
             navigate("/account/spotify"); 
         }
     });
 
     return (
-
         <div className="register-container">
             <br/>
             <form className="register-form" onSubmit={handleSubmit}>
@@ -102,7 +99,6 @@ export const Register = () => {
                 { alertMessage && (
                     <div className="alert">{ alertMessage }</div>
                 )} <br/>
-
                 <button className="link-btn" type ="button" onClick={() => navigate('/account/login')}>Already have an account? Sign in here.</button><br/><br/>
             </form>
             <br/>

@@ -9,7 +9,7 @@ export const Community = () => {
             <h1 className="community-title">Music Genres</h1>
             <div className="genre-grid">
                 {['Pop', 'Kpop', 'Rock', 'RNB', 'Indie', 'Hiphop', 'Country', 'Electronic', 'Metal', 'Classical'].map(genre => (
-                <Link to={`/${genre.toLowerCase()}`} key={genre} className="genre-card">
+                <Link to={`/community/${genre.toLowerCase()}`} key={genre} className="genre-card">
                     {genre}
                 </Link>
                 ))}

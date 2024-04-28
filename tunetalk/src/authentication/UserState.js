@@ -12,13 +12,13 @@ const initialUser = {
 };
 
 /* Passing initialUser object as the default value - if user info 
-  is not inputted/not found, email and password remain empty and authentication is false.
+  is not inputted/not found, email, password, spotifyAccount etc. remain empty and authentication is false.
 */
 const UserContext = createContext(initialUser);
 
 // UserProvider component
-const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState((initialUser) => {
     // Retrieve the user from localStorage if it exists
     const storedUser = localStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : initialUser;
@@ -27,6 +27,7 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('user', JSON.stringify(user));
   }, [user]);
+
 
   // Wrap children components with the user context provider
   return (
@@ -37,12 +38,10 @@ const UserProvider = ({ children }) => {
 };
 
 // Custom hook function to access user context
-const useUser = () => {
+export const useUser = () => {
   const context = useContext(UserContext);
   if (!context) {
     throw new Error('useUser must be used within a UserProvider');
   }
   return context;
 };
-
-export { UserProvider, useUser };

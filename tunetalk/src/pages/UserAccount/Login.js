@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useUser } from "../../UserState";
+import { useUser } from "../../authentication/UserState";
 import axios from "axios"; 
 import "../../css/App.css"; 
 
@@ -10,9 +10,6 @@ export const Login = () => {
     const [loginPassword, setLoginPassword] = useState("");
     const [alertMessage, setAlertMessage] = useState(""); // Variable that stores message at the bottom of page depending on whether user input.
     const [user, setUser] = useUser();
-
-    // Variable for email pattern regex
-    //const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
     // Vairiable to store import useNavigate 
     const navigate = useNavigate();
@@ -27,7 +24,6 @@ export const Login = () => {
             userLogin: userLogin,
             password: loginPassword,
         })
-            
         .then((res) => {
             const data = res.data;
             console.log(data, "userLogin"); // when the user is logged in creates a variable called userLogin and sets the value to true
@@ -35,13 +31,13 @@ export const Login = () => {
             if (data.status === "ok") {
                 setAlertMessage("Logged in successfully!");
                 setUser ({
-                    _id: data.user._id,
                     email: data.user.email,
                     username: data.user.username,
-                    isAuthenticated: true,
+                    // isAuthenticated: true - commented out so that when on the login page, protected routes are still protected (they need to connect to spotify).
                 });
+                localStorage.setItem('user', JSON.stringify(user));
                 console.log("user login authenticated in TuneTalk");
-                navigate("/account/home");
+                navigate("/account/spotify");
             } 
             else if (data.error === "user_not_found") {
                 setAlertMessage("User not found. Please check your email address or username again.");
@@ -55,12 +51,12 @@ export const Login = () => {
         });
     }
 
-    // When user is authenticated, will prompt them to home page - NOTE: should already have their 
+    // When user email and username is ok, will prompt them to the spotify account page
     useEffect (() => {
-        if (user.isAuthenticated) {
-            navigate("/account/home"); 
+        if (user.email && user.username) {
+            navigate("/account/spotify"); 
         }
-    }, [user.isAuthenticated, navigate]);
+    }, [navigate, user.email, user.username]);
 
     return (
         <div className="login-container">

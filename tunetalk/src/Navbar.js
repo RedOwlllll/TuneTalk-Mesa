@@ -3,7 +3,7 @@ import "./css/App.css";
 import "./css/Navbar.css";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import TuneTalkLogo from "./assets/TuneTalkTextWhite.svg";
-import { useUser } from "./UserState";
+import { useUser } from "./authentication/UserState";
 import AccountLogo from "./assets/AccountLogo.svg";
 
 export const Navbar = () => {
@@ -20,9 +20,7 @@ export const Navbar = () => {
             password: undefined,
             isAuthenticated: false, 
         });
-        // Remove the user data from localStorage
-        localStorage.removeItem('user');
-        
+        localStorage.removeItem("user");
         navigate("/");
     };
 
@@ -43,64 +41,62 @@ export const Navbar = () => {
     
     return (
         <nav>
-        <Link to ="/"><img src={TuneTalkLogo} className="account-logo" onClick={closeMenu} alt="TuneTalk"/></Link>
-        <div className="menu" onClick={toggleMenu}>
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <ul className={menuOpen ? "open" : ""}>
-            {/* NavLinks, which allow the user to navigate to different pages in the navbar */}
-            
-            {!user.isAuthenticated ? (
-                // First displays menu and login navlinks for when user is not logged in / authenticated
-                <>
-                    <li><NavLink to="/menu">Menu</NavLink></li>
-                    <li>
-                        <div className="account-dropdown">
-                            <button className="account-button" onClick={toggleDropdown}>
-                            <h3 className="account-image"> 
-                                <img src={AccountLogo} className="account-logo" alt="Account" />
-                            </h3>
-                            </button>
-                            <div className="dropdown-content">
-                            <NavLink to="/account/login" className="dropdown-link"><h3>Login</h3></NavLink>
-                            <NavLink to="/account/register" className="dropdown-link"><h3>Register</h3></NavLink>
-                            </div>
-                        </div>
-                    </li>
-                </>
-            ) : (
-                // Otherwise, if user is logged in, the navlinks below will appear instead. 
-                <>
-                    <li><NavLink to="/home">Home</NavLink></li>
-                    <li><NavLink to="/friends">Friends</NavLink></li>
-                    <li><NavLink to="/community">Community</NavLink></li>
-                    {user.isAuthenticated && (
+            <Link to ="/"><img src={TuneTalkLogo} className="account-logo" onClick={closeMenu} alt="TuneTalk"/></Link>
+            <div className="menu" onClick={toggleMenu}>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul className={menuOpen ? "open" : ""}>
+                {/* NavLinks, which allow the user to navigate to different pages in the navbar */}
+                
+                {!user.isAuthenticated ? (
+                    // First displays menu and login navlinks for when user is not logged in / authenticated
+                    <>
+                        <li><NavLink to="/menu">Menu</NavLink></li>
                         <li>
                             <div className="account-dropdown">
                                 <button className="account-button" onClick={toggleDropdown}>
-                                    <h3 className="account-image"> 
+                                <h3 className="account-image"> 
                                     <img src={AccountLogo} className="account-logo" alt="Account" />
-                                    </h3>
+                                </h3>
                                 </button>
                                 <div className="dropdown-content">
-                                    <NavLink to="/account/user" className="dropdown-link">
-                                    <div>
-                                        {/* Will display both the user email and username in one div/navlink */}
-                                        Email: {user.email} <br/> Username: {user.username}
-                                    </div>
-                                    </NavLink>
-                                    <button className="logout-btn" onClick={handleLogout}><h3>Log Out</h3></button>
+                                <NavLink to="/account/login" className="dropdown-link"><h4>Login</h4></NavLink>
+                                <NavLink to="/account/register" className="dropdown-link"><h4>Register</h4></NavLink>
                                 </div>
                             </div>
                         </li>
-                    )}
-                </>
-                
-            )}
-            
-        </ul>
+                    </>
+                ) : (
+                    // Otherwise, if user is logged in, the navlinks below will appear instead. 
+                    <>
+                        <li><NavLink to="/home">Home</NavLink></li>
+                        <li><NavLink to="/friends">Friends</NavLink></li>
+                        <li><NavLink to="/community">Community</NavLink></li>
+                        {user.isAuthenticated && (
+                            <li>
+                                <div className="account-dropdown">
+                                    <button className="account-button" onClick={toggleDropdown}>
+                                        <h3 className="account-image"> 
+                                        <img src={AccountLogo} className="account-logo" alt="Account" />
+                                        </h3>
+                                    </button>
+                                    <div className="dropdown-content">
+                                        <NavLink to="/account/user" className="dropdown-link">
+                                        <div>
+                                            {/* Will display both the user email and username in one div/navlink */}
+                                            Email: {user.email} <br/> Username: {user.username} <br/> Spotify: {user.spotifyAccount}
+                                        </div>
+                                        </NavLink>
+                                        <button className="logout-btn" onClick={handleLogout}><h4>Log Out</h4></button>
+                                    </div>
+                                </div>
+                            </li>
+                        )}
+                    </>
+                )}
+            </ul>
         </nav>
     );
 }
