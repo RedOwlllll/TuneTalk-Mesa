@@ -1,7 +1,7 @@
 const express = require('express');
 const router = require('express').Router();
 const {SongPost} = require('../models/songPost');
-const UserDetails = require('../models/userDetails');
+const UserDetails1 = require('../models/userDetails1');
 const { default: mongoose } = require('mongoose');
 
 
@@ -13,12 +13,12 @@ router.post('/user/:userId/addPost', async (req, res) => {
       const songData = req.body;
   
       // Find the user by their unique email
-      const user = await UserDetails.findById(objectId);
+      const user = await UserDetails1.findById(objectId);
   
       if (!user) {
         return res.status(404).send('User not found');
       }
-  
+
       // Create a new SongPost document
       const newSongPost = new SongPost({
         ...songData,
@@ -47,7 +47,7 @@ router.post('/user/:userId/addPost', async (req, res) => {
 
 //     try{
 
-//     const user = await UserDetails.findOne({userId: userId});
+//     const user = await UserDetails1.findOne({userId: userId});
 
 //     if(!user){
 //         return res.status(404).json({ message: "User not found"});
@@ -65,7 +65,7 @@ router.post('/user/:userId/addPost', async (req, res) => {
 //     //save the new post to the songpost colletion
 //     const savedPost = await newSongPost.save();
 
-//     const user1 = await UserDetails.findById(email);
+//     const user1 = await UserDetails1.findById(email);
 //     user1.posts.push(savedPost._id);
 //     await user.save();
 
@@ -81,7 +81,7 @@ router.post('/user/:userId/addPost', async (req, res) => {
 // router.post('/add-user', async (req, res) => {
 //     try{
 //         //hardcode user details
-//         const testUser = new UserDetails({
+//         const testUser = new UserDetails1({
 //             email: 'testuser@example.com',
 //             username: 'testuser123',
 //             password: 'testpassword',

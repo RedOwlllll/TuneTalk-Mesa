@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
+import "../css/Post.css";
 import StarRating from "./StarRating";
 
 function Post() {
 
     //spotify api credentials and endpoints
-    const CLIENT_ID = "8e2f1c8ec6e14de3b5117923af68adf7"
-    const REDIRECT_URI = "http://localhost:3000/login"
+    const CLIENT_ID = "82051e28a62540019c2de5c903d8bca1"
+    const REDIRECT_URI = "http://localhost:3000/home"
     const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
     const RESPONSE_TYPE = "token"
     const SCOPES = "user-read-recently-played";
@@ -89,7 +90,7 @@ function Post() {
 
     const saveTrackToDatabase = (userId, songData) => {
         console.log(songData);
-        axios.post(`http://localhost:8802/api/user/${userId}/addPost`, songData )
+        axios.post(`http://localhost:8082/api/user/${userId}/addPost`, songData )
           .then(response => {
             console.log('Song post saved:', response.data);
           })
