@@ -11,11 +11,9 @@ const friendRouter = require('./routes/api/friendRoutes');
 // Connect to database
 connectDB();
 
+// Init middleware
 app.use(express.json()); // allows the data from frontend to be transferred to backend/json file
 app.use(cors({origin: true, credentials: true}));
-
-// Init middleware
-app.use(express.json()); // Allows Express to read data sent using a POST or PUT request. It is used for recognizing incoming objects as JSON objects. 
 
 // middleware/routes
 app.use("/api/tunetalklogin", loginRouter);
