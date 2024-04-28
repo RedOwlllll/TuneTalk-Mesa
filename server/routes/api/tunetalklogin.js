@@ -11,7 +11,6 @@ const dotenv = require('dotenv');
 // Load environment variables from .env file
 dotenv.config();
 
-//const API_KEY ='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';
 sgMail.setApiKey(process.env.API_KEY);
 
 // Function to validate email format with the correct pattern regex
@@ -29,7 +28,8 @@ function sendNotificationEmail(userEmail, username) {
         },
         subject: '!TIME TO TUNE IN!',
         text: 'It is time to post your current/recently played song for your friends to see!',
-        html: `<h1>Hello ${username}!</h1>`
+        html: `<h2>Hello ${username}!</h2><p>It is time to post! <br><br>Click the link to post your current/recently played song for your friends to see!
+        <br><br><a href="http://localhost:3000/account/home">Post here</a></p>`
     };
 
     sgMail
