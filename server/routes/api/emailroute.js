@@ -5,9 +5,8 @@ const { SendNotificationEmail } = require('../../utils/SendEmailNotification');
 
 router.get('/email', async(req, res) => {
     try{
-        const userId = req.user.id;
-        const user = await UserDetails.findById(userId);
-
+        const { email } = req.query;
+        const user = await UserDetails.findOne({ email });
         if(!user)
         {
             return res.status(404).json({error: "User not found"});
