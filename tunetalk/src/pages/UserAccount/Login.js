@@ -17,6 +17,21 @@ export const Login = () => {
     // Vairiable to store import useNavigate 
     const navigate = useNavigate();
 
+    // Function to show notification
+    function showNotification() {
+        const notification = new Notification("!TIME TO TUNE IN!", {
+            body: "It's time to post your current/recently played song "
+        });
+
+        notification.onclick = function(event) {
+            event.preventDefault(); // Prevents the browser from focusing on the Notification's related tab
+            navigate('Friends.js'); // Navigate to the desired page within the web application
+            window.focus(); // Brings the focus to the newly opened tab
+            if (notification) {
+                notification.close(); // Closes the notification if it exists
+            }
+        }
+    }
     // Function that handles what happens login button is clicked.
     const handleSubmit = async (e) => {
         e.preventDefault(); 
@@ -40,6 +55,9 @@ export const Login = () => {
                     username: data.user.username
                 });
                 console.log("user login authenticated in TuneTalk");
+
+                showNotification();
+            
             } 
             else if (data.error === "user_not_found") {
                 setAlertMessage("User not found. Please check your email address or username again.");
