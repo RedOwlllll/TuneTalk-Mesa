@@ -122,14 +122,15 @@ export function Home() {
                         <img src={recentTrack.albumCover} alt={`${recentTrack.title} Album Cover`} className="post-card-image" />
                         <StarRating onRating={(rate) => console.log(rate)} />
                     </div>
-                    <input
-                        type="text"
-                        className="caption-input"
-                        placeholder="Add a caption"
-                        value={comment}
-                        onChange={(e) => setCaption(e.target.value)}
-                    />
                     <div className="post-card-content">
+                        {/* Caption input */}
+                        <input
+                            type="text"
+                            className="caption-input"
+                            placeholder="Add a caption"
+                            value={caption}
+                            onChange={(e) => setCaption(e.target.value)}
+                        />
                         {/* Comment form */}
                         <form onSubmit={handleCommentSubmit}>
                             <input
