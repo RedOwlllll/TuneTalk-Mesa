@@ -25,7 +25,7 @@ export const Login = () => {
 
         notification.onclick = function(event) {
             event.preventDefault(); // Prevents the browser from focusing on the Notification's related tab
-            navigate('Friends.js'); // Navigate to the desired page within the web application
+            navigate('/friends'); // Navigate to the desired page within the web application
             window.focus(); // Brings the focus to the newly opened tab
             if (notification) {
                 notification.close(); // Closes the notification if it exists
