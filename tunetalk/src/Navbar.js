@@ -50,7 +50,7 @@ export const Navbar = () => {
             <ul className={menuOpen ? "open" : ""}>
                 {/* NavLinks, which allow the user to navigate to different pages in the navbar */}
                 
-                {!user.isAuthenticated ? (
+                {!user?.isAuthenticated ? (
                     // First displays menu and login navlinks for when user is not logged in / authenticated
                     <>
                         <li><NavLink to="/menu">Menu</NavLink></li>
