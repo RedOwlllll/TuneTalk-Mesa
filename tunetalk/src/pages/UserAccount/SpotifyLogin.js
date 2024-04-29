@@ -124,7 +124,7 @@ export const SpotifyLogin = () => {
     }, []);
 
     useEffect(() => {
-        if (user.isAuthenticated) {
+        if (user?.isAuthenticated) {
             navigate("/account/spotify");
         }
     }, []); // Allows useEffect hook to render only once. 
@@ -132,7 +132,7 @@ export const SpotifyLogin = () => {
 
     return (
         <div className="spotify-login-container">
-            {user.isAuthenticated && userInfo ? (
+            {user?.isAuthenticated && userInfo ? (
                 // Render if authenticated and userInfo is available
                 <>
                 <div>
