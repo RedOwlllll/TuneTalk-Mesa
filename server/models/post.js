@@ -26,8 +26,12 @@ const postSchema = new Schema({
     rating: {
         type: Number,
         required: true
-    }
+    },
 
+    caption: {
+        type: String
+        
+    }
     
 
 }, {timestamps:true})
