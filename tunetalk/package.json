@@ -1,4 +1,5 @@
 {
+  "proxy": "http://localhost:8082",
   "name": "tunetalk",
   "version": "0.1.0",
   "private": true,

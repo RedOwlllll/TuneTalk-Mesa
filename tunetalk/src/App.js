@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Navbar } from "./Navbar";
 import { Menu } from "./pages/Menu";
 import { Home } from './pages/Home';
-import { Friends } from './pages/Friends';
+import { Feed } from './pages/Feed';
 import { Community } from './pages/Community';
 import { Account } from './pages/Account';
 import { Login } from "./pages/Login";
@@ -23,7 +23,7 @@ function App() {
               <Route path="/" element={<Menu />} />
               <Route path="/menu" element={<Menu />} />
               <Route path="/home" element={<Home />} />
-              <Route path="/friends" element={<Friends />} />
+              <Route path="/feed" element={<Feed />} />
               <Route path="/community" element={<Community />} />
               <Route path="/account" element={<Account />} />
               <Route path="/login" element={<Login />} />

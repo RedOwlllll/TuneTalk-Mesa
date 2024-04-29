@@ -6,6 +6,7 @@ import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own 
    
 import StarRating from "./StarRating";
 
+
 export function Home() {
 
     //spotify api credentials and endpoints
@@ -19,9 +20,20 @@ export function Home() {
     const [token, setToken] = useState("")
     const [recentTrack, setRecentTrack] = useState(null)
     const [comment, setComment] = useState('');
+    const [posts, setPosts] = useState(null)
 
     //hook to process the authentication token after login
     useEffect(() => {
+        const fetchPosts = async () => {
+            const response = await fetch('/api/posts/')
+            const json = await response.json()
+
+            if (response.ok) {
+                setPosts(json)
+            }
+        }
+        fetchPosts()
+
         const hash = window.location.hash;
         let token = window.localStorage.getItem("token");
 
@@ -122,6 +134,8 @@ export function Home() {
                             <button type="submit" className="submit-comment">Post</button>
                         </form>
                     </div>
+                    
+            
                 </div>
             )}
         </div>
