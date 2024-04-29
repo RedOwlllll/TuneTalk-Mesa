@@ -21,6 +21,7 @@ export function Home() {
     const [recentTrack, setRecentTrack] = useState(null)
     const [comment, setComment] = useState('');
     const [posts, setPosts] = useState(null)
+    const [caption, setCaption] = useState('');
 
     //hook to process the authentication token after login
     useEffect(() => {
@@ -121,6 +122,13 @@ export function Home() {
                         <img src={recentTrack.albumCover} alt={`${recentTrack.title} Album Cover`} className="post-card-image" />
                         <StarRating onRating={(rate) => console.log(rate)} />
                     </div>
+                    <input
+                        type="text"
+                        className="caption-input"
+                        placeholder="Add a caption"
+                        value={comment}
+                        onChange={(e) => setCaption(e.target.value)}
+                    />
                     <div className="post-card-content">
                         {/* Comment form */}
                         <form onSubmit={handleCommentSubmit}>
