@@ -13,6 +13,7 @@ const songPostschema = new mongoose.Schema({
     albumCover: { type: String, required: true},
     comments: [CommentSchema],
     rating: Number,
+    caption: {type: String, required: true},
     postedAt: { type: Date, default: Date.now}
 });
 
