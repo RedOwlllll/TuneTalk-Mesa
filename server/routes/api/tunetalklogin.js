@@ -8,7 +8,7 @@ const user = require("../../models/UserDetails"); // import user details model
 const sgMail = require('@sendgrid/mail');
 
 // Set your SendGrid API key here
-sgMail.setApiKey("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");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Function to validate email format with the correct pattern regex
 function emailRegex(email) {
