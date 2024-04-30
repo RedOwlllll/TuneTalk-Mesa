@@ -2,88 +2,130 @@
 
 /* Div for the backround of the navbar component */
 nav {
-    display: flex;
-    justify-content: space-between; /* places content to the right */
+    display: flex; /* places content to the right */
+    justify-content: space-between; 
     align-items: center;
-    background-color: black;
+    background: black;
     color: white;
     position: sticky;
-    top: 0;
-    bottom: 50%;
-    width: 100%;
-}
-
-/* Div to handle title styling */
-nav .title {
-    font-size: 1.5rem;
-    margin: 1rem;
-    font-weight: bold;
-    text-decoration: none;
-    color: white;
+    margin: 0;
+    padding-right: 40px;
+    padding-left: 40px;
 }
 
 /* Div for items in the navbar */
 nav ul {
     display: flex;
+    align-items: center;
+    background: black;
 }
 
 /* Div for styling the invdividual items in the navbar */
 nav ul li {
-   list-style: none; 
    display: flex;
-   align-items: center;
+   height: 50%;
 }
 
 /* Div that styles the list items ion navbar */
 nav ul li a {
-    display: block;
-    text-decoration: none;
+    text-decoration: none; /* Removes the underline */
     color: white;
-    padding: 0.5rem;
+    padding: 0.9rem;
     margin: 0 0.5rem;
-    border-radius: 0.5rem;
-    margin: 0 0.2rem;
-    border-radius: 0.5rem; /* Makes the border curvy */
-    display: flex; /* Make the link and button flex containers */
-    align-items: center; /* Align items vertically in the center */
+    display: block; /* Make the link a block element */
+    height: 50%; /* Make the link cover the entire width */
+    font-size: 20px;
 }
 
-/* Div for styling the items in the navbar like a button */
-nav ul li button {
-    background: none; /* Removes button background */
-    border: none; /* Removes button border */
+li a:not(.active):hover,
+li :hover {
+    background: #333333; /* Background color when link is hovered */
     cursor: pointer;
-    align-items: center;
-    margin: 0 0.2rem;
-    padding: 0.1px;
+    border-radius: 0.5rem; /* Makes the border curvy */
 }
 
-/* Changes border size of link component when mouse hovers it */
-nav ul li a:not(.active):hover,
-nav u1 li button:hover {
-    border: 1px solid #fefefe;
-    
+li a.active {
+    background-color: #333333; /* Background color for the active link */
+    cursor: pointer;
+    border-radius: 0.5rem; /* Makes the border curvy */
 }
+
 
 /* Div that displays menu / navbar in a column - this will be displayed when screen is a smaller size */
 nav .menu {
     display: flex;
     position: absolute;
-    top: 0.75rem;
+    top: 2.4rem; /* Makes hamburger menu centered */
     right: 0.5rem;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
     width: 2.25rem;
     height: 2rem;
+    margin-right: 30px;
+    cursor: pointer;
 }
 
-/* div that sets the colour of the active tab/link different to the rest */
-.active{
-    border: 2px solid white;
+/* Button where the account logo is placed in navbar */
+.account-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    margin-top: 5px;
+}
+
+.dropdown {
+    margin-bottom: 5px;
+}
+
+/* Dropdown container */
+.account-dropdown {
+    position: relative;
+    display: inline-block;
+}
+  
+/* Dropdown content container (hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    padding: 10px 10px;
+    z-index: 1;
+    width: auto;
+    overflow: visible;
+    justify-content: center; /* Center the items horizontally */
+    white-space: nowrap; /* Ensures that the items remain in a row */
+    right: -30px; /* Ensures theres a gap between the right edge and the full screen */
+    padding-bottom: 10px;
+    font-size: 20px;
+}
+
+/* Show the dropdown menu on hover */
+.account-dropdown:hover .dropdown-content {
+    display: block; 
+    background: black;
+    border-radius: 0.5rem; /* Makes the border curvy */
+}
+  
+/* Dropdown link for account dropdown menu */
+.dropdown-link {
+    color: white;
+    padding: 12px 20px;
+    text-decoration: none;
+    display: block;
+    background: black;
+    margin-bottom: 10px; /* Creates a gap between the dropdown links */
+}
+ 
+/* Change color of dropdown links on hover */
+.dropdown-content .dropdown-link:hover {
+    background-color: #333333;
 }
 
 /* Media query that handles navigation menu when screen is smaller */
-@media (max-width: 59em) {
+@media (max-width: 50em) {
     nav .menu {
         display: flex;
     }
@@ -95,10 +137,11 @@ nav .menu {
 
     nav ul {
         display: none;
-        /* Sets everything into a column instead of a row like if the screen were larger than 59em */
-        flex-direction: column; 
+        flex-direction: column;
         width: 100%;
-        margin-bottom: 0.25rem;
+        margin-bottom: 5px;
+        padding-top: 1rem; /* Add padding to the top of nav links */
+        padding-bottom: 1rem; /* Add padding to the bottom of nav links */
     }
 
     nav ul.open {
@@ -108,6 +151,8 @@ nav .menu {
     nav ul li {
         width: 100%;
         text-align: center;
+        padding-bottom: 5px; /* Add padding to the bottom of nav links */
+        padding-left: 15px;
     }
 
     nav ul li a {
@@ -116,9 +161,50 @@ nav .menu {
 
     /* Hambuger menu - will appear when screen size is smaller */
     nav .menu span {
-        height: 0.2rem;
+        height: 0.3rem;
         width: 100%;
         background-color: #ffffff;
         border-radius: 0.2rem;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .account-dropdown:hover .dropdown-content {
+        display: block; 
+        background: black;
+        border-radius: 0.5rem; /* Makes the border curvy */
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        justify-content: center; /* Center the items horizontally */
+        white-space: nowrap; /* Ensures that the items remain in a row */
+        transform: translateY(-80%); /* Center vertically */
+        left: 90%; /*Ensures dropdown conntent is placed on the right of account-dropdown/image */
+        padding-bottom: 2px; /* Add padding to the bottom of nav links */
+        padding: 5px; /* Adjust padding as needed */
+    }
+    
+    /* Show the dropdown menu on hover */
+    .account-dropdown:hover .dropdown-content {
+        display: flex; /* Show the dropdown content as a flex container */
+        flex-direction: row; /* Arrange items in a row */
+        align-items: center; /* Center the items vertically */
+        position: absolute;
+        pointer: cursor;
+    }
+      
+    /* Dropdown links */
+    .dropdown-link {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        background: black;
+    }
+
+    NavLink {
+        position: left;
+        justify-content: center;
     }
 }
