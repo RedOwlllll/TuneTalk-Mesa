@@ -29,23 +29,8 @@ function sendNotificationEmail(userEmail, username) {
         });
 }
 
-function showNotification() {
-    const notification = new Notification("!TIME TO TUNE IN!", {
-        body: "It's time to post your current/recently played song "
-    });
-
-    notification.onclick = function(event) {
-        event.preventDefault(); // Prevents the browser from focusing on the Notification's related tab
-        navigate('/friends'); // Navigate to the desired page within the web application
-        window.focus(); // Brings the focus to the newly opened tab
-        if (notification) {
-            notification.close(); // Closes the notification if it exists
-        }
-    }
-}
-
 function randomDelayGenerator(minSec, maxSec) {
     return Math.floor(Math.random() * (maxSec - minSec + 1)) + minSec;
 }
 
-module.exports = { sendNotificationEmail, showNotification ,randomDelayGenerator};
+module.exports = { sendNotificationEmail, randomDelayGenerator};

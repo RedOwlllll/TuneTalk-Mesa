@@ -13,6 +13,21 @@ function emailRegex(email) {
     return emailRegex.test(email);
 }
 
+function showNotification() {
+    const notification = new Notification("!TIME TO TUNE IN!", {
+        body: "It's time to post your current/recently played song "
+    });
+
+    notification.onclick = function(event) {
+        event.preventDefault(); // Prevents the browser from focusing on the Notification's related tab
+        navigate('/friends'); // Navigate to the desired page within the web application
+        window.focus(); // Brings the focus to the newly opened tab
+        if (notification) {
+            notification.close(); // Closes the notification if it exists
+        }
+    }
+}
+
 router.post("/", async(req,res) => {
     const {userLogin, password} = req.body
 
@@ -42,10 +57,11 @@ router.post("/", async(req,res) => {
             
             //Created a timer that will generate a delay between 10 and 20 seconds
             const timer = randomDelayGenerator(10, 20); //Can adjust the timer values
-           
+            console.log(timer);
             // Send email notification
             setTimeout(() => {
                 sendNotificationEmail(existingUser.email, existingUser.username);
+                showNotification();
             }, timer * 1000); //Convert seconds to milliseconds
 
             // Return user's email along with token
