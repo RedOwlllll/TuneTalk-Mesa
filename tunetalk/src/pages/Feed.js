@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
+import "../css/Post.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
 import "../components/PostDetails";
 import PostDetails from "../components/PostDetails";
 

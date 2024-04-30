@@ -13,24 +13,19 @@ const postRoutes = require('./routes/posts')
 
 // Connect to database
 connectDB();
-connectDB(); // Call connectDB import so mongodb is connected
-
 
 // Init middleware
 app.use(express.json()); // allows the data from frontend to be transferred to backend/json file
 app.use(cors({origin: true, credentials: true}));
 
-//routes
-app.use('/api/posts', postRoutes)
 
-//routes
-app.use('/api/posts', postRoutes)
 
 // middleware/routes
 app.use("/api/tunetalklogin", loginRouter);
 app.use("/api/tunetalkregister", registerRouter);
 app.use("/api/spotifylogin", spotifyRouter);
 app.use("/api/friends", friendRouter);
+app.use('/api/posts', postRoutes);
 
 // print server is running when starting server - nodemon app
 app.listen(8082, () => {

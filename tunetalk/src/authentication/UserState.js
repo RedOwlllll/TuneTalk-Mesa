@@ -8,6 +8,7 @@ const initialUser = {
   email: '',
   username: '',
   password: '',
+  post: '',
   isAuthenticated: false,
 };
 
