@@ -5,27 +5,12 @@ const bcrypt = require("bcryptjs"); // using bycryptjs to encrypt passwords
 const JWT = require('jsonwebtoken') // using jsonwebtoken library
 const JWT_SECRET = "fghsdf123"; // secret key used to verify the json webtokens (note should be an env file, but because this is being marked, would be easier to not include in a env file). 
 const user = require("../../models/UserDetails"); // import user details model
-const { sendNotificationEmail, randomDelayGenerator } = require("../../utils/sendNotificationEmail");
+const { sendNotificationEmail, pushNotification,randomDelayGenerator } = require("../../utils/sendNotificationEmail");
 
 // Function to validate email format with the correct pattern regex
 function emailRegex(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-}
-
-function showNotification() {
-    const notification = new Notification("!TIME TO TUNE IN!", {
-        body: "It's time to post your current/recently played song "
-    });
-
-    notification.onclick = function(event) {
-        event.preventDefault(); // Prevents the browser from focusing on the Notification's related tab
-        navigate('/friends'); // Navigate to the desired page within the web application
-        window.focus(); // Brings the focus to the newly opened tab
-        if (notification) {
-            notification.close(); // Closes the notification if it exists
-        }
-    }
 }
 
 router.post("/", async(req,res) => {
@@ -59,11 +44,11 @@ router.post("/", async(req,res) => {
             const timer = randomDelayGenerator(10, 20); //Can adjust the timer values
             console.log(timer);
             // Send email notification
+            
             setTimeout(() => {
                 sendNotificationEmail(existingUser.email, existingUser.username);
-                showNotification();
+                pushNotification();
             }, timer * 1000); //Convert seconds to milliseconds
-
             // Return user's email along with token
             return res.json({status: "ok", user: {email: existingUser.email, username: existingUser.username}, token });
         }
