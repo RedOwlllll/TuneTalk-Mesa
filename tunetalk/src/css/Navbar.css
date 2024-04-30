@@ -169,13 +169,19 @@ nav .menu {
         justify-content: center;
     }
 
+    .account-dropdown:hover .dropdown-content {
+        display: block; 
+        background: black;
+        border-radius: 0.5rem; /* Makes the border curvy */
+    }
+
     .dropdown-content {
         display: none;
         position: absolute;
         justify-content: center; /* Center the items horizontally */
         white-space: nowrap; /* Ensures that the items remain in a row */
         transform: translateY(-80%); /* Center vertically */
-        left: 100%; /*Ensures dropdown conntent is placed on the right of account-dropdown/image */
+        left: 90%; /*Ensures dropdown conntent is placed on the right of account-dropdown/image */
         padding-bottom: 2px; /* Add padding to the bottom of nav links */
         padding: 5px; /* Adjust padding as needed */
     }
@@ -199,6 +205,6 @@ nav .menu {
 
     NavLink {
         position: left;
-        justify-conntent: center;
+        justify-content: center;
     }
 }

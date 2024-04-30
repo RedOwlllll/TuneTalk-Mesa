@@ -1,41 +1,29 @@
 const express = require("express");
 const router = express.Router();
-const spotifyUser = require("../../models/UserDetails"); // import user details model
+const spotifyuser = require('../../models/SpotifyDetails');
 
-// Spotify api variables
-const CLIENT_ID = "82051e28a62540019c2de5c903d8bca1";
-const CLIENT_SECRET = "857d95768293440d9e1190b69916396a";
-const SPOTIFY_AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"; // Base url where we make the authorization request
-const REDIRECT_URI = "http://localhost:3000/menu"; // uri after login successful
-
-
-
-// Endpoint to save Spotify user data
+// Function to fetch spotify details then save into mongodb
 router.post("/", async (req, res) => {
-
-    //const { spotifyAccount, password } = req.body;
+    
+    const { spotifyID, spotifyURL, displayName, spotifyEmail } = req.body;
 
     try {
-        // Check if user already exists
-        let user = await spotifyUser.findOne({ spotifyId: req.body.spotifyId });
+        
+        const spotifyUser = await spotifyuser.create({
+            spotifyID,
+            spotifyURL,
+            displayName, 
+            spotifyEmail
+        });
 
-        if (user) {
-            res.status(200).json(user);
-        } else {
-            // Create a new user on Spotify and save their data 
-            user = new spotifyUser({
-                spotifyId: req.body.spotifyId,
-                email: req.body.email,
-                displayName: req.body.displayName,
-                profileUrl: req.body.profileUrl
-            });
-
-            await user.save();
-            res.status(201).json(user);
-        }
-    } catch (error) {
-        res.status(500).json({ message: "Error saving user", error });
+        return res.send({status: "ok", message: "Spotify account connected (to mongo).", 
+        spotifyID: spotifyUser.spotifyID, spotifyURL: spotifyUser.spotifyURL, displayName: spotifyUser.displayName, spotifyEmail: spotifyUser.spotifyEmail });
     }
+    catch (e) {
+        console.log("Error registering spotify account to TuneTalk", e);
+        return res.status(500).json({status: "error", message: "Error registering spotify account to TuneTalk", errors: e.errors || e.message });
+    }
+
 });
 
 module.exports = router;

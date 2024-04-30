@@ -32,8 +32,8 @@ router.post("/", async(req,res) => {
         // Return the registered email and username along with the response
         return res.send({status: "ok", message: "User successfully registered.", email: newUser.email, username: newUser.username });
     } catch (e) {
-        console.log(e);
-        res.json({status: "error", message: e.message});
+        console.log("Error registering user to TuneTalk", e);
+        return res.status(500).json({status: "error", message: e.message});
     }
 });
 

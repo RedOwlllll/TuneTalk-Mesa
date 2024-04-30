@@ -17,7 +17,7 @@ export const Menu = () => {
             </p>
 
             <br></br>
-            <br/><button type = "submit" onClick={() => navigate('/account/login')}>Log In to TuneTalk</button><br/><br/>
+            <br/><button type = "submit" onClick={() => navigate('/account/login')}>Login to TuneTalk</button><br/><br/>
         </div>
     );
 }
