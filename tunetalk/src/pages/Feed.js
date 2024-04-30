@@ -16,7 +16,7 @@ export const Feed = () => {
                 setPosts(json)
             }
         }
-    fetchPosts()
+    fetchPosts();
 
 
     }, []);
