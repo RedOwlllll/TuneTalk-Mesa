@@ -23,6 +23,7 @@ const getPost = async (req, res) => {
     if (!post) {
         return res.status(404).json({error:'no such post'})
     }
+    else 
 
     res.status(200).json(post)
 }
@@ -39,7 +40,7 @@ const createPost = async(req, res) => {
         res.status(400).json({error: error.message})
 
     }
-    res.json({mssg: 'POST a new post'})
+    //res.json({mssg: 'POST a new post'})
 }
 
 
