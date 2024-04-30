@@ -18,6 +18,8 @@ function Post() {
     const [recentTrack, setRecentTrack] = useState(null);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
+    const [caption, setCaption] = useState('');
+    const [captionPosted, setCaptionPosted] = useState(false);
 
     const token = localStorage.getItem("access_token");
     const username = localStorage.getItem("userlogin");
@@ -129,6 +131,15 @@ function Post() {
         //         console.error("Error adding comment:", error.response?.data || error.message);
         //     })
     };
+
+    //Function to handle "Enter" key in caption input
+    const handleCaptionKeyPress = (e) => {
+        if(e.key === 'Enter')
+        {
+            e.preventDefault();
+            postCaption();
+        }
+    }
 
     //Function to save the caption
     const postCaption = () => {
