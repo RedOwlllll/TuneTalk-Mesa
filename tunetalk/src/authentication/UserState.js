@@ -8,6 +8,7 @@ const initialUser = {
   email: '',
   username: '',
   password: '',
+  spotifyAccount: '',
   isAuthenticated: false,
 };
 

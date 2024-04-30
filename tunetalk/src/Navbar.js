@@ -17,7 +17,9 @@ export const Navbar = () => {
     const handleLogout = () => {
         setUserState({
             email: undefined, 
+            username: undefined,
             password: undefined,
+            spotifyAccount: undefined,
             isAuthenticated: false, 
         });
         localStorage.removeItem("user");
