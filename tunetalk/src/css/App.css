@@ -87,6 +87,7 @@ input {
   
 /* For login and signup pages */
 .link-btn {
+    color: black;
     background: none;
     text-decoration: underline;
     border: none;

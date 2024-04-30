@@ -159,5 +159,5 @@ export const SpotifyLogin = () => {
                 </>
             )}
         </div>
-      );
+    );
 };
