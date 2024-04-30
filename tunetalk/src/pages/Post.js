@@ -130,6 +130,37 @@ function Post() {
         //     })
     };
 
+    //Function to save the caption
+    const postCaption = () => {
+        console.log('Caption is posted: "', caption, '"');
+        setCaptionPosted(true);
+    }
+
+    //Caption input field
+    const captionInput = (
+        <input
+            type="text"
+            className="caption-input"
+            placeholder="Add a caption"
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            onKeyDown={handleCaptionKeyPress}
+        />
+    )
+
+    //JSX for caption display
+    const displayCaption = (
+        <div className="caption-display">
+            <p>{caption}</p>
+        </div>
+    )
+
+    //Depending on the captionPosted status, render the caption display or the caption input
+    const captionRender = () => {
+        return captionPosted ? displayCaption : captionInput;
+    }
+
+
     // component render
     return (
         <div className="home-page">
@@ -155,6 +186,8 @@ function Post() {
                         <StarRating onRating={(rate) => console.log(rate)} />
                     </div>
                     <div className="post-card-content">
+                        {/* Render the caption input */}
+                        {captionRender()}
                         {/* Render existing comments */}
                         <div className="comments-container">
                         {comments.map((c) => (
