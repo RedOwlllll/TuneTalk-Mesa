@@ -22,6 +22,7 @@ export function Home() {
     const [comment, setComment] = useState('');
     const [posts, setPosts] = useState(null)
     const [caption, setCaption] = useState('');
+    const [captionPosted, setCaptionPosted] = useState(false);
 
     //hook to process the authentication token after login
     useEffect(() => {
@@ -106,8 +107,32 @@ export function Home() {
 
     //Function to save the caption
     const postCaption = () => {
-        console.log('Caption is posted', caption);
-        setCaption(true);
+        console.log('Caption is posted: "', caption, '"');
+        setCaptionPosted(true);
+    }
+
+    //Caption input field
+    const captionInput = (
+        <input
+            type="text"
+            className="caption-input"
+            placeholder="Add a caption"
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            onKeyDown={handleCaptionKeyPress}
+        />
+    )
+
+    //JSX for caption display
+    const displayCaption = (
+        <div className="caption-display">
+            <p>{caption}</p>
+        </div>
+    )
+
+    //Depending on the captionPosted status, render the caption display or the caption input
+    const captionRender = () => {
+        return captionPosted ? displayCaption : captionInput;
     }
 
     //component render
@@ -138,15 +163,8 @@ export function Home() {
                         <StarRating onRating={(rate) => console.log(rate)} />
                     </div>
                     <div className="post-card-content">
-                        {/* Caption input */}
-                        <input
-                            type="text"
-                            className="caption-input"
-                            placeholder="Add a caption"
-                            value={caption}
-                            onChange={(e) => setCaption(e.target.value)}
-                            onKeyDown={handleCaptionKeyPress}
-                        />
+                        {/* Render the caption input */}
+                        {captionRender()}
                         {/* Comment form */}
                         <form onSubmit={handleCommentSubmit}>
                             <input
