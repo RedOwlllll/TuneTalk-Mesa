@@ -7,6 +7,9 @@ const JWT_SECRET = "fghsdf123"; // secret key used to verify the json webtokens 
 const user = require("../../models/UserDetails"); // import user details model
 const sgMail = require('@sendgrid/mail');
 
+// Requring env file
+require('dotenv').config({ path: '../.env' })
+
 // Set your SendGrid API key here
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
