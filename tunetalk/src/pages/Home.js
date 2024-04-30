@@ -95,6 +95,21 @@ export function Home() {
         setComment(''); // Clear the comment input after submission
     };
 
+    //Function to handle "Enter" key in caption input
+    const handleCaptionKeyPress = (e) => {
+        if(e.key === 'Enter')
+        {
+            e.preventDefault();
+            postCaption();
+        }
+    }
+
+    //Function to save the caption
+    const postCaption = () => {
+        console.log('Caption is posted', caption);
+        setCaption(true);
+    }
+
     //component render
     return (
         <div className="home-page">
@@ -130,6 +145,7 @@ export function Home() {
                             placeholder="Add a caption"
                             value={caption}
                             onChange={(e) => setCaption(e.target.value)}
+                            onKeyDown={handleCaptionKeyPress}
                         />
                         {/* Comment form */}
                         <form onSubmit={handleCommentSubmit}>

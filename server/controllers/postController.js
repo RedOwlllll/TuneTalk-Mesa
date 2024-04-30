@@ -33,7 +33,7 @@ const createPost = async(req, res) => {
     const {username, email, title, artist, rating} = req.body
 
     try {
-        const post = await Post.create({username,email,title,artist,rating})
+        const post = await Post.create({username,email,title,artist,rating,caption})
         res.status(200).json(post)
     }   catch (error) {
         res.status(400).json({error: error.message})
