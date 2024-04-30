@@ -5,41 +5,12 @@ const bcrypt = require("bcryptjs"); // using bycryptjs to encrypt passwords
 const JWT = require('jsonwebtoken') // using jsonwebtoken library
 const JWT_SECRET = "fghsdf123"; // secret key used to verify the json webtokens (note should be an env file, but because this is being marked, would be easier to not include in a env file). 
 const user = require("../../models/UserDetails"); // import user details model
-const sgMail = require('@sendgrid/mail')
-const dotenv = require('dotenv');
-
-// Load environment variables from .env file
-dotenv.config();
-
-sgMail.setApiKey(process.env.API_KEY);
+const { sendNotificationEmail, randomDelayGenerator } = require("../../utils/sendNotificationEmail");
 
 // Function to validate email format with the correct pattern regex
 function emailRegex(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-}
-
-function sendNotificationEmail(userEmail, username) {
-    const notification = {
-        to: userEmail,
-        from: {
-            name:'Tune Talk',
-            email: '2024tunetalk@gmail.com'
-        },
-        subject: '!TIME TO TUNE IN!',
-        text: 'It is time to post your current/recently played song for your friends to see!',
-        html: `<h2>Hello ${username}!</h2><p>It is time to post! <br><br>Click the link to post your current/recently played song for your friends to see!
-        <br><br><a href="http://localhost:3000/account/home">Post here</a></p>`
-    };
-
-    sgMail
-        .send(notification)
-        .then(() => {
-            console.log('Notification Email sent');
-        })
-        .catch((error) => {
-            console.error(error);
-        });
 }
 
 router.post("/", async(req,res) => {
@@ -69,8 +40,13 @@ router.post("/", async(req,res) => {
             // will generate a token with the user id in mongodb as well as their email and pass the jwt_secret variable 
             const token = JWT.sign({ id: existingUser.id, email: existingUser.email}, JWT_SECRET); 
             
+            //Created a timer that will generate a delay between 10 and 20 seconds
+            const timer = randomDelayGenerator(10, 20); //Can adjust the timer values
+           
             // Send email notification
-            sendNotificationEmail(existingUser.email, existingUser.username);
+            setTimeout(() => {
+                sendNotificationEmail(existingUser.email, existingUser.username);
+            }, timer * 1000); //Convert seconds to milliseconds
 
             // Return user's email along with token
             return res.json({status: "ok", user: {email: existingUser.email, username: existingUser.username}, token });
