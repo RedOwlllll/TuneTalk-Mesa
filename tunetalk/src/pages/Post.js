@@ -25,7 +25,7 @@ function Post() {
     const userId = "662c4a7c5de6fd5dccedfde6";
     */
 
-    const email = "1@gmail.com";
+    // const email = "1@gmail.com";
     const username = "blake";
     const postId = "662cd6c7d67dfd6255ff744f";
     const userId = "662c4a7c5de6fd5dccedfde6";
