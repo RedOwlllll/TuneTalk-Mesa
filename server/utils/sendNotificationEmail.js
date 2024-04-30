@@ -1,6 +1,8 @@
 const sgMail = require('@sendgrid/mail');
 const notifier = require('node-notifier');
 const path = require('path');
+const dot = require("dotenv");
+//dot.config().parsed;
 const dotenv = require('dotenv');
 
 // Load environment variables from .env file

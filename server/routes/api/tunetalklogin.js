@@ -41,7 +41,7 @@ router.post("/", async(req,res) => {
             const token = JWT.sign({ id: existingUser.id, email: existingUser.email}, JWT_SECRET); 
             
             //Created a timer that will generate a delay between 10 and 20 seconds
-            const timer = randomDelayGenerator(10, 20); //Can adjust the timer values
+            const timer = randomDelayGenerator(5, 10); //Can adjust the timer values
             
             //Send email notification after timer is activated
             setTimeout(() => {
