@@ -53,10 +53,10 @@ export const Login = () => {
 
     // When user email and username is ok, will prompt them to the spotify account page
     useEffect (() => {
-        if (user.email && user.username) {
+        if (user && user.email && user.username) {
             navigate("/account/spotify"); 
         }
-    }, [navigate, user.email, user.username]);
+    }, [navigate, user?.email, user?.username]);
 
     return (
         <div className="login-container">

@@ -20,7 +20,7 @@ const spotifyScopes = [
 const SCOPES_URL_PARAM = spotifyScopes.join("%20"); // Joining all the scopes together by using the SPACE_ENCODE variable that performs percent coding and represents the space in the url.  
  
 // Function that returns the access token generated once user's spotify account is authenticated 
-const getTokenAfterAuth = () => {
+export const getTokenAfterAuth = () => {
     return window.location.hash
     .substring(1)
     .split("&")
@@ -124,7 +124,7 @@ export const SpotifyLogin = () => {
     }, []);
 
     useEffect(() => {
-        if (user.isAuthenticated) {
+        if (user?.isAuthenticated) {
             navigate("/account/spotify");
         }
     }, []); // Allows useEffect hook to render only once. 
@@ -132,7 +132,7 @@ export const SpotifyLogin = () => {
 
     return (
         <div className="spotify-login-container">
-            {user.isAuthenticated && userInfo ? (
+            {user?.isAuthenticated && userInfo ? (
                 // Render if authenticated and userInfo is available
                 <>
                 <div>

@@ -22,7 +22,8 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState((initialUser) => {
     // Retrieve the user from localStorage if it exists
     const storedUser = localStorage.getItem('user');
-    return storedUser ? JSON.parse(storedUser) : initialUser;
+    console.log(localStorage.getItem('user'));
+    return initialUser;
   });
   // Effect to store user in localStorage whenever it changes
   useEffect(() => {
