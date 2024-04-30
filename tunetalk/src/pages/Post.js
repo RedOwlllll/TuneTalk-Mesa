@@ -7,57 +7,61 @@ import StarRating from "./StarRating";
 function Post() {
 
     //spotify api credentials and endpoints
-    const CLIENT_ID = "82051e28a62540019c2de5c903d8bca1"
-    const REDIRECT_URI = "http://localhost:3000/home"
-    const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
-    const RESPONSE_TYPE = "token"
-    const SCOPES = "user-read-recently-played";
+    // const CLIENT_ID = "82051e28a62540019c2de5c903d8bca1"
+    // const REDIRECT_URI = "http://localhost:3000/home"
+    // const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
+    // const RESPONSE_TYPE = "token"
+    // const SCOPES = "user-read-recently-played";
 
     //state hooks to store the token and recent song info
-    const [token, setToken] = useState("");
+    // const [token, setToken] = useState("");
     const [recentTrack, setRecentTrack] = useState(null);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
 
+        const token = localStorage.getItem("access_token");
+        const username = localStorage.getItem("userlogin");
   /* const email = "1@gmail.com";
     const username = "blake";
     const postId = "662cd6c7d67dfd6255ff744f";
-    const userId = "662c4a7c5de6fd5dccedfde6";
+    const user = "662c4a7c5de6fd5dccedfde6";
     */
 
     // const email = "1@gmail.com";
-    const username = "blake";
-    const postId = "662cd6c7d67dfd6255ff744f";
-    const userId = "662c4a7c5de6fd5dccedfde6";
+    // const username = "blake";
+    // const postId = "662cd6c7d67dfd6255ff744f";
+    // const user = "662c4a7c5de6fd5dccedfde6";
 
     //hook to process the authentication token after login
-    useEffect(() => {
-        const hash = window.location.hash;
-        let token = window.localStorage.getItem("token");
+    // useEffect(() => {
+    //     const hash = window.location.hash;
+    //     let token = window.localStorage.getItem("token");
 
-        //if no token in storage and there is a hash code, then store it
-        if (!token && hash) {
-            token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1];
-            window.location.hash = "";
-            window.localStorage.setItem("token", token);
-        }
+    //     //if no token in storage and there is a hash code, then store it
+    //     if (!token && hash) {
+    //         token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1];
+    //         window.location.hash = "";
+    //         window.localStorage.setItem("token", token);
+    //     }
 
-        setToken(token); //updates the token
-    }, []);
+    //     setToken(token); //updates the token
+    // }, []);
 
     // function to handle the user logout
-    const logout = () => {
-        setToken(""); // Clear the token from state
-        setRecentTrack(null); // Clear the recent track from state
-        window.localStorage.removeItem("token"); // Remove the token from localStorage
-    };
+    // const logout = () => {
+    //     setToken(""); // Clear the token from state
+    //     setRecentTrack(null); // Clear the recent track from state
+    //     window.localStorage.removeItem("token"); // Remove the token from localStorage
+    // };
 
-    // function to construct the spotify login url
-    const getLoginURL = () => {
-        return `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${encodeURIComponent(SCOPES)}&show_dialog=true`;
-    }
+    // // function to construct the spotify login url
+    // const getLoginURL = () => {
+    //     return `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${encodeURIComponent(SCOPES)}&show_dialog=true`;
+    // }
 
     const getRecentTrack = () => {
+
+
         if (!token) {
             console.log('No token available'); //log an error if no token is available
             return;
@@ -87,16 +91,16 @@ function Post() {
                     rating: StarRating,
                 }
                 
-                saveTrackToDatabase(userId, songData);
+                saveTrackToDatabase(username, songData);
 
             }).catch(error => {
                 console.log('Error fetching recent track:', error); //log any errors during the call
             });
     };
 
-    const saveTrackToDatabase = (userId, songData) => {
+    const saveTrackToDatabase = (username, songData) => {
         console.log(songData);
-        axios.post(`http://localhost:8082/api/user/${userId}/addPost`, songData )
+        axios.post(`http://localhost:8082/api/user/${username}/addPost`, songData )
           .then(response => {
             console.log('Song post saved:', response.data);
           })
@@ -111,25 +115,25 @@ function Post() {
 
         const commentData = {
             text: newComment,
-            userId: username
+            user: username
         };
 
-        axios.post(`http://localhost:8082/api/songpost/${postId}/comments`, commentData)
-            .then(response => {
-                setComments([...comments, response.data]);
-                setNewComment('');
-            })
-            .catch(error => {
-                console.error("Error adding comment:", error.response?.data || error.message);
-            })
+        // axios.post(`http://localhost:8082/api/songpost/${postId}/comments`, commentData)
+        //     .then(response => {
+        //         setComments([...comments, response.data]);
+        //         setNewComment('');
+        //     })
+        //     .catch(error => {
+        //         console.error("Error adding comment:", error.response?.data || error.message);
+        //     })
     };
 
     // component render
     return (
         <div className="home-page">
-            {!token ?
+            {/* {!token ?
                 <a href={getLoginURL()}>Login to Spotify</a>
-                : <button onClick={logout}>Logout</button>}
+                : <button onClick={logout}>Logout</button>} */}
 
             <div className="button-container">
                 <div className="button-box">

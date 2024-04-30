@@ -21,13 +21,13 @@ export const Login = () => {
 
         // Connect to tunetalklogin api to see whether the input matches in mongodb
         axios.post("http://localhost:8082/api/tunetalklogin", {
-            userLogin: userLogin,
-            password: loginPassword,
+            userLogin: userLogin.JSON.stringify(),
+            password: loginPassword.JSON.stringify(),
         })
         .then((res) => {
             const data = res.data;
             console.log(data, "userLogin"); // when the user is logged in creates a variable called userLogin and sets the value to true
-            
+            localStorage.setItem("userlogin", userLogin);
             if (data.status === "ok") {
                 setAlertMessage("Logged in successfully!");
                 setUser ({

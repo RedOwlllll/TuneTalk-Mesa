@@ -6,14 +6,20 @@ const { default: mongoose } = require('mongoose');
 
 
 //post endpoint to create a song post
-router.post('/user/:userId/addPost', async (req, res) => {
+router.post('/user/userinfo/addPost', async (req, res) => {
     try {
-      const { userId } = req.params;
-      const objectId = new mongoose.Types.ObjectId(userId);
+      const { userData } = req.params;
       const songData = req.body;
   
+      console.log(userData.email);
+      console.log(userData.username);
       // Find the user by their unique email
-      const user = await UserDetails1.findById(objectId);
+      const user = await UserDetails1.findOne({
+        $or: [
+          {email: userData},
+          {username: userData}
+        ]
+      });
   
       if (!user) {
         return res.status(404).send('User not found');
@@ -22,7 +28,7 @@ router.post('/user/:userId/addPost', async (req, res) => {
       // Create a new SongPost document
       const newSongPost = new SongPost({
         ...songData,
-        userId: user._id, // associate the post with the user's ObjectId
+        userData: user._id, // associate the post with the user's ObjectId
       });
   
       // Save the new song post
@@ -40,72 +46,6 @@ router.post('/user/:userId/addPost', async (req, res) => {
       res.status(500).send(error.message);
     }
   });
-// router.post('/user/:userId/addSongPost', async (req, res) => {
 
-//     const {userId} = req.params;
-
-
-//     try{
-
-//     const user = await UserDetails1.findOne({userId: userId});
-
-//     if(!user){
-//         return res.status(404).json({ message: "User not found"});
-//     }
-//    // const { title, artist, albumCover, comments, rating } = req.body;
-
-//     //
-
-//     //create a new songpost instance
-//     const newSongPost = new SongPost({
-//         userId: user._id,
-//         ...songData,
-//     });
-
-//     //save the new post to the songpost colletion
-//     const savedPost = await newSongPost.save();
-
-//     const user1 = await UserDetails1.findById(email);
-//     user1.posts.push(savedPost._id);
-//     await user.save();
-
-//     // send back a successful response
-//     res.status(201).json(savedPost);
-//     }catch (error){
-//         res.status(500).json({ message: 'Error creating song post', error: error.message});
-//     }
-// });
-
-
-//create user
-// router.post('/add-user', async (req, res) => {
-//     try{
-//         //hardcode user details
-//         const testUser = new UserDetails1({
-//             email: 'testuser@example.com',
-//             username: 'testuser123',
-//             password: 'testpassword',
-//             posts: []
-//         });
-
-//         //save the test user
-//         await testUser.save();
-
-//         //send success response
-//         res.status(201).json({ message: "test user created successfully", user: testUser});
-
-//     } catch (error){
-//         res.status(500).json({message: "error creating test user", error});
-//     } 
-
-// })
-// router.get('/user/:email', async (req, res) =>{
-//     try{
-//         const posts = await SongPost.find({ email: req.params.email}).sort({postedAt: -1})
-//         res.status(200).json(posts);
-//     } catch (err){
-//         res.status(500).json({ message: 'Error fetching posts', err: err.message});
-//     }
-// })
 
 module.exports = router;
