@@ -21,8 +21,8 @@ export const Login = () => {
 
         // Connect to tunetalklogin api to see whether the input matches in mongodb
         axios.post("http://localhost:8082/api/tunetalklogin", {
-            userLogin: userLogin.JSON.stringify(),
-            password: loginPassword.JSON.stringify(),
+            userLogin: userLogin,
+            password: loginPassword,
         })
         .then((res) => {
             const data = res.data;

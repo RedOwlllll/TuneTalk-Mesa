@@ -19,8 +19,10 @@ function Post() {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
 
-        const token = localStorage.getItem("access_token");
-        const username = localStorage.getItem("userlogin");
+    const token = localStorage.getItem("access_token");
+    const username = localStorage.getItem("userlogin");
+
+    console.log(token, username);
   /* const email = "1@gmail.com";
     const username = "blake";
     const postId = "662cd6c7d67dfd6255ff744f";
