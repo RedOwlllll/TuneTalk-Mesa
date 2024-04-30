@@ -1,0 +1,81 @@
+.button-container {
+    text-align: center;
+    /* Center the button */
+    margin-top: 20px;
+    /* Space below the navbar */
+}
+
+.button-box {
+    display: inline-block;
+    /* Only as wide as necessary */
+    padding: 10px 20px;
+    /* Padding inside the box */
+    margin: 0 auto;
+    /* Center the box */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.post-card {
+    background-color: #fff;
+    max-width: 500px;
+    margin: 20px auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+}
+
+.post-card-content {
+    text-align: center;
+    padding: 15px;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #ddd;
+}
+
+.song-title {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.artist-name {
+    font-size: 18px;
+    color: #555;
+}
+
+.post-card-image {
+    width: 100%;
+    display: block;
+    height: 500px;
+}
+
+.post-card-content .comment-input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.post-card-content .submit-comment {
+    background-color: #0095f6;
+    color: white;
+    padding: 8px 16px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.comments-container {
+  max-height: 200px;
+  overflow-y: auto;
+}

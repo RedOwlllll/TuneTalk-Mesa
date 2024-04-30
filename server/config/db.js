@@ -1,6 +1,7 @@
 const config = require("config");
 const mongoose = require("mongoose");
-const MONGODB_URI = "mongodb+srv://maxinnesjs:0tZKooVor7na94si@cluster0.w9uv8re.mongodb.net/";
+const MONGODB_URI = "mongodb+srv://bbag199:RkgM5nSddh7cHMyF@cluster0.w9uv8re.mongodb.net/";
+
 
 const connectDB = async () => {
     try {

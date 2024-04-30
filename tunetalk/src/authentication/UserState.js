@@ -8,6 +8,7 @@ const initialUser = {
   email: '',
   username: '',
   password: '',
+  spotifyAccount: '',
   isAuthenticated: false,
 };
 
@@ -21,7 +22,8 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState((initialUser) => {
     // Retrieve the user from localStorage if it exists
     const storedUser = localStorage.getItem('user');
-    return storedUser ? JSON.parse(storedUser) : initialUser;
+    console.log(localStorage.getItem('user'));
+    return storedUser ? JSON.parse(storedUser) : initialUser; // KEEP THIS HERE OTHERWISE THE TUNETALK EMAIL AND USERNAME WILL NOT BE SAVED IN THE DROPDOWN MENU AFTER REDIRECTING TO ACCOUNT/SPOTIFY
   });
   // Effect to store user in localStorage whenever it changes
   useEffect(() => {
