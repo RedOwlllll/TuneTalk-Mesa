@@ -11,7 +11,6 @@ function Pop() {
     const [isFollowing, setIsFollowing] = useState(false);
     const [accessToken, setAccessToken] = useState('');
     const [popPlaylists, setPopPlaylists] = useState([]);
-    const [error, setError] = useState("");
     const [user] = useUser(); 
 
     const handleFollowClick = async () => {
@@ -24,7 +23,6 @@ function Pop() {
             setIsFollowing(true);
         } catch (err) {
             console.error("Error updating follow status:", err);
-            setError(err.message);
         }
       } else {
         try {
@@ -35,7 +33,6 @@ function Pop() {
           setIsFollowing(false);
         } catch (err) {
           console.error("Error updating un-follow status:", err);
-          setError(err.message);
         }
       }
     };
@@ -46,7 +43,6 @@ function Pop() {
           setIsFollowing(response.data.pop); // assuming the response data structure matches your expectations
       } catch (err) {
           console.error("Error fetching follow status:", err);
-          setError(err.message);
       }
     };
 
@@ -55,7 +51,6 @@ function Pop() {
           await axios.post(`http://localhost:8082/api/community/initiate-follows/${encodeURIComponent(user.email)}`);
       } catch (err) {
           console.error("Error initializing follow record:", err);
-          setError(err.message);
       }
     };
 
@@ -105,6 +100,7 @@ function Pop() {
         fetchInitialFollow();
         fetchFollowStatus();
       }
+    // eslint-disable-next-line
     }, [user.email]); // This effect depends on user.email
 
     return (
