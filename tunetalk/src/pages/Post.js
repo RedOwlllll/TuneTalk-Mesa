@@ -14,7 +14,10 @@ function Post() {
     const token = localStorage.getItem("access_token");
     const username = localStorage.getItem("userlogin");
     const [posted, setPosted] = useState(false);
-
+    const [editStatus, setEditStatus] = useState({});
+    const [editTexts, setEditTexts] = useState({});
+    const [editingReplyId, setEditingReplyId] = useState(null);
+    const [editReplyText, setEditReplyText] = useState({});
 
     const postId = localStorage.getItem("postId");
     //function to retrieve users recerntly played song 
@@ -121,12 +124,57 @@ function Post() {
             });
     };
 
+    // Start editing a comment
+    const handleEdit = (id) => {
+        setEditStatus({ ...editStatus, [id]: true });
+        setEditTexts({ ...editTexts, [id]: comments.find(comment => comment.id === id).body });
+    };
+
+    // Cancel editing
+    const handleCancel = (id) => {
+        setEditStatus({ ...editStatus, [id]: false });
+    };
+
+    // Save the edited comment
+    const handleSave = (id) => {
+        const updatedComments = comments.map(comment => {
+            if (comment.id === id) {
+                return { ...comment, body: editTexts[id] };
+            }
+            return comment;
+        });
+        setComments(updatedComments);
+        setEditStatus({ ...editStatus, [id]: false });
+    };
+
+    const startEditReply = (replyId, currentText) => {
+        setEditingReplyId(replyId);
+        setEditReplyText({ ...editReplyText, [replyId]: currentText });
+    };
+
+    const saveReplyChanges = (replyId) => {
+        const updatedComments = comments.map(comment => {
+            if (comment.id === replyId) {
+                const updatedReplies = comment.replies.map(reply => {
+                    if (reply.id === replyId) {
+                        return { ...reply, body: editReplyText[replyId] };
+                    }
+                    return reply;
+                });
+                return { ...comment, replies: updatedReplies };
+            }
+            return comment;
+        });
+        setComments(updatedComments);
+        setEditingReplyId(null);
+        setEditReplyText({});
+    };
+
     return (
         <div className="home-page">
             <div className="button-container">
                 {!posted && <button onClick={getRecentTrack}>Show Last Played Song</button>}
             </div>
-
             {recentTrack && (
                 <div className="post-card">
                     <div className="post-card-content">
@@ -135,37 +183,62 @@ function Post() {
                     </div>
                     <div className="post-card-image-container">
                         <img src={recentTrack.albumCover} alt={`${recentTrack.title} Album Cover`} className="post-card-image" />
-                        <StarRating onRating={(rate) => {console.log(rate); // Call the increment function
+                        <StarRating onRating={(rate) => {
+                            console.log(rate); // Assuming you handle rating update here
                         }} />
                     </div>
                     <div className="post-card-content">
                         {comments.map(comment => (
                             <div key={comment.id} className="comment-box">
-                                <div className="comment-header">
-                                    <strong>{comment.username}</strong>
-                                    <p>{comment.body}<br></br></p>
-                                    <small>{new Date(comment.date).toLocaleString()}</small>
-                                </div>
-                                <div className="replies-container">
-                                    {comment.replies && comment.replies.map(reply => (
-                                        <div key={reply.id} className="reply-box">
-                                            <div className="reply-content">
-                                                <strong>{reply.username}</strong>
-                                                <p>{reply.body}</p>
-                                                <small>{new Date(reply.date).toLocaleString()}</small>
-                                            </div>
+                                {editStatus[comment.id] ? (
+                                    <>
+                                        <input
+                                            value={editTexts[comment.id]}
+                                            onChange={(e) => setEditTexts({ ...editTexts, [comment.id]: e.target.value })}
+                                        />
+                                        <button onClick={() => handleSave(comment.id)}>Save</button>
+                                        <button onClick={() => handleCancel(comment.id)}>Cancel</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="comment-header">
+                                            <strong>{comment.username}</strong>
+                                            <p>{comment.body}</p>
+                                            <small>{new Date(comment.date).toLocaleString()}</small>
+                                            <button className="comment-edit-button" onClick={() => handleEdit(comment.id)}>Edit</button>
                                         </div>
-                                    ))}
-                                </div>
-                                <form onSubmit={(e) => handleReplySubmit(comment.id, e)}>
-                                    <input
-                                        type="text"
-                                        placeholder="Reply..."
-                                        value={replyTexts[comment.id] || ''}
-                                        onChange={(e) => setReplyTexts({ ...replyTexts, [comment.id]: e.target.value })}
-                                    />
-                                    <button type="submit">Reply</button>
-                                </form>
+                                        {comment.replies && comment.replies.map(reply => (
+                                            <div key={reply.id} className="reply-box">
+                                                <div className="reply-content">
+                                                    <strong>{reply.username}</strong>
+                                                    {editingReplyId === reply.id ? (
+                                                        <input
+                                                            type="text"
+                                                            value={editReplyText[reply.id] || reply.body}
+                                                            onChange={(e) => setEditReplyText({ ...editReplyText, [reply.id]: e.target.value })}
+                                                        />
+                                                    ) : (
+                                                        <p>{reply.body}</p>
+                                                    )}
+                                                    <small>{new Date(reply.date).toLocaleString()}</small>
+                                                    <button className="comment-edit-button" onClick={() => startEditReply(reply.id, reply.body)}>Edit</button>
+                                                    {editingReplyId === reply.id && (
+                                                        <button onClick={() => saveReplyChanges(reply.id)}>Save</button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ))}
+                                        <form onSubmit={(e) => handleReplySubmit(comment.id, e)}>
+                                            <input
+                                                type="text"
+                                                placeholder="Reply..."
+                                                value={replyTexts[comment.id] || ''}
+                                                onChange={(e) => setReplyTexts({ ...replyTexts, [comment.id]: e.target.value })}
+                                            />
+                                            <button type="submit">Reply</button>
+                                        </form>
+                                    </>
+                                )}
                             </div>
                         ))}
                         <form onSubmit={handleCommentSubmit}>
@@ -183,6 +256,7 @@ function Post() {
             )}
         </div>
     );
+
 }
 
 export default Post;
