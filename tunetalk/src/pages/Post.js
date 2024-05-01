@@ -64,8 +64,6 @@ function Post() {
     // }
 
     const getRecentTrack = () => {
-
-
         if (!token) {
             console.log('No token available'); //log an error if no token is available
             return;
@@ -79,11 +77,13 @@ function Post() {
         }).then(response => {
                 const track = response.data.items[0].track; //extract track info from the response
     
+                //axios.get('http://localhost:8082/api/caption/${track.id}')
                 //update the recentTrack state with the track details
                 setRecentTrack({
                     artist: track.artists.map(artist => artist.name).join(', '), //join multiple artists the a comma
                     title: track.name, //title 
-                    albumCover: track.album.images[0].url // URL of album image
+                    albumCover: track.album.images[0].url, // URL of album image
+                    caption: caption
                 });
  
                 //prepare song to be saved
@@ -93,6 +93,7 @@ function Post() {
                     albumCover: track.album.images[0].url,                    
                     comments: [],
                     rating: StarRating,
+                    caption: caption,
                 }
                 
                 saveTrackToDatabase(username, songData);
@@ -132,12 +133,26 @@ function Post() {
         //     })
     };
 
+    const saveCaptionToDatabase = () => {
+        if(!caption) return;
+
+        axios.post('http://localhost:8082/api/save-caption', { caption })
+        .then(response => {
+            console.log('Caption save:', response.data);
+            setCaption(true);
+        })
+        .catch(error => {
+            console.error('Error saving the caption', error.nessage);
+        });
+    };
+
     //Function to handle "Enter" key in caption input
     const handleCaptionKeyPress = (e) => {
         if(e.key === 'Enter')
         {
             e.preventDefault();
             postCaption();
+            saveCaptionToDatabase();
         }
     }
 
