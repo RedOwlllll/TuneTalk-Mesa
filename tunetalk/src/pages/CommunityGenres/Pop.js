@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FaCheck, FaPlus } from 'react-icons/fa'; // FontAwesome icons
 import '../../css/Community.css';
+import { useUser } from "../../authentication/UserState";
+import axios from "axios";
 
 const CLIENT_ID = "a8c9857ace8449f290ed14c54c878e1f";
 const CLIENT_SECRET = "c747a0da53124c4ba8bc12a0e88d859b";
@@ -9,51 +11,89 @@ function Pop() {
     const [isFollowing, setIsFollowing] = useState(false);
     const [accessToken, setAccessToken] = useState('');
     const [popPlaylists, setPopPlaylists] = useState([]);
+    const [error, setError] = useState("");
+    const [user] = useUser(); 
+
+    const handleFollowClick = async () => {
+      try {
+          await axios.post(`http://localhost:8082/api/community/follow/${encodeURIComponent(user.email)}`, {
+              community: 'pop',
+              followStatus: true
+          });
+          setIsFollowing(true);
+      } catch (err) {
+          console.error("Error updating follow status:", err);
+          setError(err.message);
+          // Optionally revert the optimistic update on error
+      }
+    };
+
+    const fetchFollowStatus = async () => {
+      try {
+          const response = await axios.get(`http://localhost:8082/api/community/status/${encodeURIComponent(user.email)}`);
+          setIsFollowing(response.data.pop); // assuming the response data structure matches your expectations
+      } catch (err) {
+          console.error("Error fetching follow status:", err);
+          setError(err.message);
+      }
+    };
+
+    const fetchInitialFollow = async () => {
+      try {
+          await axios.post(`http://localhost:8082/api/community/initiate-follows/${encodeURIComponent(user.email)}`);
+      } catch (err) {
+          console.error("Error initializing follow record:", err);
+          setError(err.message);
+      }
+    };
 
     useEffect(() => {
-        // Function to retrieve the access token
-        const getAccessToken = async () => {
-            const authParameters = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`,
-            };
-
-            const response = await fetch('https://accounts.spotify.com/api/token', authParameters);
-            const data = await response.json();
-            setAccessToken(data.access_token);
+      // Function to retrieve the access token
+      const getAccessToken = async () => {
+        const authParameters = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`,
         };
 
-        getAccessToken();
+        const response = await fetch('https://accounts.spotify.com/api/token', authParameters);
+        const data = await response.json();
+        setAccessToken(data.access_token);
+      };
+
+      getAccessToken();
     }, []);
 
     useEffect(() => {
-        // Function to fetch Pop playlists using the access token
-        const fetchPopMusic = async () => {
-            if (!accessToken) return;
+      // Function to fetch Pop playlists using the access token
+      const fetchPopMusic = async () => {
+        if (!accessToken) return;
 
-            const response = await fetch('https://api.spotify.com/v1/browse/categories/pop/playlists', {
-                headers: { 'Authorization': `Bearer ${accessToken}` },
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            setPopPlaylists(data.playlists.items);
-        };
-
-        fetchPopMusic().catch(error => {
-            console.error('Fetching pop playlists failed:', error);
+        const response = await fetch('https://api.spotify.com/v1/browse/categories/pop/playlists', {
+          headers: { 'Authorization': `Bearer ${accessToken}` },
         });
-    }, [accessToken]); // This effect depends on the accessToken state
 
-    const handleFollowClick = () => {
-        setIsFollowing(!isFollowing);
-    };
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setPopPlaylists(data.playlists.items);
+      };
+
+      fetchPopMusic().catch(error => {
+        console.error('Fetching pop playlists failed:', error);
+      });
+    }, [accessToken]);
+
+    useEffect(() => {
+      if (user.email) {
+        fetchInitialFollow();
+        fetchFollowStatus();
+      }
+    }, [user.email]); // This effect depends on user.email
 
     return (
         <div className="container-page">
