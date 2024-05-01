@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Caption = require('../models/caption');
 
-router.post('/save-caption', (req, res) => {
+router.post('/api/save-caption', (req, res) => {
     const { caption } = req.body;
 
     const newCaption = new Caption({ caption });

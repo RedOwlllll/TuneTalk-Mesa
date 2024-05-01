@@ -133,6 +133,7 @@ function Post() {
         //     })
     };
 
+    //Sends a POST request to the backend with the caption data
     const saveCaptionToDatabase = () => {
         if(!caption) return;
 
@@ -142,7 +143,7 @@ function Post() {
             setCaption(true);
         })
         .catch(error => {
-            console.error('Error saving the caption', error.nessage);
+            console.error('Error saving the caption:', error.message);
         });
     };
 

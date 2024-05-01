@@ -30,7 +30,7 @@ app.use("/api/tunetalkregister", registerRouter);
 app.use("/api/spotifylogin", spotifyRouter);
 app.use("/api/friends", friendRouter);
 app.use("/", addPost);
-app.use("/routes/captionRoute", captionRoute);
+app.use("/api/captions", captionRoute);
 
 
 // print server is running when starting server - nodemon app
