@@ -6,5 +6,5 @@ const captionSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
-const Caption = mongoose.model('Caption', captionSchema);
-module.exports = { Caption };
+const Caption = new mongoose.model('Caption', captionSchema);
+module.exports = Caption;

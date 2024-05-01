@@ -134,17 +134,16 @@ function Post() {
     };
 
     //Sends a POST request to the backend with the caption data
-    const saveCaptionToDatabase = () => {
+    const saveCaptionToDatabase = async (caption) => {
         if(!caption) return;
 
-        axios.post('http://localhost:8082/api/save-caption', { caption })
-        .then(response => {
-            console.log('Caption save:', response.data);
+        try {
+            const response = await axios.post('http://localhost:8082/api/save-caption', { setCaption });
+            console.log('Caption saved:', response.data);
             setCaption(true);
-        })
-        .catch(error => {
+        } catch (error) {
             console.error('Error saving the caption:', error.message);
-        });
+        }
     };
 
     //Function to handle "Enter" key in caption input
@@ -153,7 +152,7 @@ function Post() {
         {
             e.preventDefault();
             postCaption();
-            saveCaptionToDatabase();
+            saveCaptionToDatabase(caption);
         }
     }
 
