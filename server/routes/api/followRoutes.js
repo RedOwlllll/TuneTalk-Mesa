@@ -42,7 +42,7 @@ router.post('/initiate-follows/:userEmail', async (req, res) => {
     }
 });
 
-// Endpoint to update follow status
+// Endpoint to update follow
 router.post('/follow/:userEmail', async (req, res) => {
     const { community, followStatus } = req.body;
     try {
@@ -50,6 +50,25 @@ router.post('/follow/:userEmail', async (req, res) => {
             { userEmail: req.params.userEmail },
             { $set: { [`follows.${community}`]: followStatus } },
             { new: true }
+        );
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        res.json(user.follows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error updating follow status');
+    }
+});
+
+// Endpoint to update un-follow
+router.post('/un-follow/:userEmail', async (req, res) => {
+    const { community, followStatus } = req.body;
+    try {
+        const user = await UserFollows.findOneAndUpdate(
+            { userEmail: req.params.userEmail },
+            { $set: { [`follows.${community}`]: followStatus } },
+            { new: false }
         );
         if (!user) {
             return res.status(404).send('User not found');

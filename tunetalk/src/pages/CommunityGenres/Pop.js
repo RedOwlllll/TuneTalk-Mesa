@@ -15,16 +15,28 @@ function Pop() {
     const [user] = useUser(); 
 
     const handleFollowClick = async () => {
-      try {
-          await axios.post(`http://localhost:8082/api/community/follow/${encodeURIComponent(user.email)}`, {
+      if (!isFollowing){
+        try {
+            await axios.post(`http://localhost:8082/api/community/follow/${encodeURIComponent(user.email)}`, {
               community: 'pop',
               followStatus: true
+            });
+            setIsFollowing(true);
+        } catch (err) {
+            console.error("Error updating follow status:", err);
+            setError(err.message);
+        }
+      } else {
+        try {
+          await axios.post(`http://localhost:8082/api/community/un-follow/${encodeURIComponent(user.email)}`, {
+            community: 'pop',
+            followStatus: false
           });
-          setIsFollowing(true);
-      } catch (err) {
-          console.error("Error updating follow status:", err);
+          setIsFollowing(false);
+        } catch (err) {
+          console.error("Error updating un-follow status:", err);
           setError(err.message);
-          // Optionally revert the optimistic update on error
+        }
       }
     };
 
