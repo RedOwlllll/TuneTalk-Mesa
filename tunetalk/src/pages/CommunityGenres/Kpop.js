@@ -231,7 +231,6 @@ function Kpop() {
                 )}
               </div>
             ))}
-
           </div>
           <form onSubmit={handleCommentSubmit}>
             <input
@@ -241,7 +240,7 @@ function Kpop() {
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
             />
-            <button type="submit" className="submit-comment">Post</button>
+            <button type="submit" className="submit-comment">Comment</button>
           </form>
         </div>
 

@@ -6,77 +6,77 @@ const CLIENT_ID = "a8c9857ace8449f290ed14c54c878e1f";
 const CLIENT_SECRET = "c747a0da53124c4ba8bc12a0e88d859b";
 
 function Rock() {
-    const [isFollowing, setIsFollowing] = useState(false);
-    const [accessToken, setAccessToken] = useState('');
-    const [RockPlaylists, setRockPlaylists] = useState([]);
-    const [randomTrack, setRandomTrack] = useState(null);
-    const [comments, setComments] = useState([]);
-    const [newComment, setNewComment] = useState('');
-    const [replyTexts, setReplyTexts] = useState({});
-    const username = localStorage.getItem("userlogin");
-    const [editStatus, setEditStatus] = useState({});
-    const [editTexts, setEditTexts] = useState({});
-    const [editingReplyId, setEditingReplyId] = useState(null);
-    const [editReplyText, setEditReplyText] = useState({});
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [accessToken, setAccessToken] = useState('');
+  const [RockPlaylists, setRockPlaylists] = useState([]);
+  const [randomTrack, setRandomTrack] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
+  const [replyTexts, setReplyTexts] = useState({});
+  const username = localStorage.getItem("userlogin");
+  const [editStatus, setEditStatus] = useState({});
+  const [editTexts, setEditTexts] = useState({});
+  const [editingReplyId, setEditingReplyId] = useState(null);
+  const [editReplyText, setEditReplyText] = useState({});
 
-    useEffect(() => {
-        // Function to retrieve the access token
-        const getAccessToken = async () => {
-            const authParameters = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`,
-            };
+  useEffect(() => {
+    // Function to retrieve the access token
+    const getAccessToken = async () => {
+      const authParameters = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`,
+      };
 
-            const response = await fetch('https://accounts.spotify.com/api/token', authParameters);
-            const data = await response.json();
-            setAccessToken(data.access_token);
-        };
-
-        getAccessToken();
-    }, []);
-
-    useEffect(() => {
-        // Function to fetch Rock playlists using the access token
-        const fetchRockMusic = async () => {
-            if (!accessToken) return;
-
-            const response = await fetch('https://api.spotify.com/v1/browse/categories/Rock/playlists', {
-                headers: { 'Authorization': `Bearer ${accessToken}` },
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            setRockPlaylists(data.playlists.items);
-
-            if (data.playlists.items.length > 0) {
-              const playlistId = data.playlists.items[0].id;
-              const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-                  headers: { 'Authorization': `Bearer ${accessToken}` },
-              });
-              const tracksData = await tracksResponse.json();
-              if (tracksData.items.length > 0) {
-                  const randomIndex = Math.floor(Math.random() * tracksData.items.length);
-                  setRandomTrack(tracksData.items[randomIndex].track);
-              }
-          }
-        };
-
-        fetchRockMusic().catch(error => {
-            console.error('Fetching Rock playlists failed:', error);
-        });
-    }, [accessToken]); // This effect depends on the accessToken state
-
-    const handleFollowClick = () => {
-        setIsFollowing(!isFollowing);
+      const response = await fetch('https://accounts.spotify.com/api/token', authParameters);
+      const data = await response.json();
+      setAccessToken(data.access_token);
     };
 
-     //sets the new comments
+    getAccessToken();
+  }, []);
+
+  useEffect(() => {
+    // Function to fetch Rock playlists using the access token
+    const fetchRockMusic = async () => {
+      if (!accessToken) return;
+
+      const response = await fetch('https://api.spotify.com/v1/browse/categories/Rock/playlists', {
+        headers: { 'Authorization': `Bearer ${accessToken}` },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setRockPlaylists(data.playlists.items);
+
+      if (data.playlists.items.length > 0) {
+        const playlistId = data.playlists.items[0].id;
+        const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+          headers: { 'Authorization': `Bearer ${accessToken}` },
+        });
+        const tracksData = await tracksResponse.json();
+        if (tracksData.items.length > 0) {
+          const randomIndex = Math.floor(Math.random() * tracksData.items.length);
+          setRandomTrack(tracksData.items[randomIndex].track);
+        }
+      }
+    };
+
+    fetchRockMusic().catch(error => {
+      console.error('Fetching Rock playlists failed:', error);
+    });
+  }, [accessToken]); // This effect depends on the accessToken state
+
+  const handleFollowClick = () => {
+    setIsFollowing(!isFollowing);
+  };
+
+  //sets the new comments
   const handleCommentSubmit = (e) => {
     e.preventDefault();
 
@@ -162,14 +162,14 @@ function Rock() {
     setEditingReplyId(null);
     setEditReplyText({});
   };
-  
-    return (
-        <div className="container-page">
-          <h1>Rock Music</h1>
-          <button onClick={handleFollowClick} className="follow-button">
-            {isFollowing ? <><FaCheck /> Following</> : <><FaPlus /> Follow</>}
-          </button>
-          {randomTrack && (
+
+  return (
+    <div className="container-page">
+      <h1>Rock Music</h1>
+      <button onClick={handleFollowClick} className="follow-button">
+        {isFollowing ? <><FaCheck /> Following</> : <><FaPlus /> Follow</>}
+      </button>
+      {randomTrack && (
         <div className="featured-track-container">
           <h2>Todays Featured Track:</h2>
           <div className="track-card">
@@ -243,24 +243,24 @@ function Rock() {
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
             />
-            <button type="submit" className="submit-comment">Post</button>
+            <button type="submit" className="submit-comment">Comment</button>
           </form>
         </div>
 
       )}
-          <div className="playlists-container">
-            {RockPlaylists.map((playlist) => (
-              <div key={playlist.id} className="playlist-card">
-                <img src={playlist.images[0].url} alt={playlist.name} className="playlist-image" />
-                <div className="playlist-info">
-                  <h3>{playlist.name}</h3>
-                  <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="playlist-link">Listen on Spotify</a>
-                </div>
-              </div>
-            ))}
+      <div className="playlists-container">
+        {RockPlaylists.map((playlist) => (
+          <div key={playlist.id} className="playlist-card">
+            <img src={playlist.images[0].url} alt={playlist.name} className="playlist-image" />
+            <div className="playlist-info">
+              <h3>{playlist.name}</h3>
+              <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="playlist-link">Listen on Spotify</a>
+            </div>
           </div>
-        </div>
-      );
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default Rock;
