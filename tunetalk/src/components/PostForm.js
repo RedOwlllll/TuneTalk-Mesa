@@ -4,7 +4,7 @@ import { useState } from "react"
 //username,email,title,artist,rating,caption
 
 const PostForm = () =>{
-    const [username, setUsername] = useState('')
+    const [postusername, setPostUsername] = useState('')
     const [email, setEmail] = useState('')
     const [title, setTitle] = useState('')
     const [artist, setArtist] = useState('')
@@ -16,7 +16,7 @@ const PostForm = () =>{
     const handleSubmit = async (e) =>{
         e.preventDefault()
         
-        const post = {username,email,title,artist,rating,caption}
+        const post = {postusername,email,title,artist,rating,caption}
 
         const response = await fetch('/api/posts', {
             method: 'POST', 
@@ -33,7 +33,7 @@ const PostForm = () =>{
         }
 
         if (response.ok) {
-            setUsername('')
+            setPostUsername('')
             setEmail('')
             setTitle('')
             setArtist('')
@@ -50,26 +50,8 @@ const PostForm = () =>{
         <form className="create" onSubmit={handleSubmit}>
             <h3>Add Post</h3>
 
-            {/* <label>Username</label>
-            <input type="text" onChange={(e) => setUsername("Hello")} value={username} />
-
-            <label>Email</label>
-            <input type="text" onChange={(e) => setEmail("How are you")} value={email} />
-
-            <label>Song Title</label>
-            <input type="text" onChange={(e) => setTitle("Fine thank you")} value={title} />
-
-            <label>Song Artist</label>
-            <input type="text" onChange={(e) => setArtist("This is a test")} value={artist} />
-
-            <label>Song Rating</label>
-            <input type="number" onChange={(e) => setRating("10")} value={rating} />
-
-            <label>Caption</label>
-            <input type="text" onChange={(e) => setCaption("Nice one Joel ")} value={caption} /> */}
-
             <label>Username</label>
-            <input type="text" onChange={(e) => setUsername(e.target.value)} value={username} />
+            <input type="text" onChange={(e) => setPostUsername(e.target.value)} value={postusername} />
 
             <label>Email</label>
             <input type="text" onChange={(e) => setEmail(e.target.value)} value={email} />

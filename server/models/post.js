@@ -2,30 +2,33 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const postSchema = new Schema({ 
-    username: {
+    postusername: {
         type: String, 
-        required: true
+        
     },
 
-    email: {
-        type: String, 
-        required: true
+    // image: {
+    //     data: Buffer, // Store binary image data
+    //     contentType: String // Store image MIME type (e.g., image/jpeg, image/png)
+    // },
 
+    email: {
+        type: String,
     },
 
     title: {
         type: String,
-        required: true
+        
     },
 
     artist: {
         type: String,
-        required: true
+        
     },
 
     rating: {
         type: Number,
-        required: true
+        
     },
 
     caption: {

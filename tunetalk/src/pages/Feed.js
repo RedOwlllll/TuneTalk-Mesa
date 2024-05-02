@@ -5,6 +5,7 @@ import "../components/PostDetails";
 
 import PostDetails from "../components/PostDetails";
 import PostForm from "../components/PostForm";
+import UserPost from "./UserPost";
 
 export const Feed = () => {
 
@@ -26,9 +27,15 @@ export const Feed = () => {
 
     return (
         <div className="feed-page">
-            <h1>Feed</h1>  
+            <h1>Feed</h1>
+
+            <div className="song-display-form">
+                <UserPost />
+
+            </div>
+
             <div className="post-form">
-                <PostForm />
+                {/* <PostForm /> */}
 
             </div>
             
