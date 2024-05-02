@@ -15,7 +15,7 @@ import { ProtectedRoute } from "./authentication/ProtectedRoute";
 import Pop from './pages/CommunityGenres/Pop';
 import Rock from './pages/CommunityGenres/Rock';
 import Country from './pages/CommunityGenres/Country';
-import Electro from "./pages/CommunityGenres/Electro";
+import Electronic from "./pages/CommunityGenres/Electronic";
 import Hiphop from './pages/CommunityGenres/Hiphop';
 import Indie from './pages/CommunityGenres/Indie';
 import Kpop from './pages/CommunityGenres/Kpop';
@@ -42,7 +42,7 @@ export const App = () => {
             <Route path="/community/pop" element={<ProtectedRoute><Pop /></ProtectedRoute>} />
             <Route path="/community/rock" element={<ProtectedRoute><Rock /></ProtectedRoute>} />
             <Route path="/community/country" element={<ProtectedRoute><Country /></ProtectedRoute>} />
-            <Route path="/community/electronic" element={<ProtectedRoute><Electro /></ProtectedRoute>} />
+            <Route path="/community/electronic" element={<ProtectedRoute><Electronic /></ProtectedRoute>} />
             <Route path="/community/hiphop" element={<ProtectedRoute><Hiphop /></ProtectedRoute>} />
             <Route path="/community/indie" element={<ProtectedRoute><Indie /></ProtectedRoute>} />
             <Route path="/community/kpop" element={<ProtectedRoute><Kpop /></ProtectedRoute>} />
