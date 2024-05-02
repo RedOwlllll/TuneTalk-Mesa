@@ -9,6 +9,8 @@ function Pop() {
     const [isFollowing, setIsFollowing] = useState(false);
     const [accessToken, setAccessToken] = useState('');
     const [popPlaylists, setPopPlaylists] = useState([]);
+    const [randomTrack, setRandomTrack] = useState(null);
+
 
     useEffect(() => {
         // Function to retrieve the access token
@@ -44,6 +46,18 @@ function Pop() {
 
             const data = await response.json();
             setPopPlaylists(data.playlists.items);
+
+            if (data.playlists.items.length > 0) {
+              const playlistId = data.playlists.items[0].id;
+              const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+                  headers: { 'Authorization': `Bearer ${accessToken}` },
+              });
+              const tracksData = await tracksResponse.json();
+              if (tracksData.items.length > 0) {
+                  const randomIndex = Math.floor(Math.random() * tracksData.items.length);
+                  setRandomTrack(tracksData.items[randomIndex].track);
+              }
+          }
         };
 
         fetchPopMusic().catch(error => {
@@ -61,6 +75,18 @@ function Pop() {
           <button onClick={handleFollowClick} className="follow-button">
             {isFollowing ? <><FaCheck /> Following</> : <><FaPlus /> Follow</>}
           </button>
+          {randomTrack && (
+            <div className="featured-track-container">
+                <h2>Todays Featured Track: </h2>
+                <div className="track-card">
+                    <img src={randomTrack.album.images[0].url} alt={randomTrack.name} className="track-image" />
+                    <div className="track-info">
+                        <p className="track-title">{randomTrack.name}</p>
+                        <p className="track-artist">by {randomTrack.artists.map(artist => artist.name).join(', ')}</p>
+                    </div>
+                </div>
+            </div>
+          )}
           <div className="playlists-container">
             {popPlaylists.map((playlist) => (
               <div key={playlist.id} className="playlist-card">
