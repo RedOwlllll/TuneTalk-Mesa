@@ -3,6 +3,7 @@ import { FaCheck, FaPlus } from 'react-icons/fa'; // FontAwesome icons
 import '../../css/Community.css';
 import { useUser } from "../../authentication/UserState";
 import axios from "axios";
+import StarRating from '../StarRating';
 
 const CLIENT_ID = "a8c9857ace8449f290ed14c54c878e1f";
 const CLIENT_SECRET = "c747a0da53124c4ba8bc12a0e88d859b";
@@ -124,8 +125,8 @@ function Indie() {
     // eslint-disable-next-line
     }, [user.email]); // This effect depends on user.email
 
+  // ALL BLAKES CODE
 
-    // ALL BLAKES CODE
   //sets the new comments
   const handleCommentSubmit = (e) => {
     e.preventDefault();
@@ -230,6 +231,9 @@ function Indie() {
             </div>
           </div>
           <div className="comments-container">
+            <StarRating onRating={(rate) => {
+                console.log("Rating:", rate);
+            }} />
             {comments.map(comment => (
               <div key={comment.id} className="comment-box">
                 {editStatus[comment.id] ? (

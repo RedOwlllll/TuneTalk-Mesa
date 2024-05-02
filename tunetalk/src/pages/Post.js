@@ -249,7 +249,7 @@ function Post() {
                     <div className="post-card-image-container">
                         <img src={recentTrack.albumCover} alt={`${recentTrack.title} Album Cover`} className="post-card-image" />
                         <StarRating onRating={(rate) => {
-                            console.log(rate);
+                            console.log("Rating:", rate);
                         }} />
                     </div>
                     <div className="post-card-content">
@@ -319,7 +319,7 @@ function Post() {
                                 value={newComment}
                                 onChange={(e) => setNewComment(e.target.value)}
                             />
-                            <button type="submit" className="submit-comment">Post</button>
+                            <button type="submit" className="submit-comment">Comment</button>
                         </form>
                     </div>
                 </div>

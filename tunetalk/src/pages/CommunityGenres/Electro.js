@@ -230,6 +230,7 @@ return (
           </div>
         </div>
         <div className="comments-container">
+          
           {comments.map(comment => (
             <div key={comment.id} className="comment-box">
               {editStatus[comment.id] ? (
