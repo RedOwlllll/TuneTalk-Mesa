@@ -26,7 +26,7 @@ function UserPost() {
     const [rating, setRating] = useState('')
     const [caption, setCaption] = useState('')
     const [error, setError] = useState(null)
-
+    const [imageData, setImageData] = useState('');
 
 
     const [selectedRating, setSelectedRating] = useState(0); // State variable to store the selected rating
@@ -74,7 +74,25 @@ function UserPost() {
                     title: track.name, //title 
                     albumCover: track.album.images[0].url // URL of album image
                 });
- 
+
+                
+                
+
+
+                // fetch(track.album.images[0].url)
+                // .then(response => response.blob())
+                // .then(blob => {
+                //     const reader = new FileReader();
+                //     reader.onloadend = () => {
+                //         const base64Data = reader.result; // Base64 string of the image
+                //         // Store the base64 string in state
+                //         setImageData(base64Data);
+                //     };
+                //     reader.readAsDataURL(blob);
+                // })
+                // .catch(error => {
+                //     console.log('Error fetching image:', error);
+                // });
 
                 
                 //prepare song to be saved
@@ -116,28 +134,65 @@ function UserPost() {
      
     // };
 
-    const [imageData, setImageData] = useState('');
+   
 
-    useEffect(() => {
-        if (recentTrack && recentTrack.albumCover) {
-            handleImageData(recentTrack.albumCover);
-        }
-    }, [recentTrack]);
+    // useEffect(() => {
+    //     if (recentTrack && recentTrack.albumCover) {
+    //         handleImageData(recentTrack.albumCover);
+    //     }
+    // }, [recentTrack]);
 
-    const handleImageData = async (imageUrl) => {
-        const response = await fetch(imageUrl);
-        const blob = await response.blob();
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setImageData(reader.result);
-        };
-        reader.readAsDataURL(blob);
-    };
+    // const handleImageData = async (imageUrl) => {
+    //     const response = await fetch(track.album.images[0].url);
+    //     const blob = await response.blob();
+    //     const reader = new FileReader();
+    //     reader.onloadend = () => {
+    //         setImageData(reader.result);
+    //         console.log(imageData)
+    //     };
+    //     reader.readAsDataURL(blob);
+    // };
 
 
 
     const handleSubmission = async (e) =>{
-        e.preventDefault()
+
+        const confirmation = window.confirm("Are you sure you want to post this song? (All your friends will see)");
+
+        if (confirmation) {
+            
+            setRating(selectedRating);
+            //e.preventDefault()
+            const post = {postusername,imageData,email,title,artist,rating,caption}
+
+            console.log(post)
+
+            const response = await fetch('/api/posts', {
+                method: 'POST', 
+                body: JSON.stringify(post),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            
+            })
+    
+            const json = await response.json()
+            if (!response.ok) {
+                setError(json.error)
+            }
+    
+            if (response.ok) {
+                // setPostUsername('')
+                // setEmail('')
+                // setTitle('')
+                // setArtist('')
+                // setRating('')
+                // setCaption('')
+    
+                setError(null)
+                console.log('post added')
+            }
+        }
 
         
         // console.log(postusername)
@@ -164,7 +219,7 @@ function UserPost() {
         //const post = {username,email,title,artist,rating,caption}
 
         
-        const post = {postusername,email,title,artist,rating,caption}
+        
         // const post = {postusername,email,title,artist,rating,caption}
 
 
@@ -173,7 +228,7 @@ function UserPost() {
         // console.log(caption)
 
        
-        console.log(post)
+        
         // setPostUsername('test');
         // setEmail('test');
         // setTitle('test');
@@ -181,31 +236,7 @@ function UserPost() {
         // setRating('1');
         // setCaption('test');
 
-        const response = await fetch('/api/posts', {
-            method: 'POST', 
-            body: JSON.stringify(post),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        
-        })
-
-        const json = await response.json()
-        if (!response.ok) {
-            setError(json.error)
-        }
-
-        if (response.ok) {
-            // setPostUsername('')
-            // setEmail('')
-            // setTitle('')
-            // setArtist('')
-            // setRating('')
-            // setCaption('')
-
-            setError(null)
-            console.log('post added')
-        }
+       
 
     }
 
@@ -256,9 +287,22 @@ function UserPost() {
                                     setEmail(username);
                                     setTitle(recentTrack.title);
                                     setArtist(recentTrack.artist);
-                                    
+                                    setImageData()
                                     setRating(selectedRating);
-                                    
+                                    fetch(recentTrack.albumCover).then(response => response.blob()).then(blob => 
+                                    {
+                                        const reader = new FileReader();
+                                        reader.onloadend = () => {
+                                            const base64Data = reader.result; // Base64 string of the image
+                                            // Store the base64 string in state
+                                            setImageData(base64Data);
+                                            console.log(base64Data)
+                                        };
+                                        reader.readAsDataURL(blob);
+                                    })
+                                    .catch(error => {
+                                        console.log('Error fetching image:', error);
+                                    })
                                 
                                 
                                 }}
@@ -267,14 +311,7 @@ function UserPost() {
                             <button type="submit" className="submit-comment">Post</button>
                         </form>
 
-                        {/* <form className="create" onSubmit={handleSubmission}>
-                            <h3>Add Post</h3>
-                            
-                            <button>Post</button>
-
-                            {error &&  <div className="error">{error}</div>}
-                        </form> */}
-
+                
 
 
 

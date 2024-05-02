@@ -31,11 +31,11 @@ const getPost = async (req, res) => {
 
 //create new post
 const createPost = async(req, res) => {
-    const {postusername, email, title, artist, rating, caption} = req.body
+    const {postusername, imageData, email, title, artist, rating, caption} = req.body
 
     try {
-        const post = await Post.create({postusername,email,title,artist,rating,caption})
-        res.status(200).json(post)
+        const post = await Post.create({postusername,imageData, email,title,artist,rating,caption})
+        res.status(200).json(post) 
     }   catch (error) {
         res.status(400).json({error: error.message})
 
@@ -46,6 +46,8 @@ const createPost = async(req, res) => {
 
 //delete a post
 const deletePost = async (req, res) => {
+
+    
     const {id} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)){
@@ -58,8 +60,15 @@ const deletePost = async (req, res) => {
         return res.status(400).json({error:'no such post'})
     }
 
-    res.status(200).json(post)
+    res.status(200)
 }
+
+const deleteAllPosts = async (req, res) => {
+
+    await Post.deleteMany({});
+    res.status(200).json(Post)
+}
+
 
 
 //update a post
@@ -86,5 +95,7 @@ module.exports = {
     getPost,
     createPost,
     deletePost,
+    deleteAllPosts,
     updatePost
+    
 }

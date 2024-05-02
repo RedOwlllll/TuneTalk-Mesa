@@ -30,7 +30,7 @@ export const Feed = () => {
             <h1>Feed</h1>
 
             <div className="song-display-form">
-                <UserPost />
+                {/* <UserPost /> */}
 
             </div>
 

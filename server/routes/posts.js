@@ -7,7 +7,8 @@ const
     getPost,
     createPost,
     deletePost,
-    updatePost
+    updatePost,
+    deleteAllPosts
 } = require('../controllers/postController')
 
 
@@ -19,6 +20,9 @@ router.get('/:id', getPost)
 router.post('/', createPost)
 
 router.delete('/:id', deletePost)
+
+//Commented out for security
+router.delete('/', deleteAllPosts)
 
 router.patch('/:id', updatePost)
 

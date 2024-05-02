@@ -7,10 +7,9 @@ const postSchema = new Schema({
         
     },
 
-    // image: {
-    //     data: Buffer, // Store binary image data
-    //     contentType: String // Store image MIME type (e.g., image/jpeg, image/png)
-    // },
+    imageData: {
+        type: String //store base64 image data
+    },
 
     email: {
         type: String,

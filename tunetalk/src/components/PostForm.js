@@ -14,7 +14,7 @@ const PostForm = () =>{
 
 
     const handleSubmit = async (e) =>{
-        e.preventDefault()
+        //e.preventDefault()
         
         const post = {postusername,email,title,artist,rating,caption}
 
