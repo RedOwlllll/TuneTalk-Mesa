@@ -24,44 +24,7 @@ function Post() {
     const token = localStorage.getItem("access_token");
     const username = localStorage.getItem("userlogin");
 
-    console.log(token, username);
-  /* const email = "1@gmail.com";
-    const username = "blake";
-    const postId = "662cd6c7d67dfd6255ff744f";
-    const user = "662c4a7c5de6fd5dccedfde6";
-    */
-
-    // const email = "1@gmail.com";
-    // const username = "blake";
-    // const postId = "662cd6c7d67dfd6255ff744f";
-    // const user = "662c4a7c5de6fd5dccedfde6";
-
-    //hook to process the authentication token after login
-    // useEffect(() => {
-    //     const hash = window.location.hash;
-    //     let token = window.localStorage.getItem("token");
-
-    //     //if no token in storage and there is a hash code, then store it
-    //     if (!token && hash) {
-    //         token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1];
-    //         window.location.hash = "";
-    //         window.localStorage.setItem("token", token);
-    //     }
-
-    //     setToken(token); //updates the token
-    // }, []);
-
-    // function to handle the user logout
-    // const logout = () => {
-    //     setToken(""); // Clear the token from state
-    //     setRecentTrack(null); // Clear the recent track from state
-    //     window.localStorage.removeItem("token"); // Remove the token from localStorage
-    // };
-
-    // // function to construct the spotify login url
-    // const getLoginURL = () => {
-    //     return `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${encodeURIComponent(SCOPES)}&show_dialog=true`;
-    // }
+    //console.log(token, username);
 
     const getRecentTrack = () => {
         if (!token) {
@@ -105,14 +68,15 @@ function Post() {
 
     const saveTrackToDatabase = (username, songData) => {
         console.log(songData);
-        axios.post(`http://localhost:8082/api/user/${username}/addPost`, songData )
-          .then(response => {
-            console.log('Song post saved:', response.data);
-          })
-          .catch(error => {
-            console.error('Error saving the song post:', error.response.data);
-          });
-        };
+        axios.post(`http://localhost:8082/api/user/${username}/addPost`, songData)
+            .then(response => {
+                console.log('Song post saved:', response.data);
+                localStorage.setItem("postId", response.data._id);
+            })
+            .catch(error => {
+                console.error('Error saving the song post:', error.response.data);
+            });
+    };
 
     const handleCommentSubmit = (e) => {
 
@@ -122,37 +86,27 @@ function Post() {
             text: newComment,
             user: username
         };
-
-        // axios.post(`http://localhost:8082/api/songpost/${postId}/comments`, commentData)
-        //     .then(response => {
-        //         setComments([...comments, response.data]);
-        //         setNewComment('');
-        //     })
-        //     .catch(error => {
-        //         console.error("Error adding comment:", error.response?.data || error.message);
-        //     })
     };
 
     //Sends a POST request to the backend with the caption data
-    const saveCaptionToDatabase = async (caption) => {
-        if(!caption) return;
+    const saveCaptionToDatabase = async (username, captionText) => {
+        if(!captionText) return;
 
         try {
-            const response = await axios.post('http://localhost:8082/api/save-caption', { setCaption });
+            const response = await axios.post(`http://localhost:8082/api/${username}/save-caption`, { caption: captionText });
             console.log('Caption saved:', response.data);
-            setCaption(true);
         } catch (error) {
             console.error('Error saving the caption:', error.message);
         }
     };
 
     //Function to handle "Enter" key in caption input
-    const handleCaptionKeyPress = (e) => {
+    const handleCaptionKeyPress = async (e) => {
         if(e.key === 'Enter')
         {
             e.preventDefault();
             postCaption();
-            saveCaptionToDatabase(caption);
+            await saveCaptionToDatabase(username, caption);
         }
     }
 
