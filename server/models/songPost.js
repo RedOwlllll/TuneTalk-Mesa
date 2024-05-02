@@ -8,9 +8,11 @@ const CommentSchema = new mongoose.Schema({
 
 const songPostschema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'UserDetails'},
-    title: { type: String, required: true},
-    artist: { type: String, required: true},
-    albumCover: { type: String, required: true},
+    Song: {
+        title: { type: String, required: true},
+        artist: { type: String, required: true},
+        albumCover: { type: String, required: true},
+    },
     comments: [CommentSchema],
     rating: Number,
     postedAt: { type: Date, default: Date.now}
