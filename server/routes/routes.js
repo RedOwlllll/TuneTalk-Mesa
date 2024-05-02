@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { SongPost } = require('../models/songPost');
-const User = require('../models/userDetails1'); // Ensure this correctly imports the User model
+const User = require('../models/UserDetails'); // Ensure this correctly imports the User model
 
 // POST endpoint to create a song post
 router.post('/user/:identifier/addPost', async (req, res) => {
@@ -12,7 +12,7 @@ router.post('/user/:identifier/addPost', async (req, res) => {
     const userDetails = await User.findOne({
       $or: [{ email: identifier }, { username: identifier }]
     });
-  
+
     if (!userDetails) {
       return res.status(404).send('User not found');
     }
@@ -22,16 +22,16 @@ router.post('/user/:identifier/addPost', async (req, res) => {
       ...songData,
       userId: userDetails._id, // associate the post with the user's ObjectId
     });
-  
+
     // Save the new song post
     const savedSongPost = await newSongPost.save();
-  
+
     // Add the song post's id to the user's posts array
     userDetails.posts.push(savedSongPost._id);
-  
+
     // Save the updated user document
     await userDetails.save();
-  
+
     res.status(201).json(savedSongPost);
   } catch (error) {
     console.error('Error saving the song post:', error);
