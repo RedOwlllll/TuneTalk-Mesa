@@ -6,10 +6,6 @@ const CommentSchema = new mongoose.Schema({
     postedAt: { type: Date, default: Date.now}
 })
 
-const captionSchema = new mongoose.Schema({
-    caption: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now }
-});
 
 const songPostschema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'UserDetails'},
@@ -19,11 +15,9 @@ const songPostschema = new mongoose.Schema({
     albumCover: { type: String, required: true},
     comments: [CommentSchema],
     rating: Number,
-    caption: [captionSchema],
     postedAt: { type: Date, default: Date.now}
 });
 
 const SongPost = mongoose.model('SongPost', songPostschema);
-const Comment = mongoose.model('Comment', CommentSchema)
-const Caption = mongoose.model('Caption', captionSchema);
-module.exports = { SongPost, Comment, Caption };
+const Comment = mongoose.model('Comment', CommentSchema);
+module.exports = { SongPost, Comment };

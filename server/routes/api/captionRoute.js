@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Caption = require('../../models/songPost');
+const Caption = require('../../models/caption');
 const User = require('../../models/UserDetails');
 
 router.post('/:identifier/save-caption', async (req, res) => {

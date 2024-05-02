@@ -178,6 +178,63 @@ function Post() {
         setEditReplyText({});
     };
 
+
+    // CAPTION CODE
+
+      //Sends a POST request to the backend with the caption data
+      const saveCaptionToDatabase = async (username, captionText) => {
+        if(!captionText) return;
+
+        try {
+            const response = await axios.post(`http://localhost:8082/api/${username}/save-caption`, { caption: captionText });
+            console.log('Caption saved:', response.data);
+        } catch (error) {
+            console.error('Error saving the caption:', error.message);
+        }
+    };
+
+    //Function to handle "Enter" key in caption input
+    const handleCaptionKeyPress = async (e) => {
+        if(e.key === 'Enter')
+        {
+            e.preventDefault();
+            postCaption();
+            await saveCaptionToDatabase(username, caption);
+        }
+    }
+
+    //To make the caption permanent in the song card
+    const postCaption = () => {
+        console.log('Caption is posted: "', caption, '"');
+        setCaptionPosted(true);
+    }
+
+    //Caption input field
+    const captionInput = (
+        <input
+            type="text"
+            className="caption-input"
+            placeholder="Add a caption"
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            onKeyDown={handleCaptionKeyPress}
+        />
+    )
+
+    //JSX for caption display
+    const displayCaption = (
+        <div className="caption-display">
+            <p>{caption}</p>
+        </div>
+    )
+
+    //If captionPosted is true, post is successful and returns display caption 
+    //If captionPosted is false, it indicates that no caption has been posted 
+    const captionRender = () => {
+        return captionPosted ? displayCaption : captionInput;
+    }
+
+
     return (
         <div className="home-page">
             <div className="button-container">

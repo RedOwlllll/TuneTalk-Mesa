@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const spotifyuser = require('../../models/UserDetails');
+const spotifyuser = require('../../models/SpotifyDetails');
 
 // Function to fetch spotify details then save into mongodb
 router.post("/", async (req, res) => {
