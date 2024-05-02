@@ -110,7 +110,7 @@ function Post() {
         }
     }
 
-    //Function to save the caption
+    //To make the caption permanent in the song card
     const postCaption = () => {
         console.log('Caption is posted: "', caption, '"');
         setCaptionPosted(true);
@@ -135,7 +135,8 @@ function Post() {
         </div>
     )
 
-    //Depending on the captionPosted status, render the caption display or the caption input
+    //If captionPosted is true, post is successful and returns display caption 
+    //If captionPosted is false, it indicates that no caption has been posted 
     const captionRender = () => {
         return captionPosted ? displayCaption : captionInput;
     }
