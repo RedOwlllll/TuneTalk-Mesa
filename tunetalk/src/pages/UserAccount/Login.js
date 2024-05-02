@@ -27,7 +27,7 @@ export const Login = () => {
         .then((res) => {
             const data = res.data;
             console.log(data, "userLogin"); // when the user is logged in creates a variable called userLogin and sets the value to true
-            
+            localStorage.setItem("userlogin", userLogin);
             if (data.status === "ok") {
                 setAlertMessage("Logged in successfully!");
                 setUser ({

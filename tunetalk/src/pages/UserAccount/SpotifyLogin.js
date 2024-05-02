@@ -43,7 +43,7 @@ export const SpotifyLogin = () => {
     const [user, setUser] = useUser();
     const [userInfo, setUserInfo] = useState(null); // State variable to save user's spotify info into teh userState
     const navigate = useNavigate();
-
+    
     useEffect(() => {
         const getUserSpotifyInfo = async () => {
     
@@ -80,6 +80,7 @@ export const SpotifyLogin = () => {
                         email: userInfo.email,
                     };
                     console.log(spotifyUserInfo);
+                    localStorage.setItem("username", spotifyUserInfo.username);
                     setUserInfo(spotifyUserInfo);
                     setAlertMessage("Spotify account connected!");
     

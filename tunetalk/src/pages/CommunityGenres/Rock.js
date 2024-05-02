@@ -11,7 +11,16 @@ function Rock() {
     const [isFollowing, setIsFollowing] = useState(false);
     const [accessToken, setAccessToken] = useState('');
     const [RockPlaylists, setRockPlaylists] = useState([]);
+    const [randomTrack, setRandomTrack] = useState(null);
     const [user] = useUser(); 
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState('');
+    const [replyTexts, setReplyTexts] = useState({});
+    const username = localStorage.getItem("userlogin");
+    const [editStatus, setEditStatus] = useState({});
+    const [editTexts, setEditTexts] = useState({});
+    const [editingReplyId, setEditingReplyId] = useState(null);
+    const [editReplyText, setEditReplyText] = useState({});
 
     const handleFollowClick = async () => {
       if (!isFollowing){
@@ -86,9 +95,21 @@ function Rock() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json();
-        setRockPlaylists(data.playlists.items);
-      };
+            const data = await response.json();
+            setRockPlaylists(data.playlists.items);
+
+            if (data.playlists.items.length > 0) {
+              const playlistId = data.playlists.items[0].id;
+              const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+                  headers: { 'Authorization': `Bearer ${accessToken}` },
+              });
+              const tracksData = await tracksResponse.json();
+              if (tracksData.items.length > 0) {
+                  const randomIndex = Math.floor(Math.random() * tracksData.items.length);
+                  setRandomTrack(tracksData.items[randomIndex].track);
+              }
+          }
+        };
 
       fetchRockMusic().catch(error => {
         console.error('Fetching Rock playlists failed:', error);
@@ -103,25 +124,192 @@ function Rock() {
     // eslint-disable-next-line
     }, [user.email]); // This effect depends on user.email
 
-    return (
-        <div className="container-page">
-          <h1>Rock Music</h1>
-          <button onClick={handleFollowClick} className="follow-button">
-            {isFollowing ? <><FaCheck /> Following</> : <><FaPlus /> Follow</>}
-          </button>
-          <div className="playlists-container">
-            {RockPlaylists.map((playlist) => (
-              <div key={playlist.id} className="playlist-card">
-                <img src={playlist.images[0].url} alt={playlist.name} className="playlist-image" />
-                <div className="playlist-info">
-                  <h3>{playlist.name}</h3>
-                  <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="playlist-link">Listen on Spotify</a>
-                </div>
-              </div>
-            ))}
+    // ALL BLAKES CODE
+ //sets the new comments
+ const handleCommentSubmit = (e) => {
+  e.preventDefault();
+
+  const newCommentToAdd = {
+    id: comments.length + 1,
+    username: username,
+    body: newComment,
+    date: new Date(),
+    replies: []
+  };
+
+  setComments([...comments, newCommentToAdd]);
+  setNewComment('');
+};
+
+//sets the new replies
+const handleReplySubmit = async (commentId, e) => {
+  e.preventDefault();
+  addReplyToComment(commentId, replyTexts[commentId]);
+  setReplyTexts({ ...replyTexts, [commentId]: '' });
+};
+
+//adds the reply to the parent comment
+const addReplyToComment = (commentId, replyText) => {
+  const updatedComments = comments.map(comment => {
+    if (comment.id === commentId) {
+      const newReply = {
+        id: comment.replies.length + 1,
+        username: username,
+        body: replyText,
+        date: new Date()
+      };
+      return { ...comment, replies: [...comment.replies, newReply] };
+    }
+    return comment;
+  });
+  setComments(updatedComments);
+};
+
+
+// Start editing a comment
+const handleEdit = (id) => {
+  setEditStatus({ ...editStatus, [id]: true });
+  setEditTexts({ ...editTexts, [id]: comments.find(comment => comment.id === id).body });
+};
+
+// Cancel editing
+const handleCancel = (id) => {
+  setEditStatus({ ...editStatus, [id]: false });
+};
+
+// Save the edited comment
+const handleSave = (id) => {
+  const updatedComments = comments.map(comment => {
+    if (comment.id === id) {
+      return { ...comment, body: editTexts[id] };
+    }
+    return comment;
+  });
+  setComments(updatedComments);
+  setEditStatus({ ...editStatus, [id]: false });
+};
+
+const startEditReply = (replyId, currentText) => {
+  setEditingReplyId(replyId);
+  setEditReplyText({ ...editReplyText, [replyId]: currentText });
+};
+
+const saveReplyChanges = (replyId) => {
+  const updatedComments = comments.map(comment => {
+    if (comment.id === replyId) {
+      const updatedReplies = comment.replies.map(reply => {
+        if (reply.id === replyId) {
+          return { ...reply, body: editReplyText[replyId] };
+        }
+        return reply;
+      });
+      return { ...comment, replies: updatedReplies };
+    }
+    return comment;
+  });
+  setComments(updatedComments);
+  setEditingReplyId(null);
+  setEditReplyText({});
+};
+
+return (
+  <div className="container-page">
+    <h1>Rock Music</h1>
+    <button onClick={handleFollowClick} className="follow-button">
+      {isFollowing ? <><FaCheck /> Following</> : <><FaPlus /> Follow</>}
+    </button>
+    {randomTrack && (
+      <div className="featured-track-container">
+        <h2>Todays Featured Track:</h2>
+        <div className="track-card">
+          <img src={randomTrack.album.images[0].url} alt={randomTrack.name} className="track-image" />
+          <div className="track-info">
+            <p className="track-title">{randomTrack.name}</p>
+            <p className="track-artist">by {randomTrack.artists.map(artist => artist.name).join(', ')}</p>
           </div>
         </div>
-      );
+        <div className="comments-container">
+          {comments.map(comment => (
+            <div key={comment.id} className="comment-box">
+              {editStatus[comment.id] ? (
+                <>
+                  <input
+                    value={editTexts[comment.id]}
+                    onChange={(e) => setEditTexts({ ...editTexts, [comment.id]: e.target.value })}
+                  />
+                  <button onClick={() => handleSave(comment.id)}>Save</button>
+                  <button onClick={() => handleCancel(comment.id)}>Cancel</button>
+                </>
+              ) : (
+                <>
+                  <div className="comment-header">
+                    <strong>{comment.username}</strong>
+                    <p>{comment.body}</p>
+                    <small>{new Date(comment.date).toLocaleString()}</small>
+                    <button className="comment-edit-button" onClick={() => handleEdit(comment.id)}>Edit</button>
+                  </div>
+                  {comment.replies && comment.replies.map(reply => (
+                    <div key={reply.id} className="reply-box">
+                      <div className="reply-content">
+                        <strong>{reply.username}</strong>
+                        {editingReplyId === reply.id ? (
+                          <input
+                            type="text"
+                            value={editReplyText[reply.id] || reply.body}
+                            onChange={(e) => setEditReplyText({ ...editReplyText, [reply.id]: e.target.value })}
+                          />
+                        ) : (
+                          <p>{reply.body}</p>
+                        )}
+                        <small>{new Date(reply.date).toLocaleString()}</small>
+                        <button className="comment-edit-button" onClick={() => startEditReply(reply.id, reply.body)}>Edit</button>
+                        {editingReplyId === reply.id && (
+                          <button onClick={() => saveReplyChanges(reply.id)}>Save</button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  <form onSubmit={(e) => handleReplySubmit(comment.id, e)}>
+                    <input
+                      type="text"
+                      placeholder="Reply..."
+                      value={replyTexts[comment.id] || ''}
+                      onChange={(e) => setReplyTexts({ ...replyTexts, [comment.id]: e.target.value })}
+                    />
+                    <button type="submit">Reply</button>
+                  </form>
+                </>
+              )}
+            </div>
+          ))}
+
+        </div>
+        <form onSubmit={handleCommentSubmit}>
+          <input
+            type="text"
+            className="comment-input"
+            placeholder="Add a comment..."
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+          />
+          <button type="submit" className="submit-comment">Comment</button>
+        </form>
+      </div>
+
+    )}
+    <div className="playlists-container">
+      {RockPlaylists.map((playlist) => (
+        <div key={playlist.id} className="playlist-card">
+          <img src={playlist.images[0].url} alt={playlist.name} className="playlist-image" />
+          <div className="playlist-info">
+            <h3>{playlist.name}</h3>
+            <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="playlist-link">Listen on Spotify</a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
 }
 
 export default Rock;
