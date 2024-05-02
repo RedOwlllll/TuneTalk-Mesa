@@ -16,10 +16,13 @@ router.post('/:identifier/save-caption', async (req, res) => {
         return res.status(404).send('User not found');
       }
 
+    //Creating a new caption instance with the provided caption
     const newCaption = new Caption({ caption });
     
+    //Save the new caption to the database
     const savedCaption = await newCaption.save();
 
+    //Pushing the new caption reference to the user's caption array
     userDetails.caption.push(newCaption);
 
     await userDetails.save();
