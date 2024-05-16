@@ -14,7 +14,7 @@ export const Home = () => {
     return (
         <div>
 <           div className="song-display-form">
-                <UserPost />
+               
             </div>
 
             <div className="home-page">

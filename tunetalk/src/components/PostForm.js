@@ -4,35 +4,38 @@ import { useState } from "react"
 //username,email,title,artist,rating,caption
 
 const PostForm = () =>{
-    const [postusername, setPostUsername] = useState('')
-    const [email, setEmail] = useState('')
-    const [title, setTitle] = useState('')
-    const [artist, setArtist] = useState('')
-    const [rating, setRating] = useState('')
-    const [caption, setCaption] = useState('')
-    const [error, setError] = useState(null)
+    const [postusername, setPostUsername] = useState('')    //Username state
+    const [email, setEmail] = useState('')      //Email state
+    const [title, setTitle] = useState('')      //Title state
+    const [artist, setArtist] = useState('')    //Artist state
+    const [rating, setRating] = useState('')    //Rating state
+    const [caption, setCaption] = useState('')  //Caption state
+    const [error, setError] = useState(null)    //Error state
 
 
-    const handleSubmit = async (e) =>{
-        //e.preventDefault()
+    const handleSubmit = async (e) =>{  //Submit post button
+        //e.preventDefault() //This line of code prevents automatic refresh
         
-        const post = {postusername,email,title,artist,rating,caption}
+        const post = {postusername,email,title,artist,rating,caption} //Store state values in post object
 
-        const response = await fetch('/api/posts', {
+        const response = await fetch('/api/posts', {    //send a POST request to the '/api/posts' endpoint
             method: 'POST', 
-            body: JSON.stringify(post),
+            body: JSON.stringify(post), //convert post object to JSON string as the payload
             headers: {
                 'Content-Type': 'application/json'
             }
 
         })
 
-        const json = await response.json()
+        const json = await response.json()  //error handling
         if (!response.ok) {
             setError(json.error)
         }
 
-        if (response.ok) {
+
+        
+
+        if (response.ok) {  //If the given json is valid, reset states 
             setPostUsername('')
             setEmail('')
             setTitle('')

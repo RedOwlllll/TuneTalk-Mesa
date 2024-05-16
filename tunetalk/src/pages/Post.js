@@ -4,62 +4,30 @@ import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own 
 import "../css/Post.css";
 import StarRating from "./StarRating";
 
+export const handleCommentSubmit = (e, username, newComment, setComments, setNewComment) => {
+
+    console.log("testers for the comment section")
+    e.preventDefault(); 
+
+    const commentData = {
+        text: newComment,
+        user: username
+    };
+
+};
+
+
 function Post() {
 
-    //spotify api credentials and endpoints
-    // const CLIENT_ID = "82051e28a62540019c2de5c903d8bca1"
-    // const REDIRECT_URI = "http://localhost:3000/home"
-    // const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
-    // const RESPONSE_TYPE = "token"
-    // const SCOPES = "user-read-recently-played";
-
-    //state hooks to store the token and recent song info
-    // const [token, setToken] = useState("");
     const [recentTrack, setRecentTrack] = useState(null);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
-
+    
     const token = localStorage.getItem("access_token");
     const username = localStorage.getItem("userlogin");
 
     console.log(username);
-  /* const email = "1@gmail.com";
-    const username = "blake";
-    const postId = "662cd6c7d67dfd6255ff744f";
-    const user = "662c4a7c5de6fd5dccedfde6";
-    */
-
-    // const email = "1@gmail.com";
-    // const username = "blake";
-    // const postId = "662cd6c7d67dfd6255ff744f";
-    // const user = "662c4a7c5de6fd5dccedfde6";
-
-    //hook to process the authentication token after login
-    // useEffect(() => {
-    //     const hash = window.location.hash;
-    //     let token = window.localStorage.getItem("token");
-
-    //     //if no token in storage and there is a hash code, then store it
-    //     if (!token && hash) {
-    //         token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1];
-    //         window.location.hash = "";
-    //         window.localStorage.setItem("token", token);
-    //     }
-
-    //     setToken(token); //updates the token
-    // }, []);
-
-    // function to handle the user logout
-    // const logout = () => {
-    //     setToken(""); // Clear the token from state
-    //     setRecentTrack(null); // Clear the recent track from state
-    //     window.localStorage.removeItem("token"); // Remove the token from localStorage
-    // };
-
-    // // function to construct the spotify login url
-    // const getLoginURL = () => {
-    //     return `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${encodeURIComponent(SCOPES)}&show_dialog=true`;
-    // }
+  
 
     const getRecentTrack = () => {
 
@@ -111,24 +79,9 @@ function Post() {
           });
         };
 
-    const handleCommentSubmit = (e) => {
+    
 
-        e.preventDefault(); 
-
-        const commentData = {
-            text: newComment,
-            user: username
-        };
-
-        // axios.post(`http://localhost:8082/api/songpost/${postId}/comments`, commentData)
-        //     .then(response => {
-        //         setComments([...comments, response.data]);
-        //         setNewComment('');
-        //     })
-        //     .catch(error => {
-        //         console.error("Error adding comment:", error.response?.data || error.message);
-        //     })
-    };
+       
 
     // component render
     return (
@@ -183,4 +136,7 @@ function Post() {
     );
 }
 
+
+
 export default Post;
+

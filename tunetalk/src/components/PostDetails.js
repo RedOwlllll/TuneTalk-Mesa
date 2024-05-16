@@ -1,10 +1,31 @@
 import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
 import "../css/PostDetails.css";
-
+import { handleCommentSubmit } from "../pages/Post";
+import React, { useEffect, useState } from "react";
 
 const PostDetails = ({post}) => {
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState('');
+    const username = 'testname'
+
+    const handleCommentSubmit = (e) => {
+
+        e.preventDefault(); 
+
+        const commentData = {
+            text: newComment,
+            user: username
+        };
+
+       
+    };
+    
     return (
+        
         <div className="post-details">
+
+
+            
             {/* <h4>Username: {post.postusername}</h4> */}
             <h4>Email: {post.email}</h4>
             <h4>Title: {post.title}</h4>
@@ -18,8 +39,21 @@ const PostDetails = ({post}) => {
             style={{ width: "500px", height: "500px" }}
             alt="Post Image"
             />
+            
 
             <h4>Timestamp: {post.createdAt}</h4>
+            
+            {/* Comment form */}
+            <form onSubmit={(e) => handleCommentSubmit(e, username, newComment, setComments, setNewComment)}>
+                            <input
+                                type="text"
+                                className="comment-input"
+                                placeholder="Add a comment..."
+                                value={newComment}
+                                onChange={(e) => setNewComment(e.target.value)}
+                            />
+                            <button type="submit" className="submit-comment">Post</button>
+            </form>
         </div>
     )
 }

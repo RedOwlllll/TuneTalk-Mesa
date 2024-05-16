@@ -27,6 +27,14 @@ export const Feed = () => {
 
     return (
         <div className="feed-page">
+            <h1>Post</h1>
+
+
+            <UserPost />
+            <div>
+
+            </div>
+
             <h1>Feed</h1>
 
             <div className="song-display-form">
