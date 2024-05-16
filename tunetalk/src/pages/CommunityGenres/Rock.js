@@ -13,7 +13,8 @@ function Rock() {
     const [accessToken, setAccessToken] = useState('');
     const [RockPlaylists, setRockPlaylists] = useState([]);
     const [randomTrack, setRandomTrack] = useState(null);
-    const [user] = useUser(); 
+    const [user] = useUser();
+
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [replyTexts, setReplyTexts] = useState({});
@@ -49,18 +50,18 @@ function Rock() {
 
     const fetchFollowStatus = async () => {
       try {
-          const response = await axios.get(`http://localhost:8082/api/community/status/${encodeURIComponent(user.email)}`);
-          setIsFollowing(response.data.Rock); // assuming the response data structure matches your expectations
+        const response = await axios.get(`http://localhost:8082/api/community/status/${encodeURIComponent(user.email)}`);
+        setIsFollowing(response.data.rock);
       } catch (err) {
-          console.error("Error fetching follow status:", err);
+        console.error("Error fetching follow status:", err);
       }
     };
 
     const fetchInitialFollow = async () => {
       try {
-          await axios.post(`http://localhost:8082/api/community/initiate-follows/${encodeURIComponent(user.email)}`);
+        await axios.post(`http://localhost:8082/api/community/initiate-follows/${encodeURIComponent(user.email)}`);
       } catch (err) {
-          console.error("Error initializing follow record:", err);
+        console.error("Error initializing follow record:", err);
       }
     };
 

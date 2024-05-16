@@ -50,7 +50,7 @@ function Kpop() {
     const fetchFollowStatus = async () => {
       try {
           const response = await axios.get(`http://localhost:8082/api/community/status/${encodeURIComponent(user.email)}`);
-          setIsFollowing(response.data.Kpop); // assuming the response data structure matches your expectations
+          setIsFollowing(response.data.kpop); // assuming the response data structure matches your expectations
       } catch (err) {
           console.error("Error fetching follow status:", err);
       }

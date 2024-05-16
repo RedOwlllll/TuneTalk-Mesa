@@ -50,7 +50,7 @@ function Metal() {
     const fetchFollowStatus = async () => {
       try {
           const response = await axios.get(`http://localhost:8082/api/community/status/${encodeURIComponent(user.email)}`);
-          setIsFollowing(response.data.Metal); // assuming the response data structure matches your expectations
+          setIsFollowing(response.data.metal); // assuming the response data structure matches your expectations
       } catch (err) {
           console.error("Error fetching follow status:", err);
       }

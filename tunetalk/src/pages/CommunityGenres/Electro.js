@@ -49,7 +49,7 @@ function Electro() {
     const fetchFollowStatus = async () => {
       try {
           const response = await axios.get(`http://localhost:8082/api/community/status/${encodeURIComponent(user.email)}`);
-          setIsFollowing(response.data.Electro); // assuming the response data structure matches your expectations
+          setIsFollowing(response.data.electro); // assuming the response data structure matches your expectations
       } catch (err) {
           console.error("Error fetching follow status:", err);
       }
