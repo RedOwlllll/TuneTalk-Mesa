@@ -4,8 +4,22 @@ import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own 
 import "../css/Post.css";
 import StarRating from "./StarRating";
 
+export const handleCommentSubmit = (e, username, newComment, setComments, setNewComment) => {
+
+    console.log("testers for the comment section")
+    e.preventDefault(); 
+
+    const commentData = {
+        text: newComment,
+        user: username
+    };
+
+};
+
+
 function Post() {
 
+<<<<<<< HEAD
     //variables and hooks
     const [recentTrack, setRecentTrack] = useState(null);
     const [comments, setComments] = useState([]);
@@ -21,6 +35,17 @@ function Post() {
     const [editTexts, setEditTexts] = useState({});
     const [editingReplyId, setEditingReplyId] = useState(null);
     const [editReplyText, setEditReplyText] = useState({});
+=======
+    const [recentTrack, setRecentTrack] = useState(null);
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState('');
+    
+    const token = localStorage.getItem("access_token");
+    const username = localStorage.getItem("userlogin");
+
+    console.log(username);
+  
+>>>>>>> Posting-Feature-Clone
 
     const postId = localStorage.getItem("postId");
     //function to retrieve users recerntly played song 
@@ -38,7 +63,29 @@ function Post() {
                 'Authorization': `Bearer ${token}` // set the autherization header with the token
             }
         }).then(response => {
+<<<<<<< HEAD
             const track = response.data.items[0].track; //extract track info from the response
+=======
+                const track = response.data.items[0].track; //extract track info from the response
+    
+                //update the recentTrack state with the track details
+                setRecentTrack({
+                    artist: track.artists.map(artist => artist.name).join(', '), //join multiple artists the a comma
+                    title: track.name, //title 
+                    albumCover: track.album.images[0].url // URL of album image
+                });
+ 
+                //prepare song to be saved
+                const songData = {
+                    title: track.name,
+                    artist: track.artists.map(artist => artist.name).join(', '),
+                    albumCover: track.album.images[0].url,                    
+                    comments: [],
+                    rating: StarRating,
+                }
+                
+                saveTrackToDatabase(username, songData);
+>>>>>>> Posting-Feature-Clone
 
                 //axios.get('http://localhost:8082/api/caption/${track.id}')
             //update the recentTrack state with the track details
@@ -80,6 +127,7 @@ function Post() {
             });
     };
 
+<<<<<<< HEAD
     //sets the new comments
     const handleCommentSubmit = (e) => {
         e.preventDefault();
@@ -95,6 +143,22 @@ function Post() {
         setComments([...comments, newCommentToAdd]);
         setNewComment('');
     };
+=======
+    const saveTrackToDatabase = (username, songData) => {
+        console.log(songData);
+        axios.post(`http://localhost:8082/api/user/${username}/addPost`, songData )
+          .then(response => {
+            console.log('Song post saved:', response.data);
+          })
+          .catch(error => {
+            console.error('Error saving the song post:', error.response.data);
+          });
+        };
+
+    
+
+       
+>>>>>>> Posting-Feature-Clone
 
     //sets the new replies
     const handleReplySubmit = async (commentId, e) => {
@@ -237,6 +301,13 @@ function Post() {
 
     return (
         <div className="home-page">
+<<<<<<< HEAD
+=======
+            {/* {!token ?
+                <a href={getLoginURL()}>Login to Spotify</a>
+                : <button onClick={logout}>Logout</button>} */}
+
+>>>>>>> Posting-Feature-Clone
             <div className="button-container">
                 {!posted && <button onClick={getRecentTrack}>Show Last Played Song</button>}
             </div>
@@ -324,10 +395,13 @@ function Post() {
                     </div>
                 </div>
             )}
-        </div>
+        </div> 
     );
 
 
 }
 
+
+
 export default Post;
+
