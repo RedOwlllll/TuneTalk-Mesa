@@ -37,7 +37,7 @@ export const App = () => {
             <Route path="/account/register" element={<Register />} />
             <Route path="/account/spotify" element={<SpotifyLogin />} />
             {/* Protected routes */}
-            <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            
             <Route path="/feed" element={<ProtectedRoute><Feed/></ProtectedRoute>} />
             <Route path="/friends" element={<ProtectedRoute><Friends /></ProtectedRoute>} />
             <Route path="/community" element={<ProtectedRoute><Community /></ProtectedRoute>} />

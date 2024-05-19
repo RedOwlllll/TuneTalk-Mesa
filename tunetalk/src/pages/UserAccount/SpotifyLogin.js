@@ -145,7 +145,7 @@ export const SpotifyLogin = () => {
                         <p><b>Username:</b> {userInfo.username}</p>
                         <p><b>Email:</b> {userInfo.email}</p>
                         <br/><br/><br/>
-                        <button type="submit" onClick={() => navigate('/home')}>Go to your Home Page!</button>
+                        <button type="submit" onClick={() => navigate('/feed')}>Go to your Home Page!</button>
                     </div>
                 </div>
                 </>
