@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaCheck, FaPlus } from 'react-icons/fa';
+import { FaCheck, FaPlus } from 'react-icons/fa'; // FontAwesome icons
 import '../../css/Community.css';
 import { useUser } from "../../authentication/UserState";
 import axios from "axios";
@@ -11,9 +11,8 @@ function Pop() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [accessToken, setAccessToken] = useState('');
   const [popPlaylists, setPopPlaylists] = useState([]);
+  const [featuredTrack, setFeaturedTrack] = useState(null);  // State to store the featured track
   const [user] = useUser(); 
-
-  const [randomTrack, setRandomTrack] = useState(null);
 
   const handleFollowClick = async () => {
     if (!isFollowing){
@@ -41,10 +40,10 @@ function Pop() {
 
   const fetchFollowStatus = async () => {
     try {
-        const response = await axios.get(`http://localhost:8082/api/community/status/${encodeURIComponent(user.email)}`);
-        setIsFollowing(response.data.pop);
+      const response = await axios.get(`http://localhost:8082/api/community/status/${encodeURIComponent(user.email)}`);
+      setIsFollowing(response.data.pop);
     } catch (err) {
-        console.error("Error fetching follow status:", err);
+      console.error("Error fetching follow status:", err);
     }
   };
 
@@ -79,83 +78,90 @@ function Pop() {
     // Function to fetch Pop playlists using the access token
     const fetchPopMusic = async () => {
       if (!accessToken) return;
-    
-      const playlistResponse = await fetch('https://api.spotify.com/v1/browse/categories/pop/playlists', {
+
+      const response = await fetch('https://api.spotify.com/v1/browse/categories/pop/playlists', {
         headers: { 'Authorization': `Bearer ${accessToken}` },
       });
-    
-      if (!playlistResponse.ok) {
-        throw new Error(`HTTP error! status: ${playlistResponse.status}`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    
-      const data = await playlistResponse.json();
-      if (!data.playlists || !data.playlists.items.length) {
-        console.log("No playlists found or unexpected data structure:", data);
-        return; // Early return if no playlists are found or data structure is not as expected
-      }
-      const playlistId = data.playlists.items[0].id;
-    
-      const trackResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-        headers: { 'Authorization': `Bearer ${accessToken}` },
-      });
-    
-      if (!trackResponse.ok) {
-        throw new Error(`HTTP error! status: ${trackResponse.status}`);
-      }
-    
+
+      const data = await response.json();
       setPopPlaylists(data.playlists.items);
-      const trackData = await trackResponse.json();
-      setRandomTrack(trackData.tracks.items);
     };
-  
+
     fetchPopMusic().catch(error => {
-      console.error('Fetching pop playlists & track failed:', error);
+      console.error('Fetching pop playlists failed:', error);
     });
   }, [accessToken]);
 
-  
+  useEffect(() => {
+    const fetchFeaturedTrack = async () => {
+      if (!accessToken || popPlaylists.length === 0) return;
+
+      // Optionally, choose a playlist more strategically here, e.g., the one with the most followers
+      const chosenPlaylist = popPlaylists[0]; // This is a simplification
+
+      const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${chosenPlaylist.id}/tracks`, {
+        headers: { 'Authorization': `Bearer ${accessToken}` },
+      });
+
+      if (!tracksResponse.ok) {
+        throw new Error(`HTTP error! status: ${tracksResponse.status}`);
+      }
+
+      const tracksData = await tracksResponse.json();
+      if (tracksData.items.length > 0) {
+        const featuredTrack = tracksData.items[0].track; // Simplistically choosing the first track
+        setFeaturedTrack(featuredTrack);
+      }
+    };
+
+    fetchFeaturedTrack().catch(error => {
+      console.error('Fetching featured track failed:', error);
+    });
+  }, [accessToken, popPlaylists]);
 
   useEffect(() => {
     if (user.email) {
       fetchInitialFollow();
       fetchFollowStatus();
     }
-  }, [user.email]);
-
-  // displaying song of the day
+  // eslint-disable-next-line
+  }, [user.email]); // This effect depends on user.email
 
   return (
-      <div className="container-page">
-        <h1>Pop Music</h1>
-        <button onClick={handleFollowClick} className="follow-button">
-          {isFollowing ? <><FaCheck /> Following</> : <><FaPlus /> Follow</>}
-        </button>
-        {randomTrack && (
-          <div className="featured-track-container">
-            <h2>Todays Featured Track:</h2>
+    <div className="container-page">
+      <h1>Pop Music</h1>
+      <button onClick={handleFollowClick} className="follow-button">
+        {isFollowing ? <><FaCheck /> Following</> : <><FaPlus /> Follow</>}
+      </button>
+      <div className="featured-track-container">
+        <h2>Todays Featured Track</h2>
+          {featuredTrack && (
             <div className="track-card">
-              <img src={randomTrack.album.images[0].url} alt={randomTrack.name} className="track-image" />
+              <img src={featuredTrack.album.images[0].url} alt={featuredTrack.name} className="track-image" />
               <div className="track-info">
-                <p className="track-title">{randomTrack.name}</p>
-                <p className="track-artist">by {randomTrack.artists.map(artist => artist.name).join(', ')}</p>
-              </div>
-            </div> 
-          </div>
-        )}
-        
-        <div className="playlists-container">
-          {popPlaylists.map((playlist) => (
-            <div key={playlist.id} className="playlist-card">
-              <img src={playlist.images[0].url} alt={playlist.name} className="playlist-image" />
-              <div className="playlist-info">
-                <h3>{playlist.name}</h3>
-                <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="playlist-link">Listen on Spotify</a>
+                <div className="track-title">{featuredTrack.name}</div>
+                <div className="track-artist">{featuredTrack.artists.map(artist => artist.name).join(', ')}</div>
               </div>
             </div>
-          ))}
-        </div>
+          )}
       </div>
-    );
+      <div className="playlists-container">
+          {popPlaylists.map((playlist) => (
+            <div key={playlist.id} className="playlist-card">
+                <img src={playlist.images[0].url} alt={playlist.name} className="playlist-image" />
+                <div className="playlist-info">
+                    <h3>{playlist.name}</h3>
+                    <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="playlist-link">Listen on Spotify</a>
+                </div>
+            </div>
+          ))}
+      </div>
+    </div>
+  );
 }
 
 export default Pop;

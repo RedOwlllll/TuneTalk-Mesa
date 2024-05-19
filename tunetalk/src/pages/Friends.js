@@ -64,8 +64,17 @@ export const Friends = () => {
     }, [user.email]);  // Dependency on user.email
 
     return (
-        <section className="friends-page">
+        <div className="friends-page">
             <h1>Friends</h1>
+            <section className="friends-list">
+                <h2>My Friends</h2>
+                {friends.map((friend, index) => (
+                    <div key={index} className="friend">
+                        <p>{friend.requesterEmail === user.email ? friend.recipientEmail : friend.requesterEmail}</p>
+                        <button onClick={() => removeFriend(friend.requesterEmail === user.email ? friend.recipientEmail : friend.requesterEmail)}>Remove Friend</button>
+                    </div>
+                ))}
+            </section>
             <div className="add-friend">
                 <input
                     type="text"
@@ -75,9 +84,6 @@ export const Friends = () => {
                 />
                 <button onClick={() => sendFriendRequest(email)}>Add Friend</button>
             </div>
-
-            {error && <div className="error">{error}</div>}
-
             <section className="requests-list">
                 <h2>Pending Friend Requests</h2>
                 {pendingRequests.map((request, index) => (
@@ -88,16 +94,6 @@ export const Friends = () => {
                     </div>
                 ))}
             </section>
-
-            <section className="friends-list">
-                <h2>My Friends</h2>
-                {friends.map((friend, index) => (
-                    <div key={index} className="friend">
-                        <p>{friend.requesterEmail === user.email ? friend.recipientEmail : friend.requesterEmail}</p>
-                        <button onClick={() => removeFriend(friend.requesterEmail === user.email ? friend.recipientEmail : friend.requesterEmail)}>Remove Friend</button>
-                    </div>
-                ))}
-            </section>
-        </section>
+        </div>
     );
 };
