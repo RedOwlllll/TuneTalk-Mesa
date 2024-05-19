@@ -13,11 +13,11 @@ function Pop() {
   const [popPlaylists, setPopPlaylists] = useState([]);
   const [featuredTrack, setFeaturedTrack] = useState(null);  // State to store the featured track
   const [user] = useUser(); 
-
+  
   const handleFollowClick = async () => {
     if (!isFollowing){
       try {
-          await axios.post(`http://localhost:8082/api/community/follow/${encodeURIComponent(user.email)}`, {
+          await axios.post(`http://localhost:8082/api/community/follow/${encodeURIComponent(user.username)}`, {
             community: 'pop',
             followStatus: true
           });
@@ -27,7 +27,7 @@ function Pop() {
       }
     } else {
       try {
-        await axios.post(`http://localhost:8082/api/community/un-follow/${encodeURIComponent(user.email)}`, {
+        await axios.post(`http://localhost:8082/api/community/un-follow/${encodeURIComponent(user.username)}`, {
           community: 'pop',
           followStatus: false
         });
@@ -40,7 +40,7 @@ function Pop() {
 
   const fetchFollowStatus = async () => {
     try {
-      const response = await axios.get(`http://localhost:8082/api/community/status/${encodeURIComponent(user.email)}`);
+      const response = await axios.get(`http://localhost:8082/api/community/status/${encodeURIComponent(user.username)}`);
       setIsFollowing(response.data.pop);
     } catch (err) {
       console.error("Error fetching follow status:", err);
@@ -49,7 +49,7 @@ function Pop() {
 
   const fetchInitialFollow = async () => {
     try {
-        await axios.post(`http://localhost:8082/api/community/initiate-follows/${encodeURIComponent(user.email)}`);
+        await axios.post(`http://localhost:8082/api/community/initiate-follows/${encodeURIComponent(user.username)}`);
     } catch (err) {
         console.error("Error initializing follow record:", err);
     }
@@ -100,8 +100,7 @@ function Pop() {
     const fetchFeaturedTrack = async () => {
       if (!accessToken || popPlaylists.length === 0) return;
 
-      // Optionally, choose a playlist more strategically here, e.g., the one with the most followers
-      const chosenPlaylist = popPlaylists[0]; // This is a simplification
+      const chosenPlaylist = popPlaylists[0];
 
       const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${chosenPlaylist.id}/tracks`, {
         headers: { 'Authorization': `Bearer ${accessToken}` },
@@ -124,12 +123,11 @@ function Pop() {
   }, [accessToken, popPlaylists]);
 
   useEffect(() => {
-    if (user.email) {
+    if (user.username) {
       fetchInitialFollow();
       fetchFollowStatus();
     }
-  // eslint-disable-next-line
-  }, [user.email]); // This effect depends on user.email
+  }, [user.username]); // This effect depends on user.username
 
   return (
     <div className="container-page">
