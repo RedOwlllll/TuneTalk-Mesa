@@ -97,24 +97,24 @@ function Rock() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-            const data = await response.json();
-            setRockPlaylists(data.playlists.items);
+        const data = await response.json();
+        setRockPlaylists(data.playlists.items);
 
-            if (data.playlists.items.length > 0) {
-              const playlistId = data.playlists.items[0].id;
-              const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-                  headers: { 'Authorization': `Bearer ${accessToken}` },
-              });
-              const tracksData = await tracksResponse.json();
-              if (tracksData.items.length > 0) {
-                  const randomIndex = Math.floor(Math.random() * tracksData.items.length);
-                  setRandomTrack(tracksData.items[randomIndex].track);
-              }
+        if (data.playlists.items.length > 0) {
+          const playlistId = data.playlists.items[0].id;
+          const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+              headers: { 'Authorization': `Bearer ${accessToken}` },
+          });
+          const tracksData = await tracksResponse.json();
+          if (tracksData.items.length > 0) {
+              const randomIndex = Math.floor(Math.random() * tracksData.items.length);
+              setRandomTrack(tracksData.items[randomIndex].track);
           }
-        };
+        }
+      };
 
       fetchRockMusic().catch(error => {
-        console.error('Fetching Rock playlists failed:', error);
+        console.error('Fetching Rock playlists & track failed:', error);
       });
     }, [accessToken]);
 
