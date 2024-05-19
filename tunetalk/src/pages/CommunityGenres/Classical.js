@@ -3,7 +3,6 @@ import { FaCheck, FaPlus } from 'react-icons/fa'; // FontAwesome icons
 import '../../css/Community.css';
 import { useUser } from "../../authentication/UserState";
 import axios from "axios";
-import StarRating from '../StarRating';
 
 const CLIENT_ID = "a8c9857ace8449f290ed14c54c878e1f";
 const CLIENT_SECRET = "c747a0da53124c4ba8bc12a0e88d859b";
@@ -11,22 +10,17 @@ const CLIENT_SECRET = "c747a0da53124c4ba8bc12a0e88d859b";
 function Classical() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [accessToken, setAccessToken] = useState('');
-  const [ClassicalPlaylists, setClassicalPlaylists] = useState([]);
-  const [randomTrack, setRandomTrack] = useState(null);
-  const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState('');
-  const [replyTexts, setReplyTexts] = useState({});
-  const username = localStorage.getItem("userlogin");
-  const [editStatus, setEditStatus] = useState({});
-  const [editTexts, setEditTexts] = useState({});
-  const [editingReplyId, setEditingReplyId] = useState(null);
-  const [editReplyText, setEditReplyText] = useState({});
+  const [classicalPlaylists, setClassicalPlaylists] = useState([]);
+  const [featuredTrack, setFeaturedTrack] = useState(null);  // State to store the featured track
   const [user] = useUser(); 
+  const [followerCount, setFollowerCount] = useState(0);
+  const [followers, setFollowers] = useState([]);
+  const [showFollowers, setShowFollowers] = useState(false);
 
   const handleFollowClick = async () => {
     if (!isFollowing){
       try {
-          await axios.post(`http://localhost:8082/api/community/follow/${encodeURIComponent(user.email)}`, {
+          await axios.post(`http://localhost:8082/api/community/follow/${encodeURIComponent(user.username)}`, {
             community: 'classical',
             followStatus: true
           });
@@ -36,7 +30,7 @@ function Classical() {
       }
     } else {
       try {
-        await axios.post(`http://localhost:8082/api/community/un-follow/${encodeURIComponent(user.email)}`, {
+        await axios.post(`http://localhost:8082/api/community/un-follow/${encodeURIComponent(user.username)}`, {
           community: 'classical',
           followStatus: false
         });
@@ -49,16 +43,16 @@ function Classical() {
 
   const fetchFollowStatus = async () => {
     try {
-        const response = await axios.get(`http://localhost:8082/api/community/status/${encodeURIComponent(user.email)}`);
-        setIsFollowing(response.data.classical); // assuming the response data structure matches your expectations
+      const response = await axios.get(`http://localhost:8082/api/community/status/${encodeURIComponent(user.username)}`);
+      setIsFollowing(response.data.classical);
     } catch (err) {
-        console.error("Error fetching follow status:", err);
+      console.error("Error fetching follow status:", err);
     }
   };
 
   const fetchInitialFollow = async () => {
     try {
-        await axios.post(`http://localhost:8082/api/community/initiate-follows/${encodeURIComponent(user.email)}`);
+        await axios.post(`http://localhost:8082/api/community/initiate-follows/${encodeURIComponent(user.username)}`);
     } catch (err) {
         console.error("Error initializing follow record:", err);
     }
@@ -88,7 +82,7 @@ function Classical() {
     const fetchClassicalMusic = async () => {
       if (!accessToken) return;
 
-      const response = await fetch('https://api.spotify.com/v1/browse/categories/Classical/playlists', {
+      const response = await fetch('https://api.spotify.com/v1/browse/categories/classical/playlists', {
         headers: { 'Authorization': `Bearer ${accessToken}` },
       });
 
@@ -98,124 +92,84 @@ function Classical() {
 
       const data = await response.json();
       setClassicalPlaylists(data.playlists.items);
-
-      if (data.playlists.items.length > 0) {
-        const playlistId = data.playlists.items[0].id;
-        const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-          headers: { 'Authorization': `Bearer ${accessToken}` },
-        });
-        const tracksData = await tracksResponse.json();
-        if (tracksData.items.length > 0) {
-          const randomIndex = Math.floor(Math.random() * tracksData.items.length);
-          setRandomTrack(tracksData.items[randomIndex].track);
-        }
-      }
     };
 
     fetchClassicalMusic().catch(error => {
-      console.error('Fetching Classical playlists failed:', error);
+      console.error('Fetching classical playlists failed:', error);
     });
-
-
-  }, [accessToken]); // This effect depends on the accessToken state
+  }, [accessToken]);
 
   useEffect(() => {
-    if (user.email) {
-      fetchInitialFollow();
-      fetchFollowStatus();
-    }
-  // eslint-disable-next-line
-  }, [user.email]); // This effect depends on user.email
+    const fetchFeaturedTrack = async () => {
+      if (!accessToken || classicalPlaylists.length === 0) return;
 
+      const chosenPlaylist = classicalPlaylists[0];
 
-  // ALL BLAKES CODE
+      const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${chosenPlaylist.id}/tracks`, {
+        headers: { 'Authorization': `Bearer ${accessToken}` },
+      });
 
-  //sets the new comments
-  const handleCommentSubmit = (e) => {
-    e.preventDefault();
+      if (!tracksResponse.ok) {
+        throw new Error(`HTTP error! status: ${tracksResponse.status}`);
+      }
 
-    const newCommentToAdd = {
-      id: comments.length + 1,
-      username: username,
-      body: newComment,
-      date: new Date(),
-      replies: []
+      const tracksData = await tracksResponse.json();
+      if (tracksData.items.length > 0) {
+        const featuredTrack = tracksData.items[0].track; // Simplistically choosing the first track
+        setFeaturedTrack(featuredTrack);
+      }
     };
 
-    setComments([...comments, newCommentToAdd]);
-    setNewComment('');
-  };
-
-  //sets the new replies
-  const handleReplySubmit = async (commentId, e) => {
-    e.preventDefault();
-    addReplyToComment(commentId, replyTexts[commentId]);
-    setReplyTexts({ ...replyTexts, [commentId]: '' });
-  };
-
-  //adds the reply to the parent comment
-  const addReplyToComment = (commentId, replyText) => {
-    const updatedComments = comments.map(comment => {
-      if (comment.id === commentId) {
-        const newReply = {
-          id: comment.replies.length + 1,
-          username: username,
-          body: replyText,
-          date: new Date()
-        };
-        return { ...comment, replies: [...comment.replies, newReply] };
-      }
-      return comment;
+    fetchFeaturedTrack().catch(error => {
+      console.error('Fetching featured track failed:', error);
     });
-    setComments(updatedComments);
-  };
+  }, [accessToken, classicalPlaylists]);
 
+  useEffect(() => {
+    if (user.username) {
+    fetchInitialFollow();
+    fetchFollowStatus();
+    }
+  }, [user.username]); // This effect depends on user.username
 
-  // Start editing a comment
-  const handleEdit = (id) => {
-    setEditStatus({ ...editStatus, [id]: true });
-    setEditTexts({ ...editTexts, [id]: comments.find(comment => comment.id === id).body });
-  };
+  useEffect(() => {
+    const communityName = 'classical'; 
 
-  // Cancel editing
-  const handleCancel = (id) => {
-    setEditStatus({ ...editStatus, [id]: false });
-  };
-
-  // Save the edited comment
-  const handleSave = (id) => {
-    const updatedComments = comments.map(comment => {
-      if (comment.id === id) {
-        return { ...comment, body: editTexts[id] };
+    const fetchFollowerCount = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8082/api/community/${communityName}/followers/count`);
+        setFollowerCount(response.data.count);
+      } catch (error) {
+        console.error("Error fetching follower count:", error);
       }
-      return comment;
-    });
-    setComments(updatedComments);
-    setEditStatus({ ...editStatus, [id]: false });
-  };
+    };
 
-  const startEditReply = (replyId, currentText) => {
-    setEditingReplyId(replyId);
-    setEditReplyText({ ...editReplyText, [replyId]: currentText });
-  };
-
-  const saveReplyChanges = (replyId) => {
-    const updatedComments = comments.map(comment => {
-      if (comment.id === replyId) {
-        const updatedReplies = comment.replies.map(reply => {
-          if (reply.id === replyId) {
-            return { ...reply, body: editReplyText[replyId] };
-          }
-          return reply;
-        });
-        return { ...comment, replies: updatedReplies };
+    const fetchFollowers = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8082/api/community/${communityName}/followers`);
+        setFollowers(response.data);
+      } catch (error) {
+        console.error("Error fetching followers:", error);
       }
-      return comment;
-    });
-    setComments(updatedComments);
-    setEditingReplyId(null);
-    setEditReplyText({});
-  };
+    };
+
+    fetchFollowerCount();
+    fetchFollowers();
+  }, []);
+
+  function FollowerListModal({ followers, onClose }) {
+    return (
+        <div className="follower-modal">
+            <h2>Followers</h2>
+            <ul>
+                {followers.map((follower, index) => (
+                    <li key={index}>{follower.username}</li>
+                ))}
+            </ul>
+            <button onClick={onClose}>Close</button>
+        </div>
+    );
+  }
 
   return (
     <div className="container-page">
@@ -223,99 +177,34 @@ function Classical() {
       <button onClick={handleFollowClick} className="follow-button">
         {isFollowing ? <><FaCheck /> Following</> : <><FaPlus /> Follow</>}
       </button>
-      {randomTrack && (
-        <div className="featured-track-container">
-          <h2>Todays Featured Track:</h2>
-          <div className="track-card">
-            <img src={randomTrack.album.images[0].url} alt={randomTrack.name} className="track-image" />
-            <div className="track-info">
-              <p className="track-title">{randomTrack.name}</p>
-              <p className="track-artist">by {randomTrack.artists.map(artist => artist.name).join(', ')}</p>
-            </div>
-          </div>
-          <div className="comments-container">
-            <StarRating onRating={(rate) => {
-                console.log("Rating:", rate);
-            }} />
-            {comments.map(comment => (
-              <div key={comment.id} className="comment-box">
-                {editStatus[comment.id] ? (
-                  <>
-                    <input
-                      value={editTexts[comment.id]}
-                      onChange={(e) => setEditTexts({ ...editTexts, [comment.id]: e.target.value })}
-                    />
-                    <button onClick={() => handleSave(comment.id)}>Save</button>
-                    <button onClick={() => handleCancel(comment.id)}>Cancel</button>
-                  </>
-                ) : (
-                  <>
-                    <div className="comment-header">
-                    
-                      <strong>{comment.username}</strong>
-                      <p>{comment.body}</p>
-                      <small>{new Date(comment.date).toLocaleString()}</small>
-                      <button className="comment-edit-button" onClick={() => handleEdit(comment.id)}>Edit</button>
-                    </div>
-                    {comment.replies && comment.replies.map(reply => (
-                      <div key={reply.id} className="reply-box">
-                        <div className="reply-content">
-                          <strong>{reply.username}</strong>
-                          {editingReplyId === reply.id ? (
-                            <input
-                              type="text"
-                              value={editReplyText[reply.id] || reply.body}
-                              onChange={(e) => setEditReplyText({ ...editReplyText, [reply.id]: e.target.value })}
-                            />
-                          ) : (
-                            <p>{reply.body}</p>
-                          )}
-                          <small>{new Date(reply.date).toLocaleString()}</small>
-                          <button className="comment-edit-button" onClick={() => startEditReply(reply.id, reply.body)}>Edit</button>
-                          {editingReplyId === reply.id && (
-                            <button onClick={() => saveReplyChanges(reply.id)}>Save</button>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                    <form onSubmit={(e) => handleReplySubmit(comment.id, e)}>
-                      <input
-                        type="text"
-                        placeholder="Reply..."
-                        value={replyTexts[comment.id] || ''}
-                        onChange={(e) => setReplyTexts({ ...replyTexts, [comment.id]: e.target.value })}
-                      />
-                      <button type="submit">Reply</button>
-                    </form>
-                  </>
-                )}
+      <div className="follower-info">
+            <span className="follower-count" onClick={() => setShowFollowers(true)}>
+                {followerCount} followers
+            </span>
+      </div>
+      {showFollowers && <FollowerListModal followers={followers} onClose={() => setShowFollowers(false)} />}
+      <div className="featured-track-container">
+        <h2>Todays Featured Track</h2>
+          {featuredTrack && (
+            <div className="track-card">
+              <img src={featuredTrack.album.images[0].url} alt={featuredTrack.name} className="track-image" />
+              <div className="track-info">
+                <div className="track-title">{featuredTrack.name}</div>
+                <div className="track-artist">{featuredTrack.artists.map(artist => artist.name).join(', ')}</div>
               </div>
-            ))}
-
-          </div>
-          <form onSubmit={handleCommentSubmit}>
-            <input
-              type="text"
-              className="comment-input"
-              placeholder="Add a comment..."
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-            />
-            <button type="submit" className="submit-comment">Comment</button>
-          </form>
-        </div>
-
-      )}
-      <div className="playlists-container">
-        {ClassicalPlaylists.map((playlist) => (
-          <div key={playlist.id} className="playlist-card">
-            <img src={playlist.images[0].url} alt={playlist.name} className="playlist-image" />
-            <div className="playlist-info">
-              <h3>{playlist.name}</h3>
-              <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="playlist-link">Listen on Spotify</a>
             </div>
-          </div>
-        ))}
+          )}
+      </div>
+      <div className="playlists-container">
+          {classicalPlaylists.map((playlist) => (
+            <div key={playlist.id} className="playlist-card">
+                <img src={playlist.images[0].url} alt={playlist.name} className="playlist-image" />
+                <div className="playlist-info">
+                    <h3>{playlist.name}</h3>
+                    <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="playlist-link">Listen on Spotify</a>
+                </div>
+            </div>
+          ))}
       </div>
     </div>
   );

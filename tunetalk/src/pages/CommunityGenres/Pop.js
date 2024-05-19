@@ -133,19 +133,20 @@ function Pop() {
   }, [user.username]); // This effect depends on user.username
 
   useEffect(() => {
-    
+    const communityName = 'pop'; 
+
     const fetchFollowerCount = async () => {
       try {
-        const response = await axios.get('http://localhost:8082/api/community/followers/count');
+        const response = await axios.get(`http://localhost:8082/api/community/${communityName}/followers/count`);
         setFollowerCount(response.data.count);
       } catch (error) {
         console.error("Error fetching follower count:", error);
       }
     };
+
     const fetchFollowers = async () => {
       try {
-        const response = await axios.get('http://localhost:8082/api/community/followers');
-        console.log("test22");
+        const response = await axios.get(`http://localhost:8082/api/community/${communityName}/followers`);
         setFollowers(response.data);
       } catch (error) {
         console.error("Error fetching followers:", error);
