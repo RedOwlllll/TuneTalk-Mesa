@@ -1,16 +1,36 @@
 const express = require('express');
 const router = express.Router();
 const Friend = require('../../models/Friend');
-const User = require('../../models/UserDetails'); // Assuming you have a User model
+const User = require('../../models/UserDetails');
 
 // Send Friend Request
 router.post('/request', async (req, res) => {
-    const { requesterEmail, recipientEmail } = req.body;
+    const { requesterUsername, recipientUsername } = req.body;
+
+    // Check if a request already exists between these two users
+    const existingRequest = await Friend.findOne({
+        $or: [
+            { requesterUsername: requesterUsername, recipientUsername: recipientUsername },
+            { requesterUsername: recipientUsername, recipientUsername: requesterUsername }
+        ],
+        status: { $in: ['pending', 'accepted'] } // Check for pending or accepted requests
+    });
+
+    if (existingRequest) {
+        return res.status(409).send('A request already exists or has already been accepted between these users.');
+    }
+
+    if (recipient.email === requesterEmail) {
+        return res.status(400).send("You cannot add yourself as a friend. Go get a life :)");
+    }
+
+    // If no existing request, create a new friend request
     const friend = new Friend({
-        requesterEmail,
-        recipientEmail,
+        requesterUsername,
+        recipientUsername,
         status: 'pending'
     });
+
     await friend.save();
     res.status(201).send('Friend request sent');
 });
@@ -27,13 +47,13 @@ router.put('/response', async (req, res) => {
 });
 
 // List Friends
-router.get('/list/:email', async (req, res) => {
+router.get('/list/:username', async (req, res) => {
     try {
-        const { email } = req.params;
+        const { username } = req.params;
         const friends = await Friend.find({
             $or: [
-                { requesterEmail: email, status: 'accepted' },
-                { recipientEmail: email, status: 'accepted' }
+                { requesterUsername: username, status: 'accepted' },
+                { recipientUsername: username, status: 'accepted' }
             ]
         });
         res.json(friends);
@@ -43,11 +63,11 @@ router.get('/list/:email', async (req, res) => {
 });
 
 // New route to list pending friend requests
-router.get('/requests/:email', async (req, res) => {
+router.get('/requests/:username', async (req, res) => {
     try {
-        const { email } = req.params;
+        const { username } = req.params;
         const pendingRequests = await Friend.find({
-            recipientEmail: email,
+            recipientUsername: username,
             status: 'pending'
         });
         res.json(pendingRequests);
@@ -62,11 +82,25 @@ router.delete('/remove', async (req, res) => {
     try {
         await Friend.findOneAndDelete({
             $or: [
-                { requesterEmail: userId, recipientEmail: friendId },
-                { requesterEmail: friendId, recipientEmail: userId }
+                { requesterUsername: userId, recipientUsername: friendId },
+                { requesterUsername: friendId, recipientUsername: userId }
             ]
         });
         res.status(200).send("Friendship removed");
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Search for users
+router.get('/search/:username', async (req, res) => {
+    try {
+        const { username } = req.params;
+        // Regex for case-insensitive partial match
+        const users = await User.find({
+            username: { $regex: username, $options: "i" }
+        });
+        res.json(users);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
