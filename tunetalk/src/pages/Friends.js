@@ -4,31 +4,43 @@ import { useUser } from "../authentication/UserState";
 import '../css/Friends.css';
 
 export const Friends = () => {
-    const [email, setEmail] = useState("");
     const [friends, setFriends] = useState([]);
     const [pendingRequests, setPendingRequests] = useState([]);
     const [error, setError] = useState("");
-    const [user, setUser] = useUser();  // Get user from context
+    const [user] = useUser();  // Get user from context
+    const [searchTerm, setSearchTerm] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
 
     // Function to handle sending friend requests
-    const sendFriendRequest = async (recipientEmail) => {
+    const sendFriendRequest = async (recipientUsername) => {
+        if (recipientUsername === user.username || recipientUsername.toLowerCase() === user.username.toLowerCase()) {
+            alert("You cannot add yourself as a friend. Go get a life :)");  // Set an error state to display a message
+            return;  // Stop further execution
+        }
+
         try {
             const response = await axios.post('http://localhost:8082/api/friends/request', {
-                requesterEmail: user.email,  // Use email from context
-                recipientEmail
+                requesterUsername: user.username,  // Use Username from context
+                recipientUsername
             });
-            alert('Friend request sent!');
+            if (response.status === 201) {
+                alert('Friend request sent!');
+            }
         } catch (err) {
-            setError(err.message);
+            if (err.response && err.response.status === 409) {
+                alert('You already made a request or you are already friend with this user');
+            } else {
+                setError(err.message);
+            }
         }
     };
 
     const fetchFriends = async () => {
         try {
-            const friendsResponse = await axios.get(`http://localhost:8082/api/friends/list/${encodeURIComponent(user.email)}`);
+            const friendsResponse = await axios.get(`http://localhost:8082/api/friends/list/${encodeURIComponent(user.username)}`);
             setFriends(friendsResponse.data);
 
-            const requestsResponse = await axios.get(`http://localhost:8082/api/friends/requests/${encodeURIComponent(user.email)}`);
+            const requestsResponse = await axios.get(`http://localhost:8082/api/friends/requests/${encodeURIComponent(user.username)}`);
             setPendingRequests(requestsResponse.data);
         } catch (err) {
             setError(err.message);
@@ -44,12 +56,12 @@ export const Friends = () => {
         }
     };
 
-    const removeFriend = async (friendEmail) => {
+    const removeFriend = async (friendUsername) => {
         try {
             await axios.delete('http://localhost:8082/api/friends/remove', {
                 data: {
-                    userId: user.email,
-                    friendId: friendEmail
+                    userId: user.username,
+                    friendId: friendUsername
                 }
             });
             fetchFriends(); // Refresh the friends list
@@ -59,9 +71,30 @@ export const Friends = () => {
         }
     };
 
+    const fetchSearchResults = async () => {
+        if (searchTerm.trim() !== "") {
+            try {
+                const response = await axios.get(`http://localhost:8082/api/friends/search/${encodeURIComponent(searchTerm)}`);
+                setSearchResults(response.data);
+            } catch (err) {
+                setError(err.message);
+            }
+        } else {
+            setSearchResults([]); // Clear results if search term is empty
+        }
+    };
+
     useEffect(() => {
         fetchFriends();
-    }, [user.email]);  // Dependency on user.email
+    }, [user.username]);  // Dependency on user.username
+
+    useEffect(() => {
+        const delayDebounce = setTimeout(() => {
+            fetchSearchResults();
+        }, 300); // Delay for 300ms to reduce excessive API calls
+    
+        return () => clearTimeout(delayDebounce);
+    }, [searchTerm]);
 
     return (
         <div className="friends-page">
@@ -70,25 +103,32 @@ export const Friends = () => {
                 <h2>My Friends</h2>
                 {friends.map((friend, index) => (
                     <div key={index} className="friend">
-                        <p>{friend.requesterEmail === user.email ? friend.recipientEmail : friend.requesterEmail}</p>
-                        <button onClick={() => removeFriend(friend.requesterEmail === user.email ? friend.recipientEmail : friend.requesterEmail)}>Remove Friend</button>
+                        <p>{friend.requesterUsername === user.username ? friend.recipientUsername : friend.requesterUsername}</p>
+                        <button onClick={() => removeFriend(friend.requesterUsername === user.username ? friend.recipientUsername : friend.requesterUsername)}>Remove Friend</button>
                     </div>
                 ))}
             </section>
             <div className="add-friend">
                 <input
-                    type="text"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter friend's email"
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search for friends"
                 />
-                <button onClick={() => sendFriendRequest(email)}>Add Friend</button>
+                <div>
+                    {searchResults.map((user, index) => (
+                    <div key={index} className="search-result">
+                        <p>{user.username}</p>
+                        <button onClick={() => sendFriendRequest(user.username)}>Add Friend</button>
+                    </div>
+                    ))}
+                </div>              
             </div>
             <section className="requests-list">
                 <h2>Pending Friend Requests</h2>
                 {pendingRequests.map((request, index) => (
                     <div key={index} className="friend-request">
-                        <p>{request.requesterEmail}</p>
+                        <p>{request.requesterUsername}</p>
                         <button onClick={() => handleResponse(request._id, 'accepted')}>Accept</button>
                         <button onClick={() => handleResponse(request._id, 'declined')}>Decline</button>
                     </div>

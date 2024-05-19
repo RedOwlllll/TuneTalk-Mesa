@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const FriendSchema = new mongoose.Schema({
-    requesterEmail: { type: String, ref: 'User', required: true },
-    recipientEmail: { type: String, ref: 'User', required: true },
+    requesterUsername: { type: String, ref: 'User', required: true },
+    recipientUsername: { type: String, ref: 'User', required: true },
     status: {
         type: String,
         enums: ['pending', 'accepted', 'declined', 'blocked'],
