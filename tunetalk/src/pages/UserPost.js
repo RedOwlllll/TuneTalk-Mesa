@@ -27,6 +27,8 @@ function UserPost() {
     const [caption, setCaption] = useState('')
     const [error, setError] = useState(null)
     const [imageData, setImageData] = useState('');
+    const [buttonActive, setButtonActive] = useState(false);
+
 
 
     const [selectedRating, setSelectedRating] = useState(0); // State variable to store the selected rating
@@ -36,7 +38,23 @@ function UserPost() {
         setSelectedRating(rate);
     };
 
-   
+    const checkButtonAvailability = async () => {
+        try {
+            const response = await axios.get('/api/check-availability');
+            setButtonActive(response.data.active);
+        } catch (error) {
+            console.error('Error checking button availability:', error);
+            setButtonActive(false); // Ensure button is disabled on error
+        }
+    };
+    
+    // useEffect to initiate the check on component mount and set an interval
+    useEffect(() => {
+        checkButtonAvailability();
+        const interval = setInterval(checkButtonAvailability, 60000); // Check every minute
+        return () => clearInterval(interval);
+    }, []);
+    
 
     const token = localStorage.getItem("access_token");
     const username = localStorage.getItem("userlogin");
@@ -249,7 +267,8 @@ function UserPost() {
 
             <div className="button-container">
                 <div className="button-box">
-                    <button onClick={getRecentTrack}>POST NOW!</button>
+                    <button onClick={getRecentTrack } disabled={!buttonActive}>POST NOW!</button>
+                    {!buttonActive && <p className="info-text">Button not available right now.</p>}
                 </div>
             </div>
 
@@ -274,7 +293,7 @@ function UserPost() {
                             </div>
                         ))}
                         </div>
-                        {/* Comment form */}
+                        {/* Caption form */}
                         <form onSubmit={handleSubmission}>
                             <input
                                 type="text"

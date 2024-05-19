@@ -11,11 +11,15 @@ const friendRouter = require('./routes/api/friendRoutes');
 const followRouter = require('./routes/api/followRoutes')
 const addPost = require("./routes/routes")
 
+const { initButtonAvailability } = require("./controllers/buttonCheck");
+
+
 //const commentRoutes = require('./routes/commentRoutes');
 
 // routes / api
 //const registerRouter = require("./routes/register");
 
+initButtonAvailability(app);
 
 
 const postRoutes = require('./routes/posts')
@@ -48,8 +52,10 @@ app.use('/api/posts', postRoutes);
 app.use("/", addPost);
 
 
+
 // print server is running when starting server - nodemon app
 app.listen(8082, () => {
     console.log("Server is running!");
     
 });
+
