@@ -136,7 +136,7 @@ function Pop() {
     
     const fetchFollowerCount = async () => {
       try {
-        const response = await axios.get('http://localhost:8082/api/community/${community}/followers/count');
+        const response = await axios.get('http://localhost:8082/api/community/followers/count');
         setFollowerCount(response.data.count);
       } catch (error) {
         console.error("Error fetching follower count:", error);

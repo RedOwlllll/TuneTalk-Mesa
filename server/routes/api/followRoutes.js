@@ -81,14 +81,13 @@ router.post('/un-follow/:username', async (req, res) => {
 });
 
 // Endpoint to get follower count
-router.get('/community/:communityName/followers/count', async (req, res) => {
-    const communityName = req.params.communityName;
+router.get('/community/followers/count', async (req, res) => {
     try {
-        const count = await UserCommunity.countDocuments({ [`follows.${communityName}`]: true });
+        const count = await UserCommunity.countDocuments({"follows.pop": true});
         res.json({ count });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error retrieving follower count for ' + communityName);
+        res.status(500).send('Error retrieving follower count');
     }
 });
 
@@ -99,7 +98,7 @@ router.get('/community/followers', async (req, res) => {
         res.json(followers);
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error retrieving followers for ' + communityName);
+        res.status(500).send('Error retrieving followers');
     }
 });
 
