@@ -56,6 +56,7 @@ export const Navbar = () => {
                     // First displays menu and login navlinks for when user is not logged in / authenticated
                     <>
                         <li><NavLink to="/menu">Menu</NavLink></li>
+                        
                         <li>
                             <div className="account-dropdown">
                                 <button className="account-button" onClick={toggleDropdown}>
@@ -73,7 +74,8 @@ export const Navbar = () => {
                 ) : (
                     // Otherwise, if user is logged in, the navlinks below will appear instead. 
                     <>
-                        <li><NavLink to="/home">Home</NavLink></li>
+                        
+                        <li><NavLink to="/feed">Feed</NavLink></li>
                         <li><NavLink to="/friends">Friends</NavLink></li>
                         <li><NavLink to="/community">Community</NavLink></li>
                         {user.isAuthenticated && (
