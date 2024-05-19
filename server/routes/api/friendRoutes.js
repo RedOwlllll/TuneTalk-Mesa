@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Friend = require('../../models/Friend');
-const User = require('../../models/UserDetails'); // Assuming you have a User model
+const User = require('../../models/UserDetails');
 
 // Send Friend Request
 router.post('/request', async (req, res) => {

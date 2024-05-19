@@ -13,7 +13,10 @@ function Pop() {
   const [popPlaylists, setPopPlaylists] = useState([]);
   const [featuredTrack, setFeaturedTrack] = useState(null);  // State to store the featured track
   const [user] = useUser(); 
-  
+  const [followerCount, setFollowerCount] = useState(0);
+  const [followers, setFollowers] = useState([]);
+  const [showFollowers, setShowFollowers] = useState(false);
+
   const handleFollowClick = async () => {
     if (!isFollowing){
       try {
@@ -124,10 +127,48 @@ function Pop() {
 
   useEffect(() => {
     if (user.username) {
-      fetchInitialFollow();
-      fetchFollowStatus();
+    fetchInitialFollow();
+    fetchFollowStatus();
     }
   }, [user.username]); // This effect depends on user.username
+
+  useEffect(() => {
+    
+    const fetchFollowerCount = async () => {
+      try {
+        const response = await axios.get('http://localhost:8082/api/community/${community}/followers/count');
+        setFollowerCount(response.data.count);
+      } catch (error) {
+        console.error("Error fetching follower count:", error);
+      }
+    };
+    const fetchFollowers = async () => {
+      try {
+        const response = await axios.get('http://localhost:8082/api/community/followers');
+        console.log("test22");
+        setFollowers(response.data);
+      } catch (error) {
+        console.error("Error fetching followers:", error);
+      }
+    };
+
+    fetchFollowerCount();
+    fetchFollowers();
+  }, []);
+
+  function FollowerListModal({ followers, onClose }) {
+    return (
+        <div className="follower-modal">
+            <h2>Followers</h2>
+            <ul>
+                {followers.map((follower, index) => (
+                    <li key={index}>{follower.username}</li>
+                ))}
+            </ul>
+            <button onClick={onClose}>Close</button>
+        </div>
+    );
+  }
 
   return (
     <div className="container-page">
@@ -135,6 +176,12 @@ function Pop() {
       <button onClick={handleFollowClick} className="follow-button">
         {isFollowing ? <><FaCheck /> Following</> : <><FaPlus /> Follow</>}
       </button>
+      <div className="follower-info">
+            <span className="follower-count" onClick={() => setShowFollowers(true)}>
+                {followerCount} followers
+            </span>
+      </div>
+      {showFollowers && <FollowerListModal followers={followers} onClose={() => setShowFollowers(false)} />}
       <div className="featured-track-container">
         <h2>Todays Featured Track</h2>
           {featuredTrack && (

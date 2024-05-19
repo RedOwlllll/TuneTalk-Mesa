@@ -33,6 +33,7 @@ app.use("/api/friends", friendRouter);
 app.use("/api/community", followRouter)
 app.use("/api", addPost);
 app.use("/api", captionRoute); 
+app.use("/api", followRouter)
 
 
 // print server is running when starting server - nodemon app
