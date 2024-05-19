@@ -4,6 +4,19 @@ import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own 
 import "../css/Post.css";
 import StarRating from "./StarRating";
 
+export const handleCommentSubmit = (e, username, newComment, setComments, setNewComment) => {
+
+    console.log("testers for the comment section")
+    e.preventDefault(); 
+
+    const commentData = {
+        text: newComment,
+        user: username
+    };
+
+};
+
+
 function Post() {
 
     //variables and hooks
@@ -25,6 +38,8 @@ function Post() {
     const postId = localStorage.getItem("postId");
     //function to retrieve users recerntly played song 
     const getRecentTrack = () => {
+
+
 
 
         if (!token) {
@@ -55,7 +70,7 @@ function Post() {
                 artist: track.artists.map(artist => artist.name).join(', '),
                 albumCover: track.album.images[0].url,
                 comments: [],
-                rating: 0,
+                rating: StarRating,
                     caption: caption,
             }
 
@@ -324,10 +339,13 @@ function Post() {
                     </div>
                 </div>
             )}
-        </div>
+        </div> 
     );
 
 
 }
 
+
+
 export default Post;
+

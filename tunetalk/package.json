@@ -1,4 +1,5 @@
 {
+  "proxy": "http://localhost:8082",
   "name": "tunetalk",
   "version": "0.1.0",
   "private": true,
@@ -11,6 +12,7 @@
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "query-string": "^9.0.0",
+  
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.1.0",
