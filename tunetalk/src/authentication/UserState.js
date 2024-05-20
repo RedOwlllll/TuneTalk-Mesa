@@ -10,6 +10,8 @@ const initialUser = {
   password: '',
   //post: '',
   spotifyAccount: '',
+  bio: '',
+  profileImage: '',
   isAuthenticated: false,
 };
 
@@ -32,7 +34,7 @@ export const UserProvider = ({ children }) => {
     localStorage.setItem('user', JSON.stringify(user));
   }, [user]);
 
-
+  
   // Wrap children components with the user context provider
   return (
     <UserContext.Provider value={[user, setUser]}>

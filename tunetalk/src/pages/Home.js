@@ -1,22 +1,27 @@
-import React from "react";
-import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
-import "../css/Post.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
+
+// NO LONGER USING!
+
+
+
+// import React from "react";
+// import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
+// import "../css/Post.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
 
 
    
-import StarRating from "./StarRating";
+// import StarRating from "./StarRating";
 
-import UserPost from "./UserPost";
-import Post from "./Post";
+// import UserPost from "./UserPost";
+// import Post from "./Post";
 
 
-export const Home = () => {
-    return (
-        <div className="home-page">
-            <Post />
-        </div>
-    );
-}
+// export const Home = () => {
+//     return (
+//         <div className="home-page">
+//             <Post />
+//         </div>
+//     );
+// }
 
 
 // export function Home() {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../authentication/UserState";
+import "../../css/App.css"; 
 
 const SPOTIFY_AUTH = "https://accounts.spotify.com/authorize";
 //const REDIRECT_URI = "http://localhost:3000/home";

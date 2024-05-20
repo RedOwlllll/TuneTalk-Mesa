@@ -46,13 +46,14 @@ h4 {
 }
 
 .spotify-login-container {
-    color: white;
-    background: black;
+    color: white; 
+    background: black; 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 85vh; /* Minimum height of the page to fill the viewport */
+    width: 100vw; 
+    height: 100vh; 
     text-align: center;
 }
 
@@ -68,6 +69,7 @@ button[type=submit] {
     width: auto;
     text-transform: uppercase;
 }
+
 
 input {
     background-color: #ccc;

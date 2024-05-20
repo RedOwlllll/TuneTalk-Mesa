@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
 import "../css/Post.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
 import "../components/PostDetails";
 
 import PostDetails from "../components/PostDetails";
-import PostForm from "../components/PostForm";
 import UserPost from "./UserPost";
 
 export const Feed = () => {
@@ -27,26 +25,10 @@ export const Feed = () => {
 
     return (
         <div className="feed-page">
-            <h1>Post</h1>
-
-
-            <UserPost />
-            <div>
-
-            </div>
-
-            <h1>Feed</h1>
-
-            <div className="song-display-form">
-                {/* <UserPost /> */}
-
-            </div>
-
-            <div className="post-form">
-                {/* <PostForm /> */}
-
-            </div>
             
+            <div>
+            <UserPost />
+            </div>
 
             <div className="posts">
                 {posts && posts.map((post) => (

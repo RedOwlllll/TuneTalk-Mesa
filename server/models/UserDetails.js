@@ -34,7 +34,13 @@ const UserDetailsSchema = new mongoose.Schema({
     posts: [{
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'SongPost'
-    }]
+    }],
+    bio: {
+        type: String,
+    },
+    profileImage: {
+        type: String
+    }
 });
 
 const UserDetails = mongoose.model("UserDetails", UserDetailsSchema);
