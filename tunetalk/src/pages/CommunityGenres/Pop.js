@@ -220,6 +220,17 @@ function Pop() {
   // Handle star click
   const handleRating = (rate) => {
     setRating(rate);
+    // Update class for each star
+    const stars = document.querySelectorAll('.rating i');
+    stars.forEach((star, idx) => {
+      if (idx < rate) {
+        star.classList.remove('far');
+        star.classList.add('fas');
+      } else {
+        star.classList.remove('fas');
+        star.classList.add('far');
+      }
+    });
   };
 
   return (
@@ -250,14 +261,23 @@ function Pop() {
               </div>
             </div>
           )}
+        <h4>Comment and rate the song</h4>
         <form onSubmit={handleSubmit}>
-          <textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
-          <select value={rating} onChange={(e) => setRating(Number(e.target.value))}>
-              {[1, 2, 3, 4, 5].map((num) => (
-                  <option key={num} value={num}>{num} Star{num > 1 ? 's' : ''}</option>
+          <input class="community-input" type = "text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
+          <div className="rating">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <label key={star}>
+                  <input
+                    type="radio"
+                    name="rating"
+                    value={star}
+                    onClick={() => handleRating(star)}
+                  />
+                  <i className={star <= rating ? 'fas fa-star' : 'far fa-star'}></i>
+                </label>
               ))}
-          </select>
-          <button type="submit">Post Comment and Rating</button>
+            </div>
+          <button class="community-btn" type="submit">Post Comment and Rating</button>
         </form>
       </div>
       <div className="playlists-container">
