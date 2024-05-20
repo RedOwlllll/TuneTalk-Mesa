@@ -9,7 +9,8 @@ dotenv.config();
 sgMail.setApiKey(process.env.API_KEY);
 
 //To the send the email notification to the user
-function sendNotificationEmail(userEmail, username) {
+function sendNotificationEmail(userEmail, username) 
+{
     const notification = {
         to: userEmail,
         from: {
@@ -41,6 +42,8 @@ function pushNotification() {
         icon: path.join('http://localhost:3000/static/media/TuneTalkLogoBlack.16d0f5c9352a06b53052641b8fab2fac.svg')
     });
 }
+
+
 
 function randomDelayGenerator(minSec, maxSec) {
     return Math.floor(Math.random() * (maxSec - minSec + 1)) + minSec;
