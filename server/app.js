@@ -8,8 +8,8 @@ const loginRouter = require("./routes/api/tunetalklogin");
 const registerRouter = require("./routes/api/tunetalkregister");
 const spotifyRouter = require("./routes/api/spotifylogin");
 const friendRouter = require('./routes/api/friendRoutes');
-const followRouter = require('./routes/api/followRoutes')
-const addPost = require("./routes/routes")
+const followRouter = require('./routes/api/followRoutes');
+const addPost = require("./routes/routes");
 const postRouter = require("./routes/api/posts");
 
 //const commentRoutes = require('./routes/commentRoutes');
@@ -41,10 +41,10 @@ app.use("/api/tunetalklogin", loginRouter);
 app.use("/api/tunetalkregister", registerRouter);
 app.use("/api/spotifylogin", spotifyRouter);
 app.use("/api/friends", friendRouter);
-app.use("/api/community", followRouter)
+app.use("/api/community", followRouter);
 app.use("/api", addPost);
-app.use("/api", followRouter)
-app.use("/api/posts", postRouter)
+app.use("/api", followRouter);
+app.use("/api/posts", postRouter);
 
 
 // print server is running when starting server - nodemon app

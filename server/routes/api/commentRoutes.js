@@ -1,6 +1,6 @@
 const express = require('express');
 const router = require('express').Router();
-const SongPost = require('../models/songPost');
+const SongPost = require('../../models/songPost');
 
 //Post comment to a song post
 router.post('/songpost/:postId/comments', async (req, res) => {
