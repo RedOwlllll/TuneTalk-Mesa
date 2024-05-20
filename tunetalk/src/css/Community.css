@@ -131,6 +131,7 @@
   .track-artist {
     font-size: 18px;
     color: #666;
+    margin-bottom: 70px;
   }
   
   .comment-input {
@@ -288,4 +289,40 @@
 
 .follower-count:hover {
   background-color: #e2e2e2;
+}
+
+.spotify-play-button {
+  background-color: #1DB954; /* Spotify brand green */
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.spotify-play-button:hover {
+  background-color: #1ed760; /* Lighter green on hover */
+}
+
+.rating {
+  display: inline-flex;
+  direction: rtl; /* Right-to-left to allow filling stars from right to left */
+}
+
+.rating input {
+  display: none; /* Hide the radio buttons */
+}
+
+.rating label {
+  font-size: 1.5rem;
+  color: #ddd; /* Default color of stars */
+  cursor: pointer;
+}
+
+.rating label:hover,
+.rating label:hover ~ label,
+.rating input:checked ~ label {
+  color: #ffc107; /* Gold color for selected stars */
 }

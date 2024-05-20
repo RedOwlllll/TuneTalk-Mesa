@@ -11,6 +11,7 @@ const friendRouter = require('./routes/api/friendRoutes');
 const followRouter = require('./routes/api/followRoutes');
 const addPost = require("./routes/routes");
 const postRouter = require("./routes/api/posts");
+const songRouter = require("./routes/api/songRoutes")
 
 //const commentRoutes = require('./routes/commentRoutes');
 
@@ -45,6 +46,7 @@ app.use("/api/community", followRouter);
 app.use("/api", addPost);
 app.use("/api", followRouter);
 app.use("/api/posts", postRouter);
+app.use("/api", songRouter);
 
 
 // print server is running when starting server - nodemon app

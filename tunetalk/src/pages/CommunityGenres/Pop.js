@@ -16,6 +16,10 @@ function Pop() {
   const [followerCount, setFollowerCount] = useState(0);
   const [followers, setFollowers] = useState([]);
   const [showFollowers, setShowFollowers] = useState(false);
+  const [comment, setComment] = useState('');
+  const [rating, setRating] = useState(0);
+
+  
 
   const handleFollowClick = async () => {
     if (!isFollowing){
@@ -157,6 +161,27 @@ function Pop() {
     fetchFollowers();
   }, []);
 
+  useEffect(() => {
+    // Post the featured track to your backend
+    const postFeaturedTrack = async () => {
+      if (!featuredTrack) return;
+
+      await axios.post('http://localhost:8082/api/songs', {
+        spotifyUrl: featuredTrack.external_urls.spotify
+      }).then(response => {
+        console.log('Song added:', response.data);
+      }).catch(error => {
+        if (error.response && error.response.status === 409) {
+          console.log('Song already exists.');
+        } else {
+          console.error('Error posting featured track:', error);
+        }
+      });
+    };
+
+    postFeaturedTrack();
+  }, [featuredTrack]);
+
   function FollowerListModal({ followers, onClose }) {
     return (
         <div className="follower-modal">
@@ -170,6 +195,32 @@ function Pop() {
         </div>
     );
   }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      alert('You must be logged in to post comments.');
+      return;
+    }
+    try {
+      const response = await axios.post('http://localhost:8082/api/songs/comment', {
+        spotifyUrl: featuredTrack.external_urls.spotify,
+        username: user.username,
+        comment,
+        rating
+      });
+      console.log('Comment added:', response.data);
+      setComment('');
+      setRating(1);
+    } catch (error) {
+      console.error('Failed to post comment:', error);
+    }
+  };
+
+  // Handle star click
+  const handleRating = (rate) => {
+    setRating(rate);
+  };
 
   return (
     <div className="container-page">
@@ -191,9 +242,23 @@ function Pop() {
               <div className="track-info">
                 <div className="track-title">{featuredTrack.name}</div>
                 <div className="track-artist">{featuredTrack.artists.map(artist => artist.name).join(', ')}</div>
+                <div>
+                <a href={featuredTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">
+                  Listen on Spotify
+                </a>
+                </div>
               </div>
             </div>
           )}
+        <form onSubmit={handleSubmit}>
+          <textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
+          <select value={rating} onChange={(e) => setRating(Number(e.target.value))}>
+              {[1, 2, 3, 4, 5].map((num) => (
+                  <option key={num} value={num}>{num} Star{num > 1 ? 's' : ''}</option>
+              ))}
+          </select>
+          <button type="submit">Post Comment and Rating</button>
+        </form>
       </div>
       <div className="playlists-container">
           {popPlaylists.map((playlist) => (
