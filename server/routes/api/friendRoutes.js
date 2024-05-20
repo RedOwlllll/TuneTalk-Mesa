@@ -20,7 +20,7 @@ router.post('/request', async (req, res) => {
         return res.status(409).send('A request already exists or has already been accepted between these users.');
     }
 
-    if (recipient.email === requesterEmail) {
+    if (recipientUsername === requesterUsername) {
         return res.status(400).send("You cannot add yourself as a friend. Go get a life :)");
     }
 
