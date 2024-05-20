@@ -1,6 +1,6 @@
 const express = require('express') 
 const router = express.Router()
-const Post = require('../models/post')
+const Post = require('../../models/post')
 const 
 {
     getAllPosts,
@@ -9,7 +9,7 @@ const
     deletePost,
     updatePost,
     deleteAllPosts
-} = require('../controllers/postController')
+} = require('../../controllers/postController')
 
 
 router.get('/', getAllPosts)

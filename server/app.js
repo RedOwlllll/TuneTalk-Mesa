@@ -10,15 +10,13 @@ const spotifyRouter = require("./routes/api/spotifylogin");
 const friendRouter = require('./routes/api/friendRoutes');
 const followRouter = require('./routes/api/followRoutes')
 const addPost = require("./routes/routes")
+const postRouter = require("./routes/api/posts");
 
 //const commentRoutes = require('./routes/commentRoutes');
 
 // routes / api
 //const registerRouter = require("./routes/register");
 
-
-
-const postRoutes = require('./routes/posts')
 
 // Connect to database
 connectDB();
@@ -46,6 +44,7 @@ app.use("/api/friends", friendRouter);
 app.use("/api/community", followRouter)
 app.use("/api", addPost);
 app.use("/api", followRouter)
+app.use("/api/posts", postRouter)
 
 
 // print server is running when starting server - nodemon app
