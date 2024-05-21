@@ -25,3 +25,8 @@ yarn-debug.log*
 yarn-error.log*
 *.pack
 /tunetalk/node_modules
+/tunetalk/node_modules/.cache
+./tunetalk/node_modules
+.tunetalk\node_modules\.cache
+tunetalk\node_modules\
+.tunetalk\node_modules\
