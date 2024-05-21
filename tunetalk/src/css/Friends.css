@@ -33,7 +33,7 @@ h1 {
 }
 
 h2 {
-    color: #333;
+    text-align: center;
 }
 
 .add-friend input, .add-friend button, .friend-request button, .friend button {
@@ -93,7 +93,6 @@ button:hover {
     background-color: #007BFF; /* Blue button for actions */
     color: white;
     border: none;
-    padding: 8px 16px;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;

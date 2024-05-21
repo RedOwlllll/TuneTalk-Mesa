@@ -3,6 +3,9 @@ import { FaCheck, FaPlus } from 'react-icons/fa'; // FontAwesome icons
 import '../../css/Community.css';
 import { useUser } from "../../authentication/UserState";
 import axios from "axios";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
+
 
 const CLIENT_ID = "a8c9857ace8449f290ed14c54c878e1f";
 const CLIENT_SECRET = "c747a0da53124c4ba8bc12a0e88d859b";
@@ -18,8 +21,12 @@ function Pop() {
   const [showFollowers, setShowFollowers] = useState(false);
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
-
+  const [comments, setComments] = useState([]);
+  const [averageRating, setAverageRating] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
   
+
+  const toggleVisibility = () => setIsVisible(!isVisible); // Collapse comment box
 
   const handleFollowClick = async () => {
     if (!isFollowing){
@@ -80,6 +87,15 @@ function Pop() {
 
     getAccessToken();
   }, []);
+
+  const fetchComments = async (spotifyUrl) => {
+    try {
+      const response = await axios.get(`http://localhost:8082/api/songs/comments/${encodeURIComponent(spotifyUrl)}`);
+      setComments(response.data.comments);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  };
 
   useEffect(() => {
     // Function to fetch Pop playlists using the access token
@@ -233,16 +249,53 @@ function Pop() {
     });
   };
 
+  function StarRating({ rating }) {
+    const totalStars = 5;
+    let stars = [];
+
+    // Create filled stars up to the rating
+    for (let i = 1; i <= totalStars; i++) {
+      if (i <= rating) {
+        stars.push(<i key={i} className="fas fa-star" style={{ color: '#ffc107' }}></i>);
+      } else if (i > rating && i - 1 < rating) {
+        // Handle half star for fractions
+        stars.push(<i key={i} className="fas fa-star-half-alt" style={{ color: '#ffc107' }}></i>);
+      } else {
+        stars.push(<i key={i} className="far fa-star" style={{ color: '#ffc107' }}></i>);
+      }
+    }
+
+    return <div>{stars}</div>;
+  }
+
+  useEffect(() => {
+    if (featuredTrack) {
+      fetchComments(featuredTrack.external_urls.spotify);
+    }
+  }, [featuredTrack]);
+
+  useEffect(() => {
+    if (comments.length > 0) {
+      const totalRating = comments.reduce((acc, comment) => acc + comment.rating, 0);
+      const averageRating = totalRating / comments.length;
+      setAverageRating(Math.round(averageRating * 2) / 2); // Rounds to nearest 0.5
+    } else {
+      setAverageRating(0);
+    }
+  }, [comments]);
+
   return (
     <div className="container-page">
-      <h1>Pop Music</h1>
-      <button onClick={handleFollowClick} className="follow-button">
-        {isFollowing ? <><FaCheck /> Following</> : <><FaPlus /> Follow</>}
-      </button>
-      <div className="follower-info">
-            <span className="follower-count" onClick={() => setShowFollowers(true)}>
-                {followerCount} followers
-            </span>
+      <div className="follow-container">
+        <h1>Pop Music</h1>
+        <button onClick={handleFollowClick} className="follow-button">
+          {isFollowing ? <><FaCheck /> Following</> : <><FaPlus /> Follow</>}
+        </button>
+        <div className="follower-info">
+          <span className="follower-count" onClick={() => setShowFollowers(true)}>
+            {followerCount} followers
+          </span>
+        </div>
       </div>
       {showFollowers && <FollowerListModal followers={followers} onClose={() => setShowFollowers(false)} />}
       <div className="featured-track-container">
@@ -280,14 +333,31 @@ function Pop() {
           <button class="community-btn" type="submit">Post Comment and Rating</button>
         </form>
       </div>
+      <div className="community-comments-container">
+        <div className= "toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
+        <strong>{comment.username}</strong> <h5>Tap to {isVisible ? 'hide' : 'view'} comment <FontAwesomeIcon icon={isVisible ? faChevronCircleDown : faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
+        </div>
+        <div className={`collapsible-content ${isVisible ? 'open' : ''}`}>
+          {isVisible && (
+          <div>
+            <h4>Average Rating: <StarRating rating={averageRating} /></h4>
+            {comments.map((comment, index) => (
+            <div key={index} className="comment">
+              <p><strong>{comment.username}</strong></p><StarRating rating={comment.rating} /> : <span>{comment.body}</span>
+            </div>
+            ))}
+          </div>
+          )}
+        </div>
+      </div>
       <div className="playlists-container">
           {popPlaylists.map((playlist) => (
             <div key={playlist.id} className="playlist-card">
-                <img src={playlist.images[0].url} alt={playlist.name} className="playlist-image" />
-                <div className="playlist-info">
-                    <h3>{playlist.name}</h3>
-                    <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="playlist-link">Listen on Spotify</a>
-                </div>
+              <img src={playlist.images[0].url} alt={playlist.name} className="playlist-image" />
+              <div className="playlist-info">
+                <h3>{playlist.name}</h3>
+                <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="playlist-link">Listen on Spotify</a>
+              </div>
             </div>
           ))}
       </div>

@@ -2,9 +2,15 @@ h4 {
   margin-top:25px;
   text-align: center;
   color: #333;
+  margin-bottom:10px;
 }
 
-.container-page {
+h5 {
+  text-align: center;
+  color: #333;
+}
+
+.follow-container {
   padding: 20px;
   text-align: center;
 }
@@ -103,7 +109,7 @@ h4 {
   background: #1ed760;
 }
 
-.featured-track-container {
+.featured-track-container{
   width: 50%;
   margin: 20px auto;
   padding: 20px;
@@ -113,6 +119,28 @@ h4 {
   display: flex;
   flex-direction: column;
   min-width: 510px; 
+  padding: 20px;
+  text-align: center;
+}
+
+.community-comments-container{
+  width: 50%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f2f2f2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  min-width: 510px; 
+  padding: 20px;
+}
+.community-comments-container .comment {
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
 }
   
 .track-card {
@@ -242,6 +270,8 @@ input.community-input {
   margin-bottom: 15px;
 }
 
+
+
 .follower-modal ul {
   list-style: none;
   width: 100%;
@@ -283,4 +313,36 @@ input.community-input {
 
 .follower-count:hover {
   background-color: #e2e2e2;
+}
+
+.icon {
+  transition: transform 0.3s ease;
+}
+.icon.up {
+  transform: rotate(180deg);
+}
+
+.toggleText {
+  cursor: pointer;
+  color: #2C3E50;
+  background-color: #ECF0F1;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.collapsible-content {
+  visibility: hidden;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: visibility 0s linear 0.5s, opacity 0.5s linear, max-height 0.5s ease-out;
+  
+}
+
+.collapsible-content.open {
+  visibility: visible;
+  opacity: 1;
+  max-height: 1000px;
+  transition: visibility 0s linear 0s, opacity 0.5s linear, max-height 0.5s ease-in;
 }
