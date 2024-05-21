@@ -2,6 +2,7 @@ const sgMail = require('@sendgrid/mail');
 const notifier = require('node-notifier');
 const path = require('path');
 const dotenv = require('dotenv');
+const { exec } = require('child_process');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -33,14 +34,35 @@ function sendNotificationEmail(userEmail, username) {
 }
 
 //To push a notification to the user's device 
+// function pushNotification() {
+//     notifier.notify({
+//         appName: 'Tune Talk',
+//         title: '!TIME TO TUNE IN!',
+//         message: "It's time to post your current/recently played song!",
+//         icon: path.join('../tunetalk/src/assets/TuneTalkLogoBlack.16d0f5c9352a06b53052641b8fab2fac.svg'),
+//         open: "https://www.youtube.com/"
+//     });
+// }
+
 function pushNotification() {
     notifier.notify({
-        appName: 'Tune Talk',
+        appName: 'TuneTalk',
         title: '!TIME TO TUNE IN!',
         message: "It's time to post your current/recently played song!",
-        icon: path.join('http://localhost:3000/static/media/TuneTalkLogoBlack.16d0f5c9352a06b53052641b8fab2fac.svg')
+        icon: path.join(__dirname, './TuneTalkLogoBlack.16d0f5c9352a06b53052641b8fab2fac.svg'),
+        wait: true, // Wait for user interaction (click)
+    });
+
+    // Handle the click event
+    notifier.on('click', () => {
+        // Open the specified URL when the notification is clicked
+        // Replace with your actual URL
+        console.log('Notification clicked! Opening URL...');
+        openUrl('http://localhost:3000/feed');
     });
 }
+
+
 
 function randomDelayGenerator(minSec, maxSec) {
     return Math.floor(Math.random() * (maxSec - minSec + 1)) + minSec;
