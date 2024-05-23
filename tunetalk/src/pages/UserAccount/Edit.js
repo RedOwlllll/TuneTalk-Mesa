@@ -25,31 +25,45 @@ export const Edit = () => {
 
     const handleSave = async () => {
         try {
-
-            if (!username.trim() || !email.trim() ) {
+            if (!username.trim() || !email.trim()) {
                 setAlertMessage("Name and email cannot be empty");
                 return; // Don't proceed with saving if required fields are empty
             }
 
+            // Check if the new username is different from the current and if its already taken
+            if (username !== user.username) {
+                const usernameInput = await axios.get(`http://localhost:8082/api/userprofile/username-availability/${username}`);
+                if (!usernameInput.data.isAvailable) {
+                    setAlertMessage("This username is already in use by another account. Try a different one.")
+                    return; // Stop the update if the email is not available
+                }
+            }
+            
+            // Check if the new email is different from the current and if its already taken
+            if (email !== user.email) {
+                const emailInput = await axios.get(`http://localhost:8082/api/userprofile/email-availability/${email}`);
+                if (!emailInput.data.isAvailable) {
+                    setAlertMessage("This email is already in use by another account. Try a different one.");
+                    return; // Stop the update if the email is not available
+                }
+            }
+    
             const formData = new FormData();
             formData.append("username", username);
             formData.append("email", email);
             formData.append("bio", bio);
-            
+    
             if (newProfileFile) {
                 formData.append("profileImage", newProfileFile);
-            } 
-            else if (newProfileImage === "") {
+            } else if (newProfileImage === "") {
                 formData.append("profileImage", ""); // Sending empty string to indicate removal
             }
-            
     
-            axios.put("http://localhost:8082/api/userprofile", formData, {
+            axios.put("http://localhost:8082/api/userprofile/edit-profile", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
-            })
-            .then(res => {
+            }).then(res => {
                 const data = res.data;
                 console.log(data);
                 if (data.status === "ok") {
@@ -63,15 +77,14 @@ export const Edit = () => {
                         profileImage: data.user.profileImage || AccountLogo
                     });
                     navigate("/account/profile");
-                } 
-
-            })
-
-            
-        } 
-        catch (error) {
-            console.error("Error updating profile:", error);
-            setAlertMessage("Failed to update profile. Please check your internet connection or try again later.");
+                }
+            }).catch(error => {
+                console.error("Error updating profile:", error);
+                setAlertMessage("Failed to update profile. Please check your internet connection or try again later.");
+            });
+        } catch (error) {
+            console.error("Error checking email availability:", error);
+            setAlertMessage("Error during validation. Please try again later.");
         }
     };
 

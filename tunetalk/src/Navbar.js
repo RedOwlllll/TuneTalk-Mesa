@@ -78,7 +78,7 @@ export const Navbar = () => {
                         <li><NavLink to="/feed">Feed</NavLink></li>
                         <li><NavLink to="/friends">Friends</NavLink></li>
                         <li><NavLink to="/community">Community</NavLink></li>
-                        {user.isAuthenticated && (
+                        {user?.isAuthenticated && (
                             <li>
                                 <div className="account-dropdown">
                                     <div className="profile-image-section" style={{marginTop: '2px', justifyContent: 'center', alignItems: 'center', width: '50px', height: '45px'}}>

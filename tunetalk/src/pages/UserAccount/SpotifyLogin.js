@@ -5,7 +5,6 @@ import { useUser } from "../../authentication/UserState";
 import "../../css/App.css"; 
 
 const SPOTIFY_AUTH = "https://accounts.spotify.com/authorize";
-//const REDIRECT_URI = "http://localhost:3000/home";
 const REDIRECT_URI = "http://localhost:3000/account/spotify"; // Needed to change the uri to this as there was issues with redirecting to the home page right after spotify user is authenticated
 const CLIENT_ID = "82051e28a62540019c2de5c903d8bca1";
 
@@ -123,13 +122,13 @@ export const SpotifyLogin = () => {
             }
         };
         getUserSpotifyInfo();
-    }, []);
+    }, [navigate, setUser]);
 
     useEffect(() => {
         if (user?.isAuthenticated) {
             navigate("/account/spotify");
         }
-    }, []); // Allows useEffect hook to render only once. 
+    }, [navigate, user?.isAuthenticated]); // Allows useEffect hook to render only once. 
 
 
     return (
@@ -146,7 +145,7 @@ export const SpotifyLogin = () => {
                         <p><b>Username:</b> {userInfo.username}</p>
                         <p><b>Email:</b> {userInfo.email}</p>
                         <br/><br/><br/>
-                        <button type="submit" onClick={() => navigate('/feed')}>Go to your Home Page!</button>
+                        <button type="submit" onClick={() => navigate('/feed')}>View your feed!</button>
                     </div>
                 </div>
                 </>

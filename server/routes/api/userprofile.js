@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const user = require("../../models/UserDetails");
 const multer = require("multer");
-const path = require('path');
 
 // Set up multer for file storage
 const storage = multer.diskStorage({
@@ -32,19 +31,18 @@ const upload = multer({ storage, fileFilter });
 
 
 // Update Profile
-router.put('/', upload.single('profileImage'), async (req, res) => {
+router.put('/edit-profile', upload.single('profileImage'), async (req, res) => {
     const { username, email, bio } = req.body;
 
     try {
-        // Find the user by their email
-        const userprofile = await user.findOne({ email: email });
+        const userprofile = await user.findOne({ email: email }); // Use the current email to find the user
         if (!userprofile) {
-            return res.json({ status: "error", message: 'User not found' });
+            return res.status(404).json({ status: "error", message: 'User not found' });
         }
 
         // Update user details; only update if provided
         userprofile.username = username || userprofile.username;
-        userprofile.email = email ||  userprofile.email;
+        userprofile.email = email || userprofile.email;
         userprofile.bio = bio !== "" ? bio : userprofile.bio;
 
         // Update the profile image if a new one was uploaded
@@ -54,7 +52,6 @@ router.put('/', upload.single('profileImage'), async (req, res) => {
 
         await userprofile.save();
 
-        // Return updated user details
         return res.json({
             status: "ok",
             user: {
@@ -64,10 +61,60 @@ router.put('/', upload.single('profileImage'), async (req, res) => {
                 profileImage: userprofile.profileImage
             }
         });
-
     } catch (error) {
         console.error("Error updating profile:", error);
-        return res.json({ status: "error", message: "Server error" });
+        return res.status(500).json({ status: "error", message: "Server error" });
+    }
+});
+
+// Checks email availability and prevents user from changing their email to one that is already in use.
+router.get("/email-availability/:email", async (req, res) => {
+    const { email } = req.query;
+
+    try {
+        const existingUser = await user.findOne({ email: email });
+        if (existingUser) {
+            return res.json({
+                status: "error",
+                message: "Email already in use",
+                isAvailable: false
+            });
+           
+        }
+        return res.json({
+            status: "ok",
+            message: "Email updated!",
+            isAvailable: true
+        });
+    } catch (error) {
+        console.error("Error checking availability:", error);
+        return res.status(500).json({ status: "error", message: "Server error" });
+    }
+});
+
+
+// Checks username availability and prevents user from changing their username to one that is already in use.
+router.get("/username-availability/:username", async (req, res) => {
+    const { username } = req.query;
+
+    try {
+        const existingUser = await user.findOne({ username: username });
+        if (existingUser) {
+            return res.json({
+                status: "error",
+                message: "Username is already in use",
+                isAvailable: false
+            });
+           
+        }
+        return res.json({
+            status: "ok",
+            message: "Username updated!",
+            isAvailable: true
+        });
+    } catch (error) {
+        console.error("Error checking availability:", error);
+        return res.status(500).json({ status: "error", message: "Server error" });
     }
 });
 
