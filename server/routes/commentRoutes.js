@@ -1,6 +1,9 @@
 const express = require('express');
 const router = require('express').Router();
 const SongPost = require('../models/songPost');
+const { sendNotification, pushNotification } = require('../../server/utils/sendNotificationEmail');
+const Friend = require('../../server/models/Friend');
+const User = require('../../server/models/UserDetails');
 
 //Post comment to a song post
 router.post('/songpost/:postId/comments', async (req, res) => {
