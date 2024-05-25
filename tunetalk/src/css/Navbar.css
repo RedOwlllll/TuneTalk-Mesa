@@ -124,6 +124,14 @@ nav .menu {
     background-color: #333333;
 }
 
+/* Logout button inside dropdown menu */
+.logout-btn {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
 /* Media query that handles navigation menu when screen is smaller */
 @media (max-width: 50em) {
     nav .menu {
