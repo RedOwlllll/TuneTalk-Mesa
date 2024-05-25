@@ -16,7 +16,6 @@ export const handleCommentSubmit = (e, username, newComment, setComments, setNew
 
 };
 
-
 function Post() {
 
     //variables and hooks
@@ -38,10 +37,6 @@ function Post() {
     const postId = localStorage.getItem("postId");
     //function to retrieve users recerntly played song 
     const getRecentTrack = () => {
-
-
-
-
         if (!token) {
             console.log('No token available'); //log an error if no token is available
             return;
@@ -135,7 +130,6 @@ function Post() {
         setComments(updatedComments);
     };
 
-
     const handleRatingSubmit = async (rate, postId) => {
         axios.post(`http://localhost:8082/api/posts/${postId}/rate`, { rating: rate })
             .then(response => {
@@ -193,7 +187,6 @@ function Post() {
         setEditReplyText({});
     };
 
-
     // CAPTION CODE
 
       //Sends a POST request to the backend with the caption data
@@ -248,7 +241,6 @@ function Post() {
     const captionRender = () => {
         return captionPosted ? displayCaption : captionInput;
     }
-
 
     return (
         <div className="home-page">
@@ -341,11 +333,6 @@ function Post() {
             )}
         </div> 
     );
-
-
 }
-
-
-
 export default Post;
 
