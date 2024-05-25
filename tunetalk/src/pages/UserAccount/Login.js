@@ -33,11 +33,12 @@ export const Login = () => {
                 setUser ({
                     email: data.user.email,
                     username: data.user.username,
-                    // isAuthenticated: true - commented out so that when on the login page, protected routes are still protected (they need to connect to spotify).
+                    bio: data.user.bio,
+                    profileImage: data.user.profileImage,
+                    isAuthenticated: false // make false because user should only be authenticated once spotify login is successful.
                 });
                 localStorage.setItem('user', JSON.stringify(user));
                 console.log("user login authenticated in TuneTalk");
-                navigate("/account/spotify");
             } 
             else if (data.error === "user_not_found") {
                 setAlertMessage("User not found. Please check your email address or username again.");
@@ -53,10 +54,10 @@ export const Login = () => {
 
     // When user email and username is ok, will prompt them to the spotify account page
     useEffect (() => {
-        if (user && user.email && user.username) {
+        if (user && user?.email && user?.username) {
             navigate("/account/spotify"); 
         }
-    }, [navigate, user?.email, user?.username]);
+    }, [navigate, user, user?.email, user?.username]);
 
     return (
         <div className="login-container">

@@ -8,7 +8,6 @@ const initialUser = {
   email: '',
   username: '',
   password: '',
-  //post: '',
   spotifyAccount: '',
   bio: '',
   profileImage: '',

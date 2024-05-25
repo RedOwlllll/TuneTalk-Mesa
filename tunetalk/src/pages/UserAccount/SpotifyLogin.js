@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../authentication/UserState";
 import "../../css/App.css"; 
+import AccountLogo from "../../assets/AccountLogo.svg"
 
 const SPOTIFY_AUTH = "https://accounts.spotify.com/authorize";
 const REDIRECT_URI = "http://localhost:3000/account/spotify"; // Needed to change the uri to this as there was issues with redirecting to the home page right after spotify user is authenticated
@@ -95,14 +96,15 @@ export const SpotifyLogin = () => {
                     .then((res) => {
                         const data = res.data;
                         console.log(data, "spotifyUserLogin");
-
+                        localStorage.setItem("userSpotifyInfo", spotifyUserInfo);
                         if(data.status === "ok") {
                             // Now, update the user state
-                            setUser((prevUser) => ({
-                                ...prevUser,
+                            setUser({
+                                ...user,
                                 isAuthenticated: true,
                                 spotifyAccount: spotifyUserInfo.username, 
-                            }));
+                
+                            });
                             setAlertMessage("Spotify account connected!");
                             navigate("/account/spotify");
                         } else {
@@ -122,7 +124,7 @@ export const SpotifyLogin = () => {
             }
         };
         getUserSpotifyInfo();
-    }, [navigate, setUser]);
+    }, [navigate, setUser, user]);
 
     useEffect(() => {
         if (user?.isAuthenticated) {

@@ -16,8 +16,14 @@ router.post("/", async (req, res) => {
             spotifyEmail
         });
 
-        return res.send({status: "ok", message: "Spotify account connected (to mongo).", 
-        spotifyID: spotifyUser.spotifyID, spotifyURL: spotifyUser.spotifyURL, displayName: spotifyUser.displayName, spotifyEmail: spotifyUser.spotifyEmail });
+        return res.send({
+            status: "ok", 
+            message: "Spotify account connected (to mongo).", 
+            spotifyID: spotifyUser.spotifyID, 
+            spotifyURL: spotifyUser.spotifyURL, 
+            displayName: spotifyUser.displayName, 
+            spotifyEmail: spotifyUser.spotifyEmail,
+        });
     }
     catch (e) {
         console.log("Error registering spotify account to TuneTalk", e);
