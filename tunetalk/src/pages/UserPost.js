@@ -36,21 +36,10 @@ function UserPost() {
         setSelectedRating(rate);
     };
 
-   
-
     const token = localStorage.getItem("access_token");
     const username = localStorage.getItem("userlogin");
 
     console.log(username);
-
-
-  
-
-    // const testusername = 10;
-    // const testemail = 10;
-    // const testtitle = 10;
-    // const testartist = 10;
-    // const testrating = 10;
 
     const getRecentTrack = () => {
 
@@ -74,11 +63,6 @@ function UserPost() {
                     title: track.name, //title 
                     albumCover: track.album.images[0].url // URL of album image
                 });
-
-                
-                
-
-
                 // fetch(track.album.images[0].url)
                 // .then(response => response.blob())
                 // .then(blob => {
@@ -93,8 +77,6 @@ function UserPost() {
                 // .catch(error => {
                 //     console.log('Error fetching image:', error);
                 // });
-
-                
                 //prepare song to be saved
                 const songData = {
                     title: track.name,
@@ -130,12 +112,7 @@ function UserPost() {
     //         text: newComment,
     //         user: username
     //     };
-
-     
     // };
-
-   
-
     // useEffect(() => {
     //     if (recentTrack && recentTrack.albumCover) {
     //         handleImageData(recentTrack.albumCover);
@@ -152,8 +129,6 @@ function UserPost() {
     //     };
     //     reader.readAsDataURL(blob);
     // };
-
-
 
     const handleSubmission = async (e) =>{
 
@@ -173,9 +148,7 @@ function UserPost() {
                 headers: {
                     'Content-Type': 'application/json'
                 }
-            
             })
-    
             const json = await response.json()
             if (!response.ok) {
                 setError(json.error)
@@ -193,51 +166,6 @@ function UserPost() {
                 console.log('post added')
             }
         }
-
-        
-        // console.log(postusername)
-        // console.log(rating)
-        // console.log(caption)
-
-       
-
-       
-        // setPostUsername('test');
-        // setEmail('test');
-        // setTitle('test');
-        // setArtist('test');
-        // setRating(1);
-        // setCaption('test');
-       
-        
-        // console.log(postusername)
-        // console.log(rating)
-        // console.log(caption)
-
-       
-
-        //const post = {username,email,title,artist,rating,caption}
-
-        
-        
-        // const post = {postusername,email,title,artist,rating,caption}
-
-
-        // console.log(postusername)
-        // console.log(rating)
-        // console.log(caption)
-
-       
-        
-        // setPostUsername('test');
-        // setEmail('test');
-        // setTitle('test');
-        // setArtist('test');
-        // setRating('1');
-        // setCaption('test');
-
-       
-
     }
 
     // component render
@@ -302,20 +230,11 @@ function UserPost() {
                                     })
                                     .catch(error => {
                                         console.log('Error fetching image:', error);
-                                    })
-                                
-                                
+                                    })                                
                                 }}
-                                
                             />
                             <button type="submit" className="submit-comment">Post</button>
                         </form>
-
-                
-
-
-
-
                     </div>
                 
                 </div>
