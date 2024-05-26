@@ -9,6 +9,8 @@ export const Profile = () => {
     const [user] = useUser();
     const navigate = useNavigate();
 
+    
+
 
     return (
         <div className="user">

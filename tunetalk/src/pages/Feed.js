@@ -12,7 +12,7 @@ export const Feed = () => {
 
     useEffect(() => {
         const fetchPosts = async () => {
-            const response = await fetch(`/api/posts/getuserpost/?username=${user.username}`)
+            const response = await fetch(`/api/posts/getallpost/?username=${user.username}`)
             const json = await response.json()
 
             if (response.ok) {
