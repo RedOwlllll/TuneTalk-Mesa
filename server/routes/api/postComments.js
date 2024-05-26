@@ -2,38 +2,8 @@ const express = require('express')
 const router = express.Router()
 const Post = require('../../models/post')
 
-// const Song = require('../../models/Song'); 
-// const router = express.Router();
 
-
-// Endpoint to comment and rate the song
-
-
-// router.post('/postsongs/comment', async (req, res) => {
-//     const { postId, username, comment, rating } = req.body;
-
-//     try {
-//         let userPostSong = await Post.findById(postId);
-//         if (!userPostSong) {
-//             return res.status(404).send('Song not found');
-//         }
-
-//         // Add a new comment to the comments array
-//         userPostSong.comments.push({
-//             commentusername: username, 
-//             commentbody: comment, 
-//             commentrating: rating, 
-//             date: new Date() 
-//         });
-
-//         // Save the updated song document
-//         let updatedPostSong = await userPostSong.save();
-//         res.json(updatedPostSong);  // Return the updated document in the response
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('Error adding comment and rating');
-//     }
-// });
+// Endpoint to comment an existing post
 
 router.post('/postsongs/comment', async (req, res) => {
     const { postId, commentusername, commentbody, commentrating } = req.body;
@@ -57,35 +27,13 @@ router.post('/postsongs/comment', async (req, res) => {
 });
 
 
-// Endpoint to comment and rate the song
 
-// router.post('/postsongs/comment', async (req, res) => {
-//     const { postId, username, comment, rating } = req.body;
+
+// // Endpoint to get comments for a post
+// router.get('/postsongs/comments/:id', async (req, res) => {
 //     try {
-//         let userPostSong = await Post.findById({ postId });
-//         if (!userPostSong) {
-//             return res.status(404).send('Song not found');
-//         }
-        
-      
-//             // No existing comment from this user, add new
-//             userPostSong.comments.push({ username, body: comment, rating, date: new Date() });
-        
-
-//         await userPostSong.save(); // Save the updated song document
-//         res.json(userPostSong);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('Error adding comment and rating');
-//     }
-// });
-
-
-// Endpoint to get comments for a song
-// router.get('/posts/comments/:id', async (req, res) => {
-//     try {
-//         const { _id: postId } = req.params;
-//         const userPostSong = await Post.findOne({ _id: postId });
+//         const { id: postId } = req.params.id; // Corrected from _id to id to match the route parameter
+//         const userPostSong = await Post.findOne({ id: postId });
 //         if (!userPostSong) {
 //             return res.status(404).send('Song not found');
 //         }
@@ -96,11 +44,10 @@ router.post('/postsongs/comment', async (req, res) => {
 //     }
 // });
 
-// Endpoint to get comments for a song
 router.get('/postsongs/comments/:id', async (req, res) => {
     try {
-        const { id: postId } = req.params.id; // Corrected from _id to id to match the route parameter
-        const userPostSong = await Post.findOne({ id: postId });
+        const postId = req.params.id;  // Correct way to get id from params
+        const userPostSong = await Post.findOne({ _id: postId });  // Use _id for querying MongoDB
         if (!userPostSong) {
             return res.status(404).send('Song not found');
         }
@@ -110,7 +57,6 @@ router.get('/postsongs/comments/:id', async (req, res) => {
         res.status(500).send('Error fetching comments');
     }
 });
-
 
 
 

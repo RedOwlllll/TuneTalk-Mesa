@@ -69,6 +69,7 @@ const PostDetails = ({post}) => {
           setComments(response.data.comments);
           console.log("comments fetched")
           console.log(response.data.comments);
+          console.log(comments)
         } catch (error) {
           console.error("Error fetching comments:", error);
         }
@@ -137,6 +138,7 @@ const PostDetails = ({post}) => {
             <h4>Rating: {post.rating}</h4>
             <h4>Caption: {post.caption}</h4>
             <h4>Image: {post.image}</h4>
+            
             <img
             src={post.imageData}
             className="post-card-image"
@@ -168,16 +170,15 @@ const PostDetails = ({post}) => {
         
         <div className="community-comments-container">
         <div className="toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
-        <strong>{commentText.username}</strong> <h5>Tap to {isVisible ? 'hide' : 'view'} comment <FontAwesomeIcon icon={isVisible ? faChevronCircleDown : faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
+        <strong>{commentText.username}</strong> <h5>View {isVisible ? 'less' : 'more'} comments <FontAwesomeIcon icon={isVisible ? faChevronCircleDown : faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
         </div>
         <div className={`collapsible-content ${isVisible ? 'open' : ''}`}>
             {isVisible && (
             <div>
                 <h4>Average Rating: <StarRating rating={averageRating} /></h4>
-                {post.comments.map((commentText, index) => (
+                {comments.map((commentText, index) => (
                 <div key={index} className="comment">
-                    <p><strong>{commentText.username}</strong></p>
-                    <StarRating rating={commentText.rating} /> : <span>{commentText.body}</span>
+                    <p><strong>{commentText.username}</strong></p><StarRating rating={commentText.rating} /> : <span>{commentText.body}</span>
                 </div>
                 ))}
             </div>
@@ -185,7 +186,7 @@ const PostDetails = ({post}) => {
         </div>
         </div>
 
-
+     
         
         </div>
     )
