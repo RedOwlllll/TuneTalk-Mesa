@@ -31,8 +31,13 @@ const postSchema = new Schema({
     },
 
     caption: {
-        type: String
+        type: String,
         
+    },
+
+    spotifyURL: {
+        type: String,
+
     }
     
 
