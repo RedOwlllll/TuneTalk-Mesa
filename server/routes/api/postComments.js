@@ -6,37 +6,55 @@ const Post = require('../../models/post')
 // const router = express.Router();
 
 
-
-
-
-// Endpoint to comment and rate the song
-router.post('api/songs/comment', async (req, res) => {
+router.post('/postsongs/comment', async (req, res) => {
     const { postId, username, comment, rating } = req.body;
+
     try {
-        let userPostSong = await Post.findById({ postId });
+        // Correctly find the document by ID
+        let userPostSong = await Post.findById(postId);
         if (!userPostSong) {
             return res.status(404).send('Song not found');
         }
-        
-        // Check if the user has already commented
-        const existingCommentIndex = userPostSong.comments.findIndex(c => c.username === username);
-        if (existingCommentIndex !== -1) {
-            // User has commented before, update the existing comment
-            userPostSong.comments[existingCommentIndex].body = comment;
-            userPostSong.comments[existingCommentIndex].rating = rating;
-            userPostSong.comments[existingCommentIndex].date = new Date(); // Update the date of the comment
-        } else {
-            // No existing comment from this user, add new
-            userPostSong.comments.push({ username, body: comment, rating, date: new Date() });
-        }
 
-        await userPostSong.save(); // Save the updated song document
-        res.json(userPostSong);
+        // Add a new comment to the comments array
+        userPostSong.comments.push({
+            username, 
+            body: comment, 
+            rating, 
+            date: new Date()
+        });
+
+        // Save the updated song document
+        let updatedPostSong = await userPostSong.save();
+        res.json(updatedPostSong);  // Return the updated document in the response
     } catch (error) {
         console.error(error);
         res.status(500).send('Error adding comment and rating');
     }
 });
+
+
+// Endpoint to comment and rate the song
+// router.post('/postsongs/comment', async (req, res) => {
+//     const { postId, username, comment, rating } = req.body;
+//     try {
+//         let userPostSong = await Post.findById({ postId });
+//         if (!userPostSong) {
+//             return res.status(404).send('Song not found');
+//         }
+        
+      
+//             // No existing comment from this user, add new
+//             userPostSong.comments.push({ username, body: comment, rating, date: new Date() });
+        
+
+//         await userPostSong.save(); // Save the updated song document
+//         res.json(userPostSong);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send('Error adding comment and rating');
+//     }
+// });
 
 const createPost = async(req, res) => {
     const {postusername, imageData, email, title, artist, rating, caption} = req.body

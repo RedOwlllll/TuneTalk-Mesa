@@ -41,27 +41,49 @@ const PostDetails = ({post}) => {
         });
       };
 
-    const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!user) {
-        alert('You must be logged in to post comments.');
-        return;
-    }
-    try {
-        const response = await axios.post('http://localhost:8082/api/postsongs/comment', {
-        //spotifyUrl: featuredTrack.external_urls.spotify,
-        postID: post.postId,
-        username: user.username,
-        comment,
-        rating
-        });
-        console.log('Comment added:', response.data);
-        setComment('');
-        setRating(1);
-    } catch (error) {
-        console.error('Failed to post comment:', error);
-    }
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!user) {
+            alert('You must be logged in to post comments.');
+            return;
+        }
+        try {
+            const commentData = {
+                postId: post._id,  // Ensure this is the MongoDB _id of the post
+                username: user.username,
+                comment: comment, // This should be the text of the new comment
+            };
+    
+            const response = await axios.post('http://localhost:8082/api/posts/comment', commentData);
+            console.log('Comment added:', response.data);
+            setComment('');
+        } catch (error) {
+            console.error('Failed to post comment:', error);
+        }
     };
+    
+
+    // const handleSubmit = async (e) => {
+    // e.preventDefault();
+    // if (!user) {
+    //     alert('You must be logged in to post comments.');
+    //     return;
+    // }
+    // try {
+    //     const response = await axios.post('http://localhost:8082/api/postsongs/comment', {
+    //     //spotifyUrl: featuredTrack.external_urls.spotify,
+    //     postId: post._id,
+    //     username: user.username,
+    //     comment: post.comments,
+        
+    //     });
+    //     console.log('Comment added:', response.data);
+    //     setComment('');
+    //     setRating(1);
+    // } catch (error) {
+    //     console.error('Failed to post comment:', error);
+    // }
+    // };
     
     return (
         
