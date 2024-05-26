@@ -34,7 +34,6 @@ export const Feed = () => {
             <div className="posts">
                 {posts && posts.map((post) => (
                     <PostDetails key={post._id} post={post} />
-            
                 ))}
             </div>
         </div>

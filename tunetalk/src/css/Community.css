@@ -258,6 +258,7 @@ input.community-input {
   border: none;
   transition: background-color 0.3s ease;
   text-transform: none;
+  border-radius: 20px;
 }
 
 .container-page .community-btn:hover {
