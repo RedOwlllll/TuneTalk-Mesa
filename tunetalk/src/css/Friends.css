@@ -1,43 +1,57 @@
 .friends-page {
-    width: 90%;
-    max-width: 600px;
-    margin: 20px auto;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr; /* Maintain the column sizing */
+    gap: 20px;
+    padding: 20px;
+    margin: 0 auto; /* Center the grid horizontally */
+    align-items: start; /* Keep items aligned at the top */
+    width: 100%; /* Use full width */
+    max-width: 1200px; /* Maximum width of the grid */
     font-family: Arial, sans-serif;
+    box-sizing: border-box; /* Include padding in width calculations */
 }
 
-h1, h2 {
-    color: #333;
-}
-
-.add-friend, .friend-request, .friend {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    padding: 10px;
+/* Additional styles to ensure consistency */
+.add-friend, .requests-list, .friends-list {
+    padding: 20px;
     background-color: #f9f9f9;
-    border-radius: 5px;
+    border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.add-friend input, .add-friend button {
+.requests-list, .friends-list {
+    background-color: #f1f1f1; /* Lighter background for distinction */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Soft shadow */
+}
+
+h1 {
+    grid-column: 1 / -1; /* Full width */
+    text-align: center;
+    color: #333;
+}
+
+h2 {
+    text-align: center;
+}
+
+.add-friend input, .add-friend button, .friend-request button, .friend button {
     padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 input {
     flex: 1;
     margin-right: 8px;
     border: 2px solid #ccc;
-    border-radius: 4px;
 }
 
 button {
     background-color: #007BFF;
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
@@ -46,10 +60,96 @@ button:hover {
 }
 
 .error {
-    color: red;
     text-align: center;
     padding: 10px;
     background-color: #ffd2d2;
     border: 1px solid red;
     margin: 10px 0;
+    color: red;
+}
+
+.friends-list h2 {
+    margin-bottom: 20px; /* Adds space below the 'My Friends' title */
+}
+
+.friend {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* Space between each friend box */
+    padding: 10px;
+    background-color: #ffffff; /* White background for each friend box */
+    border: 1px solid #ccc; /* Light gray border for a subtle box look */
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Soft shadow for depth */
+}
+
+.friend p {
+    margin: 0 10px 0 0; /* Remove bottom margin, add right margin for space between email and button */
+    flex: 1; /* Allows email to take up available space */
+}
+
+.friend button {
+    background-color: #007BFF; /* Blue button for actions */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.friend button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.requests-list {
+    padding: 20px;
+    background-color: #f1f1f1; /* Matches the friends-list background */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px; /* Consistent spacing */
+}
+
+.requests-list h2 {
+    margin-bottom: 20px; 
+}
+
+.friend-request:first-child {
+    margin-top: 20px; 
+}
+
+.friend-request {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* Space between each request box */
+    padding: 10px;
+    background-color: #ffffff; /* White background for each request box */
+    border: 1px solid #ccc; /* Light gray border for a subtle box look */
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Soft shadow for depth */
+}
+
+.friend-request p {
+    margin: 0 10px 0 0; /* Remove bottom margin, add right margin for space */
+    flex: 1; /* Allows email to take up available space */
+}
+
+.friend-request button {
+    background-color: #007BFF; /* Blue button for actions */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px; /* Adds spacing to the right of each button */
+}
+
+.friend-request button:last-child {
+    margin-right: 0; /* Remove margin from the last button to maintain alignment */
+}
+
+.friend-request button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
 }

@@ -69,7 +69,7 @@ export const Login = () => {
                 <label>Password:</label><br/>
                 <input value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} type="password" id="loginPassword" placeholder="********" required/>
                 <br/>
-                <br/><button type="submit">Log In</button><br/>
+                <br/><button type="submit" className="login-button">Log In</button><br/>
                 <br/>
                 { alertMessage && (
                     <div className="alert">{ alertMessage }</div>

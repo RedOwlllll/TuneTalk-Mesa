@@ -58,10 +58,13 @@ h4 {
 }
 
 
-button[type=submit] {
+.menu-button,
+.login-button,
+.register-button,
+.spotify-button {
     border-radius: 30px;
     border: 1px solid #004d39;
-    background-color: #6D968F;
+    background-color: #6D968F; 
     color: #ffffff;
     font-weight: bold;
     cursor: pointer;
@@ -70,6 +73,12 @@ button[type=submit] {
     text-transform: uppercase;
 }
 
+.menu-button:hover,
+.login-button:hover,
+.register-button:hover,
+.spotify-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
 
 input {
     background-color: #ccc;

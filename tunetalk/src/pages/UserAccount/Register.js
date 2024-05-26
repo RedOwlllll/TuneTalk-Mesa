@@ -94,7 +94,7 @@ export const Register = () => {
                 <label>Password:</label><br/>
                 <input value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} type="password" id="registerPassword" placeholder="*********" required/><br/>
                 <br/>
-                <button type="submit">register</button>
+                <button type="submit" className="register-button">register</button>
                 <br/><br/>
                 { alertMessage && (
                     <div className="alert">{ alertMessage }</div>

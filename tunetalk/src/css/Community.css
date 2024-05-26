@@ -1,13 +1,26 @@
-.container-page {
+/* h4 tag for community pages - had to define a className as it was overriding other css classes w h4 tags */
+.community-h4 {
+  margin-top:25px;
+  text-align: center;
+  color: #333;
+  margin-bottom:10px;
+}
+
+h5 {
+  text-align: center;
+  color: #333;
+}
+
+.follow-container {
   padding: 20px;
   text-align: center;
 }
-
+  
 .community-title {
   margin-bottom: 30px;
   color: #333;
 }
-
+  
 .genre-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -16,7 +29,7 @@
   margin: 0 auto;
   max-width: 960px;
 }
-
+  
 .genre-card {
   background-color: #f0f0f0;
   color: #333;
@@ -27,7 +40,7 @@
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
-
+  
 .genre-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 12px rgba(0,0,0,0.15);
@@ -56,7 +69,7 @@
   justify-content: center;
   padding: 20px;
 }
-
+  
 .playlist-card {
   width: 200px; /* Set the width of the card */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -66,22 +79,22 @@
   text-align: center;
   background: #fff;
 }
-
+  
 .playlist-image {
   width: 100%;
   height: 200px; /* Set a fixed height, or use 'auto' to keep the aspect ratio */
   object-fit: cover; /* This makes sure the image covers the area, can also use 'contain' */
 }
-
+  
 .playlist-info {
   padding: 10px;
 }
-
+  
 .playlist-info h3 {
   margin: 10px 0;
   font-size: 1rem;
 }
-
+  
 .playlist-link {
   display: inline-block;
   background: #1DB954; /* Spotify green */
@@ -92,25 +105,51 @@
   font-weight: bold;
   margin-top: 10px;
 }
-
+  
 .playlist-link:hover {
   background: #1ed760;
 }
 
-.featured-track-container {
+.featured-track-container{
   width: 50%;
   margin: 20px auto;
   padding: 20px;
   background-color: #f2f2f2;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  min-width: 510px; 
+  padding: 20px;
+  text-align: center;
 }
 
+.community-comments-container{
+  width: 50%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f2f2f2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  min-width: 510px; 
+  padding: 20px;
+}
+.community-comments-container .comment {
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+}
+  
 .track-card {
   display: flex;
   align-items: center;
+  width: 100%;
 }
-
+  
 .track-image {
   width: 300px;
   height: 300px;
@@ -131,84 +170,47 @@
 .track-artist {
   font-size: 18px;
   color: #666;
+  margin-bottom: 16px;
 }
 
-.comment-input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.submit-comment {
-  background-color: #0095f6;
+  
+.spotify-play-button {
+  background-color: #1DB954; /* Spotify brand green */
   color: white;
   padding: 8px 16px;
-  margin-top: 10px;
   border: none;
-  border-radius: 4px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: bold;
   cursor: pointer;
-  font-size: 14px;
+  margin-bottom: 20px;
+  min-width: 120px; 
+  padding: 8px 16px;
 }
 
-.submit-comment:hover {
-  background-color: #0056b3;
+.spotify-play-button:hover {
+  background-color: #1ed760; /* Lighter green on hover */
 }
 
-.comments-container {
-  max-height: 200px; 
-  overflow-y: auto; 
-  padding: 10px;
-  margin-top: 10px;
-  border: 1px solid #ccc; 
-  border-radius: 5px;    
-  background-color: #f9f9f9; 
-  transform: translateY(10px); 
+.rating {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
-.comment-box, .reply-box {
-  background-color: #f9f9f9;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  position: relative;
+.rating input {
+  display: none; /* Hide the radio buttons */
 }
 
-.comment-header {
-  background-color: #f9f9f9;
-  font-size: 0.85em;
-  color: #555;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.reply-box {
-  background-color: #e9e9e9;
-  margin-left: 20px;
-}
-
-.reply-content {
-  background-color: #ffffff;
-  padding: 8px;
-  margin-bottom: 5px;
-  border-radius: 5px;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
-}
-
-.comment-edit-button {
-  padding: 2px 6px; /* Smaller padding */
-  font-size: 12px; /* Smaller font size */
-  color: white;
-  background-color: #007BFF;
-  border: none;
-  border-radius: 3px;
+.rating label i {
+  padding: 0 10px;
+  font-size: 1.5rem;
+  color: #ccc; /* Default color for stars */
   cursor: pointer;
 }
 
-.comment-edit-button:hover {
-  background-color: #0056b3;
+.rating label .fas {
+  color: #ffc107; /* Gold color for selected stars */
 }
 
 /* Responsive adjustments */
@@ -230,7 +232,6 @@ input.community-input {
   width: 100%;
 }
 
-
 .container-page .community-btn {
   padding: 10px 20px;
   margin-top: 10px;
@@ -244,6 +245,7 @@ input.community-input {
 .container-page .community-btn:hover {
   background-color: #0056b3;
 }
+
 
 
 .follower-modal {
@@ -299,7 +301,6 @@ input.community-input {
   background-color: #45a049;
 }
 
-
 .follower-count {
   display: inline-block;
   background-color: #f2f2f2;
@@ -318,7 +319,6 @@ input.community-input {
 .icon {
   transition: transform 0.3s ease;
 }
-
 .icon.up {
   transform: rotate(180deg);
 }

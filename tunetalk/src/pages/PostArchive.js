@@ -127,9 +127,6 @@ function Post() {
     // component render
     return (
         <div className="home-page">
-            {/* {!token ?
-                <a href={getLoginURL()}>Login to Spotify</a>
-                : <button onClick={logout}>Logout</button>} */}
 
             <div className="button-container">
                 <div className="button-box">

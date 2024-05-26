@@ -6,19 +6,9 @@ import StarRating from "./StarRating";
 
 function UserPost() {
 
-    //spotify api credentials and endpoints
-    // const CLIENT_ID = "82051e28a62540019c2de5c903d8bca1"
-    // const REDIRECT_URI = "http://localhost:3000/home"
-    // const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
-    // const RESPONSE_TYPE = "token"
-    // const SCOPES = "user-read-recently-played";
-
-    //state hooks to store the token and recent song info
-    // const [token, setToken] = useState("");
     const [recentTrack, setRecentTrack] = useState(null);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
-
     const [postusername, setPostUsername] = useState('')
     const [email, setEmail] = useState('')
     const [title, setTitle] = useState('')
@@ -36,21 +26,11 @@ function UserPost() {
         setSelectedRating(rate);
     };
 
-   
-
     const token = localStorage.getItem("access_token");
     const username = localStorage.getItem("userlogin");
 
     console.log(username);
 
-
-  
-
-    // const testusername = 10;
-    // const testemail = 10;
-    // const testtitle = 10;
-    // const testartist = 10;
-    // const testrating = 10;
 
     const getRecentTrack = () => {
 
@@ -74,26 +54,6 @@ function UserPost() {
                     title: track.name, //title 
                     albumCover: track.album.images[0].url // URL of album image
                 });
-
-                
-                
-
-
-                // fetch(track.album.images[0].url)
-                // .then(response => response.blob())
-                // .then(blob => {
-                //     const reader = new FileReader();
-                //     reader.onloadend = () => {
-                //         const base64Data = reader.result; // Base64 string of the image
-                //         // Store the base64 string in state
-                //         setImageData(base64Data);
-                //     };
-                //     reader.readAsDataURL(blob);
-                // })
-                // .catch(error => {
-                //     console.log('Error fetching image:', error);
-                // });
-
                 
                 //prepare song to be saved
                 const songData = {
@@ -122,39 +82,6 @@ function UserPost() {
           });
         };
 
-    // const handleCommentSubmit = (e) => {
-
-    //     e.preventDefault(); 
-
-    //     const commentData = {
-    //         text: newComment,
-    //         user: username
-    //     };
-
-     
-    // };
-
-   
-
-    // useEffect(() => {
-    //     if (recentTrack && recentTrack.albumCover) {
-    //         handleImageData(recentTrack.albumCover);
-    //     }
-    // }, [recentTrack]);
-
-    // const handleImageData = async (imageUrl) => {
-    //     const response = await fetch(track.album.images[0].url);
-    //     const blob = await response.blob();
-    //     const reader = new FileReader();
-    //     reader.onloadend = () => {
-    //         setImageData(reader.result);
-    //         console.log(imageData)
-    //     };
-    //     reader.readAsDataURL(blob);
-    // };
-
-
-
     const handleSubmission = async (e) =>{
 
         const confirmation = window.confirm("Are you sure you want to post this song? (All your friends will see)");
@@ -182,71 +109,16 @@ function UserPost() {
             }
     
             if (response.ok) {
-                // setPostUsername('')
-                // setEmail('')
-                // setTitle('')
-                // setArtist('')
-                // setRating('')
-                // setCaption('')
-    
                 setError(null)
                 console.log('post added')
             }
         }
-
-        
-        // console.log(postusername)
-        // console.log(rating)
-        // console.log(caption)
-
-       
-
-       
-        // setPostUsername('test');
-        // setEmail('test');
-        // setTitle('test');
-        // setArtist('test');
-        // setRating(1);
-        // setCaption('test');
-       
-        
-        // console.log(postusername)
-        // console.log(rating)
-        // console.log(caption)
-
-       
-
-        //const post = {username,email,title,artist,rating,caption}
-
-        
-        
-        // const post = {postusername,email,title,artist,rating,caption}
-
-
-        // console.log(postusername)
-        // console.log(rating)
-        // console.log(caption)
-
-       
-        
-        // setPostUsername('test');
-        // setEmail('test');
-        // setTitle('test');
-        // setArtist('test');
-        // setRating('1');
-        // setCaption('test');
-
-       
-
     }
 
     // component render
     return (
         <div className="home-page">
-            {/* {!token ?
-                <a href={getLoginURL()}>Login to Spotify</a>
-                : <button onClick={logout}>Logout</button>} */}
-
+            
             <div className="button-container">
                 <div className="button-box">
                     <button onClick={getRecentTrack}>POST NOW!</button>
@@ -310,12 +182,6 @@ function UserPost() {
                             />
                             <button type="submit" className="submit-comment">Post</button>
                         </form>
-
-                
-
-
-
-
                     </div>
                 
                 </div>
