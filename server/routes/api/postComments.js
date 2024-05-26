@@ -36,7 +36,7 @@ const Post = require('../../models/post')
 // });
 
 router.post('/postsongs/comment', async (req, res) => {
-    const { postId, commentusername, comment, commentrating } = req.body;
+    const { postId, commentusername, commentbody, commentrating } = req.body;
     try {
         let userPostSong = await Post.findById({ _id: postId });
         if (!userPostSong) {
@@ -45,8 +45,8 @@ router.post('/postsongs/comment', async (req, res) => {
 
 
             // No existing comment from this user, add new
-            userPostSong.comments.push({ commentusername, commentbody: comment, commentrating, date: new Date() });
-
+            userPostSong.comments.push({ commentusername, commentbody, commentrating, date: new Date() });
+            
 
         await userPostSong.save(); // Save the updated song document
         res.json(userPostSong);
@@ -82,10 +82,25 @@ router.post('/postsongs/comment', async (req, res) => {
 
 
 // Endpoint to get comments for a song
-router.get('/posts/comments/:spotifyUrl', async (req, res) => {
+// router.get('/posts/comments/:id', async (req, res) => {
+//     try {
+//         const { _id: postId } = req.params;
+//         const userPostSong = await Post.findOne({ _id: postId });
+//         if (!userPostSong) {
+//             return res.status(404).send('Song not found');
+//         }
+//         res.json({ comments: userPostSong.comments });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send('Error fetching comments');
+//     }
+// });
+
+// Endpoint to get comments for a song
+router.get('/postsongs/comments/:id', async (req, res) => {
     try {
-        const { spotifyUrl } = req.params;
-        const userPostSong = await Post.findOne({ spotifyUrl });
+        const { id: postId } = req.params.id; // Corrected from _id to id to match the route parameter
+        const userPostSong = await Post.findOne({ id: postId });
         if (!userPostSong) {
             return res.status(404).send('Song not found');
         }
@@ -95,5 +110,8 @@ router.get('/posts/comments/:spotifyUrl', async (req, res) => {
         res.status(500).send('Error fetching comments');
     }
 });
+
+
+
 
 module.exports = router

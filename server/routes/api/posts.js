@@ -14,7 +14,6 @@ const
 
 router.get('/', getAllPosts)
 
-
 router.get('/:id', getPost)
 
 router.post('/', createPost)

@@ -4,15 +4,24 @@ import { handleCommentSubmit } from "../pages/Post";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "../authentication/UserState";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+
+
+import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 
 
 const PostDetails = ({post}) => {
     // const [newComment, setNewComment] = useState('');
     // const [comments, setComments] = useState([]);
     // const username = 'testname'
-    const [comment, setComment] = useState('');
+    const [commentText, setCommentText] = useState('');
     const [rating, setRating] = useState(0);
     const [user] = useUser(); 
+    const [isVisible, setIsVisible] = useState(false);
+    const [comments, setComments] = useState([]);
+    const [averageRating, setAverageRating] = useState(0);
+    const toggleVisibility = () => setIsVisible(!isVisible); // Collapse comment box
 
     // const handleCommentSubmit = (e) => {
 
@@ -41,50 +50,77 @@ const PostDetails = ({post}) => {
         });
       };
 
-      const handleSubmit = async (postId) => {
-        postId.preventDefault();
+      useEffect(() => {
+        if (post._id) {
+            fetchComments(post._id);
+        }
+    }, [post._id]);
+    
+
+      useEffect(() => {
+        if (post._id) {
+          fetchComments(post._id);
+        }
+      }, [post._id]);
+
+      const fetchComments = async (postId) => {
+        try {
+          const response = await axios.get(`http://localhost:8082/api/postsongs/comments/${encodeURIComponent(postId)}`);
+          setComments(response.data.comments);
+          console.log("comments fetched")
+          console.log(response.data.comments);
+        } catch (error) {
+          console.error("Error fetching comments:", error);
+        }
+      };
+    
+      
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
         if (!user) {
             alert('You must be logged in to post comments.');
             return;
         }
         try {
+            //const post = {postusername,imageData,email,title,artist,rating,caption}
+
+            console.log(commentText)
+            console.log("chan")
             const commentData = {
                 postId: post._id,  // Ensure this is the MongoDB _id of the post
                 commentusername: user.username,
-                commentbody: comment, // This should be the text of the new comment
+                commentbody: commentText, // This should be the text of the new comment
                 commentrating: rating
             };
             const response = await axios.post('http://localhost:8082/api/postsongs/comment', commentData);
             console.log('Comment added:', response.data);
-            setComment('');
+            console.log(commentData)
+            setCommentText('');
             setRating(1);
         } catch (error) {
             console.error('Failed to post comment:', error);
         }
       };
     
-
-    // const handleSubmit = async (e) => {
-    // e.preventDefault();
-    // if (!user) {
-    //     alert('You must be logged in to post comments.');
-    //     return;
-    // }
-    // try {
-    //     const response = await axios.post('http://localhost:8082/api/postsongs/comment', {
-    //     //spotifyUrl: featuredTrack.external_urls.spotify,
-    //     postId: post._id,
-    //     username: user.username,
-    //     comment: post.comments,
-        
-    //     });
-    //     console.log('Comment added:', response.data);
-    //     setComment('');
-    //     setRating(1);
-    // } catch (error) {
-    //     console.error('Failed to post comment:', error);
-    // }
-    // };
+      function StarRating({ rating }) {
+        const totalStars = 5;
+        let stars = [];
+    
+        // Create filled stars up to the rating
+        for (let i = 1; i <= totalStars; i++) {
+          if (i <= rating) {
+            stars.push(<i key={i} className="fas fa-star" style={{ color: '#ffc107' }}></i>);
+          } else if (i > rating && i - 1 < rating) {
+            // Handle half star for fractions
+            stars.push(<i key={i} className="fas fa-star-half-alt" style={{ color: '#ffc107' }}></i>);
+          } else {
+            stars.push(<i key={i} className="far fa-star" style={{ color: '#ffc107' }}></i>);
+          }
+        }
+    
+        return <div>{stars}</div>;
+      }
 
     
     
@@ -113,7 +149,7 @@ const PostDetails = ({post}) => {
             
             {/* Comment form */}
             <form onSubmit={handleSubmit}>
-          <input class="post-comment-input" type = "text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
+          <input class="post-comment-input" type = "text" value={commentText} onChange={(e) => setCommentText(e.target.value)} placeholder="Write a comment..." required />
           <div className="rating">
               {[1, 2, 3, 4, 5].map((star) => (
                 <label key={star}>
@@ -129,10 +165,31 @@ const PostDetails = ({post}) => {
             </div>
           <button class="post-comment-btn" type="submit">Post Comment and Rating</button>
         </form>
+        
+        <div className="community-comments-container">
+        <div className="toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
+        <strong>{commentText.username}</strong> <h5>Tap to {isVisible ? 'hide' : 'view'} comment <FontAwesomeIcon icon={isVisible ? faChevronCircleDown : faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
+        </div>
+        <div className={`collapsible-content ${isVisible ? 'open' : ''}`}>
+            {isVisible && (
+            <div>
+                <h4>Average Rating: <StarRating rating={averageRating} /></h4>
+                {post.comments.map((commentText, index) => (
+                <div key={index} className="comment">
+                    <p><strong>{commentText.username}</strong></p>
+                    <StarRating rating={commentText.rating} /> : <span>{commentText.body}</span>
+                </div>
+                ))}
+            </div>
+            )}
+        </div>
+        </div>
+
 
         
-                    </div>
-                )
-            }
+        </div>
+    )
+    }
+            
 
 export default PostDetails

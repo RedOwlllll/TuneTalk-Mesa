@@ -6,15 +6,7 @@ import StarRating from "./StarRating";
 
 function UserPost() {
 
-    //spotify api credentials and endpoints
-    // const CLIENT_ID = "82051e28a62540019c2de5c903d8bca1"
-    // const REDIRECT_URI = "http://localhost:3000/home"
-    // const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
-    // const RESPONSE_TYPE = "token"
-    // const SCOPES = "user-read-recently-played";
-
-    //state hooks to store the token and recent song info
-    // const [token, setToken] = useState("");
+   
     const [recentTrack, setRecentTrack] = useState(null);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
@@ -46,11 +38,6 @@ function UserPost() {
 
   
 
-    // const testusername = 10;
-    // const testemail = 10;
-    // const testtitle = 10;
-    // const testartist = 10;
-    // const testrating = 10;
 
     const getRecentTrack = () => {
 
@@ -79,20 +66,7 @@ function UserPost() {
                 
 
 
-                // fetch(track.album.images[0].url)
-                // .then(response => response.blob())
-                // .then(blob => {
-                //     const reader = new FileReader();
-                //     reader.onloadend = () => {
-                //         const base64Data = reader.result; // Base64 string of the image
-                //         // Store the base64 string in state
-                //         setImageData(base64Data);
-                //     };
-                //     reader.readAsDataURL(blob);
-                // })
-                // .catch(error => {
-                //     console.log('Error fetching image:', error);
-                // });
+               
 
                 
                 //prepare song to be saved
@@ -104,54 +78,23 @@ function UserPost() {
                     rating: StarRating,
                 }
                 
-                saveTrackToDatabase(username, songData);
+                // saveTrackToDatabase(username, songData);
 
             }).catch(error => {
                 console.log('Error fetching recent track:', error); //log any errors during the call
             });
     };
 
-    const saveTrackToDatabase = (username, songData) => {
-        console.log(songData);
-        axios.post(`http://localhost:8082/api/user/${username}/addPost`, songData )
-          .then(response => {
-            console.log('Song post saved:', response.data);
-          })
-          .catch(error => {
-            console.error('Error saving the song post:', error.response.data);
-          });
-        };
-
-    // const handleCommentSubmit = (e) => {
-
-    //     e.preventDefault(); 
-
-    //     const commentData = {
-    //         text: newComment,
-    //         user: username
+    // const saveTrackToDatabase = (username, songData) => {
+    //     console.log(songData);
+    //     axios.post(`http://localhost:8082/api/user/${username}/addPost`, songData )
+    //       .then(response => {
+    //         console.log('Song post saved:', response.data);
+    //       })
+    //       .catch(error => {
+    //         console.error('Error saving the song post:', error.response.data);
+    //       });
     //     };
-
-     
-    // };
-
-   
-
-    // useEffect(() => {
-    //     if (recentTrack && recentTrack.albumCover) {
-    //         handleImageData(recentTrack.albumCover);
-    //     }
-    // }, [recentTrack]);
-
-    // const handleImageData = async (imageUrl) => {
-    //     const response = await fetch(track.album.images[0].url);
-    //     const blob = await response.blob();
-    //     const reader = new FileReader();
-    //     reader.onloadend = () => {
-    //         setImageData(reader.result);
-    //         console.log(imageData)
-    //     };
-    //     reader.readAsDataURL(blob);
-    // };
 
 
 
@@ -182,12 +125,7 @@ function UserPost() {
             }
     
             if (response.ok) {
-                // setPostUsername('')
-                // setEmail('')
-                // setTitle('')
-                // setArtist('')
-                // setRating('')
-                // setCaption('')
+                
     
                 setError(null)
                 console.log('post added')
@@ -195,46 +133,6 @@ function UserPost() {
         }
 
         
-        // console.log(postusername)
-        // console.log(rating)
-        // console.log(caption)
-
-       
-
-       
-        // setPostUsername('test');
-        // setEmail('test');
-        // setTitle('test');
-        // setArtist('test');
-        // setRating(1);
-        // setCaption('test');
-       
-        
-        // console.log(postusername)
-        // console.log(rating)
-        // console.log(caption)
-
-       
-
-        //const post = {username,email,title,artist,rating,caption}
-
-        
-        
-        // const post = {postusername,email,title,artist,rating,caption}
-
-
-        // console.log(postusername)
-        // console.log(rating)
-        // console.log(caption)
-
-       
-        
-        // setPostUsername('test');
-        // setEmail('test');
-        // setTitle('test');
-        // setArtist('test');
-        // setRating('1');
-        // setCaption('test');
 
        
 
