@@ -145,7 +145,6 @@ nav .menu {
     border-radius: 0.5rem; /* Makes the border curvy */
 }
 
-
 /* Media query that handles navigation menu when screen is smaller */
 @media (max-width: 50em) {
     nav .menu {

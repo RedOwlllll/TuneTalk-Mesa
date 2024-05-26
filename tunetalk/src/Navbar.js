@@ -81,8 +81,8 @@ export const Navbar = () => {
                         {user?.isAuthenticated && (
                             <li>
                                 <div className="account-dropdown">
-                                    <div className="profile-image-section" style={{marginTop: '2px', justifyContent: 'center', alignItems: 'center', width: '50px', height: '45px'}}>
-                                        <div className="profile-image-container" style={{justifyContent: 'center', alignItems: 'center', width: '36px', height: '36px'}}>
+                                    <div className="profile-image-section" style={{justifyContent: 'center', alignItems: 'center', width: '50px', height: '45px'}}>
+                                        <div className="profile-image-container" style={{justifyContent: 'center', alignItems: 'center', width: '45px', height: '45px'}}>
                                         <img className="profile-image" src={user.profileImage || AccountLogo} alt="Profile" />
                                         </div>
                                     </div>

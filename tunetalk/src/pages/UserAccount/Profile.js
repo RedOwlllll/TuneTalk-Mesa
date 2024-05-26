@@ -18,7 +18,7 @@ export const Profile = () => {
                 {user.isAuthenticated && (
                    
                     <div className="profile-section">
-                        <div className="profile-image-container" style={{justifyContent: 'center'}}>
+                        <div className="profile-image-container">
                             <img className="profile-image" src={user.profileImage || AccountLogo} alt="Profile" />
                         </div>
                         <br></br>
