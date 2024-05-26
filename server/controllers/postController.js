@@ -1,33 +1,48 @@
-const post = require('../models/post')
 const Post = require('../models/post')
 const mongoose = require('mongoose')
+const User = require('../models/UserDetails');
+const Friend = require('../models/Friend');
 
 //get all posts
 const getAllPosts = async (req, res) => {
-    const posts = await Post.find({}).sort({createdAt: -1})
+    console.log("Query Parameters:", req.query);
+    const { username } = req.query;
 
-    res.status(200).json(posts)
-}
-
-
-//get a single post
-const getPost = async (req, res) => {
-    const {id} = req.params
-
-    if (!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({error: 'No such post'})
+    if (!username) {
+        return res.status(400).json({ error: 'Username required' });
     }
 
-    const post = await Post.findById(id)
+    try {
+        // Fetch friends where the current user is either the requester or the recipient and the status is 'accepted'
+        const friends = await Friend.find({
+            $or: [
+                { requesterUsername: username, status: 'accepted' },
+                { recipientUsername: username, status: 'accepted' }
+            ]
+        });
 
-    if (!post) {
-        return res.status(404).json({error:'no such post'})
+        // Extract usernames from both sides of each friendship
+        const friendUsernames = new Set();
+        friends.forEach(friend => {
+            friendUsernames.add(friend.requesterUsername);
+            friendUsernames.add(friend.recipientUsername);
+        });
+
+        console.log(friendUsernames)
+        // Remove the current user's username from the set
+        friendUsernames.delete(username);
+
+        // Convert the Set back to an array for the database query
+        const friendList = Array.from(friendUsernames);
+
+        console.log(friendList)
+        // Fetch posts made by friends
+        const posts = await Post.find({ 'postusername': { $in: friendList } }).sort({ createdAt: -1 });
+        res.status(200).json(posts);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
     }
-    else 
-
-    res.status(200).json(post)
-}
-
+};
 
 //create new post
 const createPost = async(req, res) => {
@@ -35,6 +50,7 @@ const createPost = async(req, res) => {
 
     try {
         const post = await Post.create({postusername,imageData, email,title,artist,rating,caption})
+        
         res.status(200).json(post) 
     }   catch (error) {
         res.status(400).json({error: error.message})
@@ -44,58 +60,7 @@ const createPost = async(req, res) => {
 }
 
 
-//delete a post
-const deletePost = async (req, res) => {
-
-    
-    const {id} = req.params
-
-    if (!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({error: 'No such post'})
-    }
-
-    const post = await Post.findOneAndDelete({_id:id})
-    
-    if (!post) {
-        return res.status(400).json({error:'no such post'})
-    }
-
-    res.status(200)
-}
-
-const deleteAllPosts = async (req, res) => {
-
-    await Post.deleteMany({});
-    res.status(200).json(Post)
-}
-
-
-
-//update a post
-const updatePost = async (req, res) => {
-    const {id} = req.params
-
-    if (!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({error: 'No such post'})
-    }
-
-    const post = await Post.findOneAndUpdate({_id: id}, {
-        ...req.body
-    })
-
-    if (!post) {
-        return res.status(400).json({error:'no such post'})
-    }
-
-    res.status(200).json(post)
-}
-
 module.exports = {
     getAllPosts,
-    getPost,
-    createPost,
-    deletePost,
-    deleteAllPosts,
-    updatePost
-    
+    createPost
 }

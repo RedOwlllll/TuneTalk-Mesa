@@ -2,19 +2,20 @@ import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own 
 import "../css/PostDetails.css";
 import { handleCommentSubmit } from "../pages/Post";
 import React, { useEffect, useState } from "react";
+import { useUser } from "../authentication/UserState";
 
 const PostDetails = ({post}) => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
-    const username = 'testname'
+    const [user] = useUser();
 
     const handleCommentSubmit = (e) => {
 
         e.preventDefault(); 
 
         const commentData = {
-            text: newComment,
-            user: username
+          text: newComment,
+          user: user.username
         };
 
        
@@ -27,6 +28,7 @@ const PostDetails = ({post}) => {
 
             
             {/* <h4>Username: {post.postusername}</h4> */}
+            <h4>Username: {post.postusername}</h4>
             <h4>Email: {post.email}</h4>
             <h4>Title: {post.title}</h4>
             <h4>Artist: {post.artist}</h4>
@@ -44,15 +46,15 @@ const PostDetails = ({post}) => {
             <h4>Timestamp: {post.createdAt}</h4>
             
             {/* Comment form */}
-            <form onSubmit={(e) => handleCommentSubmit(e, username, newComment, setComments, setNewComment)}>
-                            <input
-                                type="text"
-                                className="comment-input"
-                                placeholder="Add a comment..."
-                                value={newComment}
-                                onChange={(e) => setNewComment(e.target.value)}
-                            />
-                            <button type="submit" className="submit-comment">Post</button>
+            <form onSubmit={(e) => handleCommentSubmit(e, user.username, newComment, setComments, setNewComment)}>
+              <input
+                  type="text"
+                  className="comment-input"
+                  placeholder="Add a comment..."
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+              />
+              <button type="submit" className="submit-comment">Post</button>
             </form>
         </div>
     )

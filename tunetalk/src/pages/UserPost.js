@@ -3,6 +3,7 @@ import axios from 'axios';
 import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
 import "../css/Post.css";
 import StarRating from "./StarRating";
+import { useUser } from "../authentication/UserState";
 
 function UserPost() {
 
@@ -17,7 +18,9 @@ function UserPost() {
     const [caption, setCaption] = useState('')
     const [error, setError] = useState(null)
     const [imageData, setImageData] = useState('');
+    const [user] = useUser();
 
+    const [username] = user.username;
 
     const [selectedRating, setSelectedRating] = useState(0); // State variable to store the selected rating
 
@@ -27,10 +30,6 @@ function UserPost() {
     };
 
     const token = localStorage.getItem("access_token");
-    const username = localStorage.getItem("userlogin");
-
-    console.log(username);
-
 
     const getRecentTrack = () => {
 
@@ -63,24 +62,13 @@ function UserPost() {
                     comments: [],
                     rating: StarRating,
                 }
-                
-                saveTrackToDatabase(username, songData);
 
             }).catch(error => {
                 console.log('Error fetching recent track:', error); //log any errors during the call
             });
     };
 
-    const saveTrackToDatabase = (username, songData) => {
-        console.log(songData);
-        axios.post(`http://localhost:8082/api/user/${username}/addPost`, songData )
-          .then(response => {
-            console.log('Song post saved:', response.data);
-          })
-          .catch(error => {
-            console.error('Error saving the song post:', error.response.data);
-          });
-        };
+   
 
     const handleSubmission = async (e) =>{
 
@@ -155,13 +143,17 @@ function UserPost() {
                                 placeholder="Add a caption..."
                                 value={caption}
                                 onChange={(e) => {
-                                    setCaption(e.target.value)
-                                    setPostUsername(username);
-                                    setEmail(username);
+                                    console.log(user.email);
+                                    console.log(user.username);
+                                    setCaption(e.target.value);
+                                    setPostUsername(user.username);
+                                    setEmail(user.email);
                                     setTitle(recentTrack.title);
                                     setArtist(recentTrack.artist);
                                     setImageData()
                                     setRating(selectedRating);
+                                    console.log(setPostUsername);
+                                    console.log(setEmail);
                                     fetch(recentTrack.albumCover).then(response => response.blob()).then(blob => 
                                     {
                                         const reader = new FileReader();
@@ -183,8 +175,8 @@ function UserPost() {
                             />
                             <button type="submit" className="submit-comment" onMouseDown={(e) => {
                                     
-                                    setPostUsername(username);
-                                    setEmail(username);
+                                    setPostUsername(user.username);
+                                    setEmail(user.email);
                                     setTitle(recentTrack.title);
                                     setArtist(recentTrack.artist);
                                     
