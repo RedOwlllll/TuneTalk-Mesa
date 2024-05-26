@@ -1,0 +1,23 @@
+.about-page {
+    padding: 20px;
+    text-align: center;
+}
+
+.about-page h1 {
+    margin-bottom: 20px;
+    font-size: 2.5em;
+}
+
+.about-page p {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.link-btn {
+    color: black;
+    background: none;
+    text-decoration: underline;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}

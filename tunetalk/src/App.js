@@ -8,6 +8,7 @@ import { Register } from "./pages/UserAccount/Register";
 import { SpotifyLogin } from "./pages/UserAccount/SpotifyLogin";
 import { Feed } from "./pages/Feed";
 import { Home } from "./pages/Home";
+import { About } from './pages/About';
 import { Friends } from './pages/Friends';
 import { Community } from './pages/Community';
 import { ProtectedRoute } from "./authentication/ProtectedRoute";
@@ -40,6 +41,7 @@ export const App = () => {
             
             <Route path="/feed" element={<ProtectedRoute><Feed/></ProtectedRoute>} />
             <Route path="/friends" element={<ProtectedRoute><Friends /></ProtectedRoute>} />
+            <Route path="/about" element={<ProtectedRoute><About /></ProtectedRoute>} />
             <Route path="/community" element={<ProtectedRoute><Community /></ProtectedRoute>} />
             <Route path="/community/pop" element={<ProtectedRoute><Pop /></ProtectedRoute>} />
             <Route path="/community/rock" element={<ProtectedRoute><Rock /></ProtectedRoute>} />

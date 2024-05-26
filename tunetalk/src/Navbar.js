@@ -78,6 +78,7 @@ export const Navbar = () => {
                         <li><NavLink to="/feed">Feed</NavLink></li>
                         <li><NavLink to="/friends">Friends</NavLink></li>
                         <li><NavLink to="/community">Community</NavLink></li>
+                        <li><NavLink to="/about">About</NavLink></li>
                         {user.isAuthenticated && (
                             <li>
                                 <div className="account-dropdown">
