@@ -5,7 +5,6 @@ const Friend = require('../models/Friend');
 
 //get all posts
 const getAllPosts = async (req, res) => {
-    console.log("Query Parameters:", req.query);
     const { username } = req.query;
 
     if (!username) {

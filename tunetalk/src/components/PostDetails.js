@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import "../css/App.css";
 import "../css/PostDetails.css";
-import { handleCommentSubmit } from "../pages/Post";
-import React, { useEffect, useState } from "react";
 import { useUser } from "../authentication/UserState";
 
 const PostDetails = ({ post }) => {
