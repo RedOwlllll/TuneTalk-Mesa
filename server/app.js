@@ -12,7 +12,7 @@ const followRouter = require('./routes/api/followRoutes');
 const addPost = require("./routes/routes");
 const postRouter = require("./routes/api/posts");
 const songRouter = require("./routes/api/songRoutes")
-const commentRouter = require('./routes/api/commentRoutes'); // Adjust the path according to your setup
+const commentRouter = require('./routes/api/postComments'); // Adjust the path according to your setup
 
 //const commentRoutes = require('./routes/commentRoutes');
 
@@ -48,7 +48,7 @@ app.use("/api", addPost);
 app.use("/api", followRouter);
 app.use("/api/posts", postRouter);
 app.use("/api", songRouter);
-app.use("/api/commentRoutes", commentRouter);
+app.use("/api/postComments", commentRouter);
 
 
 

@@ -54,7 +54,7 @@ const PostDetails = ({post}) => {
                 commentbody: comment, // This should be the text of the new comment
                 commentrating: rating
             };
-            const response = await axios.post('http://localhost:8082/api/commentRoute/postsongs/comment', commentData);
+            const response = await axios.post('http://localhost:8082/api/commentRoutes/postsongs/comment', commentData);
             console.log('Comment added:', response.data);
             setComment('');
             setRating(1);
