@@ -77,6 +77,8 @@ function UserPost() {
                 // .catch(error => {
                 //     console.log('Error fetching image:', error);
                 // });
+
+                
                 //prepare song to be saved
                 const songData = {
                     title: track.name,
