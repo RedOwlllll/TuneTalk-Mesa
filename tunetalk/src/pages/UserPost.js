@@ -135,6 +135,8 @@ function UserPost() {
                     <div className="post-card-image-container">
                         <img src={recentTrack.albumCover} alt={`${recentTrack.title} Album Cover`} className="post-card-image" />
                         <StarRating onRating={(rate) => {console.log(rate); setSelectedRating(rate)}} />
+                       
+                    
                     </div>
                     <div className="post-card-content">
                         {/* Render existing comments */}
@@ -180,7 +182,31 @@ function UserPost() {
                                 }}
                                 
                             />
-                            <button type="submit" className="submit-comment">Post</button>
+                            <button type="submit" className="submit-comment" onMouseDown={(e) => {
+                                    
+                                    setPostUsername(username);
+                                    setEmail(username);
+                                    setTitle(recentTrack.title);
+                                    setArtist(recentTrack.artist);
+                                    
+                                    setRating(selectedRating);
+                                    fetch(recentTrack.albumCover).then(response => response.blob()).then(blob => 
+                                        {
+                                            const reader = new FileReader();
+                                            reader.onloadend = () => {
+                                                const base64Data = reader.result; // Base64 string of the image
+                                                // Store the base64 string in state
+                                                setImageData(base64Data);
+                                                console.log(base64Data)
+                                            };
+                                            reader.readAsDataURL(blob);
+                                        })
+                                        .catch(error => {
+                                            console.log('Error fetching image:', error);
+                                        })
+                                
+                                
+                                }}>Post</button>
                         </form>
                     </div>
                 
