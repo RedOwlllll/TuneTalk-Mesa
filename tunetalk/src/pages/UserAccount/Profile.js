@@ -46,6 +46,7 @@ export const Profile = () => {
                             <button className="edit-button" onClick={(e) => navigate("/account/edit-profile")}>Edit Profile</button>
                     </div>
                     <div className="post-section">
+                        <center><h1>My Posts:</h1></center><br></br>
                         {posts && posts.map((post) => (
                             <PostDetails key={post._id} post={post} />
                         ))}
