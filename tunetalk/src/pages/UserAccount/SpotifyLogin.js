@@ -154,7 +154,7 @@ export const SpotifyLogin = () => {
                 <div className="spotify-login-container">
                     <h3>Nearly there! <br/> You need to connect your Spotify Account with TuneTalk</h3>
                     <br/>
-                    <button type="submit" onClick={handleLogin}>Login to your Spotify Account</button>
+                    <button type="submit" className="spotify-button" onClick={handleLogin}>Login to your Spotify Account</button>
                     <br/><br/>
                 </div>
                 </>
