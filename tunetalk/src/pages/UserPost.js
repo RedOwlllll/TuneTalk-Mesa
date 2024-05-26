@@ -68,17 +68,6 @@ function UserPost() {
             });
     };
 
-    const saveTrackToDatabase = (username, songData) => {
-        console.log(songData);
-        axios.post(`http://localhost:8082/api/user/${username}/addPost`, songData )
-          .then(response => {
-            console.log('Song post saved:', response.data);
-          })
-          .catch(error => {
-            console.error('Error saving the song post:', error.response.data);
-          });
-        };
-
     const handleSubmission = async (e) => {
 
         e.preventDefault();

@@ -27,10 +27,6 @@ const getAllPosts = async (req, res) => {
             friendUsernames.add(friend.recipientUsername);
         });
 
-        console.log(friendUsernames)
-        // Remove the current user's username from the set
-        friendUsernames.delete(username);
-
         // Convert the Set back to an array for the database query
         const friendList = Array.from(friendUsernames);
 
@@ -41,6 +37,17 @@ const getAllPosts = async (req, res) => {
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
+};
+
+const getUserPosts = async (req, res) => {
+    const { username } = req.query;
+
+    if (!username) {
+        return res.status(400).json({ error: 'Username required' });
+    }
+
+    const posts = await Post.find({ 'postusername': username}).sort({ createdAt: -1 });
+    res.status(200).json(posts);
 };
 
 //create new post
@@ -61,5 +68,6 @@ const createPost = async(req, res) => {
 
 module.exports = {
     getAllPosts,
-    createPost
+    createPost,
+    getUserPosts
 }
