@@ -314,7 +314,7 @@ function Indie() {
               </div>
             </div>
           )}
-        <h4>Comment and rate the song</h4>
+        <h4 className="community-h4">Comment and rate the song</h4>
         <form onSubmit={handleSubmit}>
           <input class="community-input" type = "text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
           <div className="rating">
@@ -340,7 +340,7 @@ function Indie() {
         <div className={`collapsible-content ${isVisible ? 'open' : ''}`}>
           {isVisible && (
           <div>
-            <h4>Average Rating: <StarRating rating={averageRating} /></h4>
+            <h4 className="community-h4">Average Rating: <StarRating rating={averageRating} /></h4>
             {comments.map((comment, index) => (
             <div key={index} className="comment">
               <p><strong>{comment.username}</strong></p><StarRating rating={comment.rating} /> : <span>{comment.body}</span>

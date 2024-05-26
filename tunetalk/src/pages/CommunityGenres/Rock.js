@@ -314,7 +314,7 @@ function Rock() {
               </div>
             </div>
           )}
-        <h4>Comment and rate the song</h4>
+        <h4 className="community-h4">Comment and rate the song</h4>
         <form onSubmit={handleSubmit}>
           <input class="community-input" type = "text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
           <div className="rating">

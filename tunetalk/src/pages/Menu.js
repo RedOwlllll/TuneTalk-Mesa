@@ -16,7 +16,7 @@ export const Menu = () => {
             All your friends post at the same time, allowing you to create special bonds through music!
             </p>
             <br></br>
-            <br/><button type = "submit" onClick={() => navigate('/account/login')}>Login to TuneTalk</button><br/><br/>
+            <br/><button type = "submit" className="menu-button" onClick={() => navigate('/account/login')}>Login to TuneTalk</button><br/><br/>
         </div>
     );
 }

@@ -93,7 +93,7 @@ export const Navbar = () => {
                                             Email: {user.email} <br/> Username: {user.username} <br/> Spotify: {user.spotifyAccount}
                                         </div>
                                         </NavLink>
-                                        <button className="logout-btn" onClick={handleLogout}><h4>Log Out</h4></button>
+                                        <center><button className="logout-btn" onClick={handleLogout}><h4>Log Out</h4></button></center>
                                     </div>
                                 </div>
                             </li>
