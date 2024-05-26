@@ -15,8 +15,6 @@ const PostDetails = ({ post }) => {
         const newComments = [...comments, { text: newComment, user: username }];
         setComments(newComments);
         setNewComment('');
-
-        // Here you would typically also send `newComments` to your backend
     };
 
     // Created function to format date better in the post
