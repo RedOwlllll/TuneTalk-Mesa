@@ -22,11 +22,12 @@ console.log("DB connected")
 app.use(cors({origin: true, credentials: true}));
 
 // Init middleware
+app.use(express.json({extended: false, limit: '100mb' })); // Allows Express to read data sent using a POST or PUT request. It is used for recognizing incoming objects as JSON objects. 
+
 app.use(express.json({extended: false})); // Allows Express to read data sent using a POST or PUT request. It is used for recognizing incoming objects as JSON objects. 
 app.use(express.static('public'));
 app.use(bodyParser.json({limit: '100mb'})); //100mb capacity for load
 app.use(bodyParser.urlencoded({limit: '100mb', extended: true}));
-app.use(express.json({extended: false, limit: '100mb' })); // Allows Express to read data sent using a POST or PUT request. It is used for recognizing incoming objects as JSON objects. 
 
 
 app.use("/api/tunetalklogin", loginRouter);

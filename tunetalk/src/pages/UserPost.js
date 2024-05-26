@@ -135,8 +135,7 @@ function UserPost() {
                     <div className="post-card-image-container">
                         <img src={recentTrack.albumCover} alt={`${recentTrack.title} Album Cover`} className="post-card-image" />
                         <StarRating onRating={(rate) => {console.log(rate); setSelectedRating(rate)}} />
-                       
-                    
+                        
                     </div>
                     <div className="post-card-content">
                         {/* Render existing comments */}
