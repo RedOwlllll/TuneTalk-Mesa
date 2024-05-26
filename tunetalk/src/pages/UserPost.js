@@ -68,44 +68,63 @@ function UserPost() {
             });
     };
 
-   
+    const saveTrackToDatabase = (username, songData) => {
+        console.log(songData);
+        axios.post(`http://localhost:8082/api/user/${username}/addPost`, songData )
+          .then(response => {
+            console.log('Song post saved:', response.data);
+          })
+          .catch(error => {
+            console.error('Error saving the song post:', error.response.data);
+          });
+        };
 
-    const handleSubmission = async (e) =>{
+    const handleSubmission = async (e) => {
 
+        e.preventDefault();
+        
+        // Validation check to ensure post isn't made if the user does not input a caption and rating
+        if (selectedRating <= 0 || !caption.trim()) {
+            alert("Please provide a valid rating and a caption.");
+            return;
+        }
+        
         const confirmation = window.confirm("Are you sure you want to post this song? (All your friends will see)");
-
-        if (confirmation) {
-            
-            setRating(selectedRating);
-            //e.preventDefault()
-            const post = {postusername,imageData,email,title,artist,rating,caption}
-
-            console.log(post)
-
+        if (!confirmation) {
+            return; // If they don't confirm, do nothing further
+        }
+        
+        const post = { postusername, imageData, email, title, artist, rating: selectedRating, caption };
+        console.log(post);
+        
+        try {
             const response = await fetch('/api/posts', {
-                method: 'POST', 
+                method: 'POST',
                 body: JSON.stringify(post),
                 headers: {
                     'Content-Type': 'application/json'
                 }
-            
-            })
-    
-            const json = await response.json()
+            });
+            const json = await response.json();
+                
             if (!response.ok) {
-                setError(json.error)
+                setError(json.error);
+                
+            } else {
+                setError(null);
+                console.log('Post added');
+                setCaption(''); // Reset caption after posting
+                setSelectedRating(0); // Optionally reset the rating as well
+                window.location.reload();  // This will reload the current page
             }
-    
-            if (response.ok) {
-                setError(null)
-                console.log('post added')
-            }
+        } catch (error) {
+            console.error('Error posting:', error);
+            alert("An error occurred while posting. Please try again."); // if theres any error with posting 
         }
-    }
+    };
 
-    // component render
     return (
-        <div className="home-page">
+        <div className="poster-container">
             
             <div className="button-container">
                 <div className="button-box">
@@ -123,7 +142,6 @@ function UserPost() {
                     <div className="post-card-image-container">
                         <img src={recentTrack.albumCover} alt={`${recentTrack.title} Album Cover`} className="post-card-image" />
                         <StarRating onRating={(rate) => {console.log(rate); setSelectedRating(rate)}} />
-                        
                     </div>
                     <div className="post-card-content">
                         {/* Render existing comments */}
@@ -168,10 +186,7 @@ function UserPost() {
                                     .catch(error => {
                                         console.log('Error fetching image:', error);
                                     })
-                                
-                                
                                 }}
-                                
                             />
                             <button type="submit" className="submit-comment" onMouseDown={(e) => {
                                     
@@ -200,7 +215,6 @@ function UserPost() {
                                 }}>Post</button>
                         </form>
                     </div>
-                
                 </div>
             )}
         </div> 

@@ -17,7 +17,6 @@ export const Profile = () => {
                    
                     <div className="profile-section">
                         <div className="profile-image-container" style={{justifyContent: 'center'}}>
-            
                             <img className="profile-image" src={user.profileImage || AccountLogo} alt="Profile" />
                         </div>
                         <br></br>
@@ -28,7 +27,6 @@ export const Profile = () => {
                         <br></br>
                             <button className="edit-button" onClick={(e) => navigate("/account/edit-profile")}>Edit Profile</button>
                     </div>
-                    
                 )}
             </div>
         </div>  
