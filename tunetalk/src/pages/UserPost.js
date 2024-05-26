@@ -56,6 +56,7 @@ function UserPost() {
                     spotifyURL: track.external_urls.spotify
                 });
                 
+                setSpotifyURL(track.external_urls.spotify);
                 //prepare song to be saved
                 const songData = {
                     title: track.name,
