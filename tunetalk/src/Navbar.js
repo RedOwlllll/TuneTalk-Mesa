@@ -78,16 +78,16 @@ export const Navbar = () => {
                         <li><NavLink to="/feed">Feed</NavLink></li>
                         <li><NavLink to="/friends">Friends</NavLink></li>
                         <li><NavLink to="/community">Community</NavLink></li>
-                        {user.isAuthenticated && (
+                        {user?.isAuthenticated && (
                             <li>
                                 <div className="account-dropdown">
-                                    <button className="account-button" onClick={toggleDropdown}>
-                                        <h3 className="account-image"> 
-                                        <img src={AccountLogo} className="account-logo" alt="Account" />
-                                        </h3>
-                                    </button>
+                                    <div className="profile-image-section" style={{marginTop: '2px', justifyContent: 'center', alignItems: 'center', width: '50px', height: '45px'}}>
+                                        <div className="profile-image-container" style={{justifyContent: 'center', alignItems: 'center', width: '36px', height: '36px'}}>
+                                        <img className="profile-image" src={user.profileImage || AccountLogo} alt="Profile" />
+                                        </div>
+                                    </div>
                                     <div className="dropdown-content">
-                                        <NavLink to="/account/user" className="dropdown-link">
+                                        <NavLink to="/account/profile" className="dropdown-link">
                                         <div>
                                             {/* Will display both the user email and username in one div/navlink */}
                                             Email: {user.email} <br/> Username: {user.username} <br/> Spotify: {user.spotifyAccount}

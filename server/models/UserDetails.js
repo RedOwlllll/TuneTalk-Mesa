@@ -31,10 +31,16 @@ const UserDetailsSchema = new mongoose.Schema({
     spotifyEmail: {
         type: String, 
     },
+    bio: {
+        type: String,
+    },
+    profileImage: {
+        type: String
+    },
     posts: [{
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'SongPost'
-    }]
+    }],
 });
 
 const UserDetails = mongoose.model("UserDetails", UserDetailsSchema);
