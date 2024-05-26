@@ -50,13 +50,14 @@ const PostDetails = ({post}) => {
         try {
             const commentData = {
                 postId: post._id,  // Ensure this is the MongoDB _id of the post
-                username: user.username,
-                comment: comment, // This should be the text of the new comment
+                commentusername: user.username,
+                commentbody: comment, // This should be the text of the new comment
+                commentrating: rating
             };
-    
-            const response = await axios.post('http://localhost:8082/api/posts/comment', commentData);
+            const response = await axios.post('http://localhost:8082/api/commentRoute/postsongs/comment', commentData);
             console.log('Comment added:', response.data);
             setComment('');
+            setRating(1);
         } catch (error) {
             console.error('Failed to post comment:', error);
         }
@@ -110,7 +111,7 @@ const PostDetails = ({post}) => {
             
             {/* Comment form */}
             <form onSubmit={handleSubmit}>
-          <input class="community-input" type = "text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
+          <input class="post-comment-input" type = "text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
           <div className="rating">
               {[1, 2, 3, 4, 5].map((star) => (
                 <label key={star}>
@@ -124,7 +125,7 @@ const PostDetails = ({post}) => {
                 </label>
               ))}
             </div>
-          <button class="community-btn" type="submit">Post Comment and Rating</button>
+          <button class="post-comment-btn" type="submit">Post Comment and Rating</button>
         </form>
 
         
