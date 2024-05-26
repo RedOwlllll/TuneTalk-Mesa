@@ -35,22 +35,18 @@ const Post = require('../../models/post')
 //     }
 // });
 
-
-
-// Endpoint to comment and rate the song
-
 router.post('/postsongs/comment', async (req, res) => {
-    const { postId, username, comment, rating } = req.body;
+    const { postId, commentusername, comment, commentrating } = req.body;
     try {
-        let userPostSong = await Post.findById({ postId });
+        let userPostSong = await Post.findById({ _id: postId });
         if (!userPostSong) {
             return res.status(404).send('Song not found');
         }
-        
-      
+
+
             // No existing comment from this user, add new
-            userPostSong.comments.push({ username, body: comment, rating, date: new Date() });
-        
+            userPostSong.comments.push({ commentusername, commentbody: comment, commentrating, date: new Date() });
+
 
         await userPostSong.save(); // Save the updated song document
         res.json(userPostSong);
@@ -59,6 +55,30 @@ router.post('/postsongs/comment', async (req, res) => {
         res.status(500).send('Error adding comment and rating');
     }
 });
+
+
+// Endpoint to comment and rate the song
+
+// router.post('/postsongs/comment', async (req, res) => {
+//     const { postId, username, comment, rating } = req.body;
+//     try {
+//         let userPostSong = await Post.findById({ postId });
+//         if (!userPostSong) {
+//             return res.status(404).send('Song not found');
+//         }
+        
+      
+//             // No existing comment from this user, add new
+//             userPostSong.comments.push({ username, body: comment, rating, date: new Date() });
+        
+
+//         await userPostSong.save(); // Save the updated song document
+//         res.json(userPostSong);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send('Error adding comment and rating');
+//     }
+// });
 
 
 // Endpoint to get comments for a song

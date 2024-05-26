@@ -41,8 +41,8 @@ const PostDetails = ({post}) => {
         });
       };
 
-      const handleSubmit = async (e) => {
-        e.preventDefault();
+      const handleSubmit = async (postId) => {
+        postId.preventDefault();
         if (!user) {
             alert('You must be logged in to post comments.');
             return;
@@ -54,14 +54,14 @@ const PostDetails = ({post}) => {
                 commentbody: comment, // This should be the text of the new comment
                 commentrating: rating
             };
-            const response = await axios.post('http://localhost:8082/api/commentRoutes/postsongs/comment', commentData);
+            const response = await axios.post('http://localhost:8082/api/postsongs/comment', commentData);
             console.log('Comment added:', response.data);
             setComment('');
             setRating(1);
         } catch (error) {
             console.error('Failed to post comment:', error);
         }
-    };
+      };
     
 
     // const handleSubmit = async (e) => {
@@ -85,6 +85,8 @@ const PostDetails = ({post}) => {
     //     console.error('Failed to post comment:', error);
     // }
     // };
+
+    
     
     return (
         

@@ -48,7 +48,7 @@ app.use("/api", addPost);
 app.use("/api", followRouter);
 app.use("/api/posts", postRouter);
 app.use("/api", songRouter);
-app.use("/api/postComments", commentRouter);
+app.use("/api", commentRouter);
 
 
 
