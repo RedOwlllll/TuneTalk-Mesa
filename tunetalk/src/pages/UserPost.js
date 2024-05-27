@@ -133,15 +133,6 @@ function UserPost() {
                         <StarRating onRating={(rate) => {console.log(rate); setSelectedRating(rate)}} />
                     </div>
                     <div className="post-card-content">
-                        {/* Render existing comments */}
-                        <div className="comments-container">
-                        {comments.map((c) => (
-                            <div key={c.id} className="comment">
-                                <p>{c.body}</p>
-                                <small>{new Date(c.date).toLocaleString()}</small>
-                            </div>
-                        ))}
-                        </div>
                         {/* Comment form */}
                         <form onSubmit={handleSubmission}>
                             <input

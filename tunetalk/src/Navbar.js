@@ -56,6 +56,7 @@ export const Navbar = () => {
                     // First displays menu and login navlinks for when user is not logged in / authenticated
                     <>
                         <li><NavLink to="/menu">Menu</NavLink></li>
+                        <li><NavLink to="/about">About</NavLink></li>
                         
                         <li>
                             <div className="account-dropdown">
@@ -78,11 +79,12 @@ export const Navbar = () => {
                         <li><NavLink to="/feed">Feed</NavLink></li>
                         <li><NavLink to="/friends">Friends</NavLink></li>
                         <li><NavLink to="/community">Community</NavLink></li>
+                        <li><NavLink to="/about">About</NavLink></li>
                         {user?.isAuthenticated && (
                             <li>
                                 <div className="account-dropdown">
-                                    <div className="profile-image-section" style={{marginTop: '2px', justifyContent: 'center', alignItems: 'center', width: '50px', height: '45px'}}>
-                                        <div className="profile-image-container" style={{justifyContent: 'center', alignItems: 'center', width: '36px', height: '36px'}}>
+                                    <div className="profile-image-section" style={{justifyContent: 'center', alignItems: 'center', width: '50px', height: '45px'}}>
+                                        <div className="profile-image-container" style={{justifyContent: 'center', alignItems: 'center', width: '45px', height: '45px'}}>
                                         <img className="profile-image" src={user.profileImage || AccountLogo} alt="Profile" />
                                         </div>
                                     </div>

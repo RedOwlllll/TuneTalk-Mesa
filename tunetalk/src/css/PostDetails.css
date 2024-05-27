@@ -1,34 +1,69 @@
 /* Assuming there's a parent container with a class like .content or directly on body */
 .post-details-container {
     display: flex;
-    justify-content: center; /* Centers child horizontally */
-    align-items: center; /* Centers child vertically if needed */
-    margin-bottom: 20px;
+    align-items: center;
+    width: 100%;
 }
 
+.username-detail h2{
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
 .post-details {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; 
-    padding: 20px;
-    background-color: #f0f0f0;
-    border-radius: 10px;
-    margin: 10px;
-    width: 600px; 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding-bottom: 10px;
-    justify-content: center; /* Centers child horizontally */
-    align-items: center; /* Centers child vertically if needed */
+    width: 50%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f2f2f2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  min-width: 510px; 
+  padding: 20px;
+  text-align: center;
 }
 
-.post-details h4 {
-    margin: 5px 0;
-    color: #333;
+.caption-rating-box {
+    padding-top: 5px;
+    width: 100%;
+    text-align: center;
+    background-color: white;  /* Light gray background */
+    border: 1px solid #d0d0d0;  /* Solid gray border */
+    padding: 2px;             /* Padding inside the box */
+    margin:  15px auto;              /* Center the box horizontally */
+    border-radius: 8px;        /* Rounded corners */
 }
 
-.post-card-image {
+.caption-rating-box .post-stars i {
+    font-size: 20px;  /* Set the desired font size */
+    padding: 2px 5px;
+}
+
+
+
+.feed-card-image {
     width: 100%; 
-    height: auto; 
-    margin-top: 10px;
-    border-radius: 5px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.post-track {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.track-artist h4{
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+.track-title h4{
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.track-details {
+    width: 100%;
 }
