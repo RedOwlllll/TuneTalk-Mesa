@@ -16,11 +16,11 @@ router.post('/postsongs/comment', async (req, res) => {
         userPostSong.comments.push({ commentusername, commentbody, commentrating, date: new Date() });
         await userPostSong.save(); // Save the updated song document
 
-        // Check if the comment is made by someone other than the post owner
+        //If the comment is made by someone other than the post owner
         if (commentusername !== userPostSong.postusername) {
-            // Send notification email and push notification
+            //Send notification email and push notification to the post owner
             rateComNotifEmail(userPostSong.email, userPostSong.postusername, commentusername, commentbody, commentrating);
-            pushRateCommentNotif();
+            pushRateCommentNotif(commentusername);
         }
 
         res.json(userPostSong);
