@@ -162,14 +162,14 @@ const PostDetails = ({post}) => {
                         Your browser does not support the audio element.
                     </audio>
                 )}
+                <h4>Date & Time Posted: {formatDate(post.createdAt)}</h4>
                 <h4>Caption: {post.caption}</h4>
                 <h4>Personal Rating: {post.rating}</h4>
-                <h4>Date & Time Posted: {formatDate(post.createdAt)}</h4>
+                <br />
                 {post.spotifyURL && (
                     <a href={post.spotifyURL || "#"} target="_blank" rel="noopener noreferrer" className="spotify-button">
                         Listen on Spotify
                     </a>
-
                 )}
                 {/* Comment form */}
                 <form onSubmit={handleSubmit}>
@@ -192,24 +192,23 @@ const PostDetails = ({post}) => {
 
 
                 <div className="post-comments-container">
-                <div className="toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
-                    <strong>{comment.commentusername}</strong> <h5>View {isVisible ? 'less' : 'more'} comments <FontAwesomeIcon icon={isVisible ? faChevronCircleDown : faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
-                </div>
-            <div className={`collapsible-content ${isVisible ? 'open' : ''}`}> {isVisible && (
-                <div>
-             
-                    {comments.map((comment, index) => (
-                    <div key={index} className="comment">
-                        <p><strong>{comment.commentusername}</strong></p><StarRating rating={comment.commentrating} /> : <span>{comment.commentbody}</span>
+                    <div className="toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
+                        <strong>{comment.commentusername}</strong> <h5>View {isVisible ? 'less' : 'more'} comments <FontAwesomeIcon icon={faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
                     </div>
-                    ))}
+                    <div className={`collapsible-content ${isVisible ? 'open' : ''}`}>
+                        {isVisible && (
+                            <div>
+                                {comments.map((comment, index) => (
+                                    <div key={index} className="comment">
+                                        <p><strong>{comment.commentusername}</strong></p><StarRating rating={comment.commentrating} /> : <span>{comment.commentbody}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
-                )}
-            </div>
-                
             </div>
         </div>
-      </div>
     );
 }
 

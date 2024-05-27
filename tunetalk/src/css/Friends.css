@@ -11,6 +11,11 @@
     box-sizing: border-box; /* Include padding in width calculations */
 }
 
+.friends-title {
+    margin-top: 50px; 
+    text-align: center;
+}
+
 /* Additional styles to ensure consistency */
 .add-friend, .requests-list, .friends-list {
     padding: 20px;

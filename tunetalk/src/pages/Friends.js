@@ -98,7 +98,7 @@ export const Friends = () => {
 
     return (
         <div className="friends-page">
-            <h1>Friends</h1>
+            <h1 className="friends-title">Friends</h1>
             <section className="friends-list">
                 <h2>My Friends</h2>
                 {friends.map((friend, index) => (
