@@ -12,6 +12,12 @@ const followRouter = require('./routes/api/followRoutes');
 const postRouter = require("./routes/api/posts");
 const songRouter = require("./routes/api/songRoutes")
 const profileRouter = require("./routes/api/userprofile");
+const commentRouter = require('./routes/api/postComments'); // Adjust the path according to your setup
+
+//const commentRoutes = require('./routes/commentRoutes');
+
+// routes / api
+//const registerRouter = require("./routes/register");
 
 
 connectDB(); // Call connectDB import so mongoDB is connected
@@ -38,6 +44,8 @@ app.use("/api", followRouter);
 app.use("/api/posts", postRouter);
 app.use("/api", songRouter);
 app.use("/api/userprofile", profileRouter); 
+app.use("/api", commentRouter);
+
 
 
 

@@ -97,6 +97,8 @@ function Hiphop() {
     }
   };
 
+
+
   useEffect(() => {
     // Function to fetch Hiphop playlists using the access token
     const fetchHiphopMusic = async () => {
