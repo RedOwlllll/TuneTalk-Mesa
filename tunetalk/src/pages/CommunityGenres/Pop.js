@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FaCheck, FaPlus } from 'react-icons/fa'; // FontAwesome icons
 import '../../css/Community.css';
 import { useUser } from "../../authentication/UserState";
@@ -183,7 +183,8 @@ function Pop() {
       if (!featuredTrack) return;
 
       await axios.post('http://localhost:8082/api/songs', {
-        spotifyUrl: featuredTrack.external_urls.spotify
+        spotifyUrl: featuredTrack.external_urls.spotify,
+        previewURL: featuredTrack.preview_url
       }).then(response => {
         console.log('Song added:', response.data);
       }).catch(error => {
@@ -284,6 +285,25 @@ function Pop() {
     }
   }, [comments]);
 
+
+  const [isPlaying, setIsPlaying] = useState(false); // State to manage play status
+  const audioRef = useRef(null);
+
+
+  // Function to toggle audio playback
+  const togglePlay = () => {
+      if (audioRef.current) {
+          if (isPlaying) {
+              audioRef.current.pause();
+          } else {
+              audioRef.current.play();
+          }
+          setIsPlaying(!isPlaying);
+      }
+  };
+
+
+
   return (
     <div className="container-page">
       <div className="follow-container">
@@ -310,6 +330,12 @@ function Pop() {
                 <a href={featuredTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">
                   Listen on Spotify
                 </a>
+
+                {featuredTrack.previewURL && (
+                    <audio controls src={featuredTrack.previewURL}>
+                        Your browser does not support the audio element.
+                    </audio>
+                )}
                 </div>
               </div>
             </div>
