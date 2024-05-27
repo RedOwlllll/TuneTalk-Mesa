@@ -52,10 +52,10 @@ const getUserPosts = async (req, res) => {
 
 //create new post
 const createPost = async(req, res) => {
-    const {postusername, imageData, email, title, artist, rating, caption, spotifyURL} = req.body
+    const {postusername, imageData, email, title, artist, rating, caption, spotifyURL, previewURL} = req.body
 
     try {
-        const post = await Post.create({postusername,imageData, email,title,artist,rating,caption, spotifyURL})
+        const post = await Post.create({postusername,imageData, email,title,artist,rating,caption, spotifyURL, previewURL})
         
         res.status(200).json(post) 
     }   catch (error) {

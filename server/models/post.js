@@ -38,8 +38,11 @@ const postSchema = new Schema({
     spotifyURL: {
         type: String,
 
-    }
+    },
     
+    previewURL: {
+        type: String
+    },
 
 }, {timestamps:true})
 
