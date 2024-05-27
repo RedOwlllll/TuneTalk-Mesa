@@ -41,3 +41,5 @@ function pushRateCommentNotif() {
         icon: path.join('http://localhost:3000/static/media/TuneTalkLogoBlack.16d0f5c9352a06b53052641b8fab2fac.svg')
     });
 }
+
+module.exports = { rateComNotifEmail, pushRateCommentNotif };
