@@ -124,12 +124,6 @@ const PostDetails = ({ post }) => {
                 <h4>Caption: {post.caption}</h4>
                 <h4>Personal Rating: {post.rating}</h4>
                 <h4>Date & Time Posted: {formatDate(post.createdAt)}</h4>
-                {post.previewURL && (
-                    <div>
-                        <button onClick={togglePlay}>{isPlaying ? "Pause Preview" : "Play Preview"}</button>
-                        <audio ref={audioRef} src={post.previewURL} onEnded={() => setIsPlaying(false)} />
-                    </div>
-                )}
                 {post.spotifyURL && (
                     <a href={post.spotifyURL || "#"} target="_blank" rel="noopener noreferrer" className="spotify-button">
                         Listen on Spotify

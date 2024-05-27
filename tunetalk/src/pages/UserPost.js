@@ -113,7 +113,7 @@ function UserPost() {
                 console.log('Post added');
                 setCaption(''); // Reset caption after posting
                 setSelectedRating(0); // Optionally reset the rating as well
-               // window.location.reload();  // This will reload the current page
+                window.location.reload();  // This will reload the current page
             }
         } catch (error) {
             console.error('Error posting:', error);
