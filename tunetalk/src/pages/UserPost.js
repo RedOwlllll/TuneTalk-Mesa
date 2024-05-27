@@ -15,11 +15,12 @@ function UserPost() {
     const [title, setTitle] = useState('')
     const [artist, setArtist] = useState('')
     const [rating, setRating] = useState('')
+    const [spotifyURL, setSpotifyURL] = useState('');
     const [caption, setCaption] = useState('')
     const [error, setError] = useState(null)
     const [imageData, setImageData] = useState('');
     const [user] = useUser();
-
+    const[ previewURL, setPreviewURL] = useState('');
     const [username] = user.username;
 
     const [selectedRating, setSelectedRating] = useState(0); // State variable to store the selected rating
@@ -51,14 +52,21 @@ function UserPost() {
                 setRecentTrack({
                     artist: track.artists.map(artist => artist.name).join(', '), //join multiple artists the a comma
                     title: track.name, //title 
-                    albumCover: track.album.images[0].url // URL of album image
+                    albumCover: track.album.images[0].url, // URL of album image
+                    spotifyURL: track.external_urls.spotify, // URL of the spotify song
+                    previewURL: track.preview_url // URL of 30s song preview
                 });
                 
+                setSpotifyURL(track.external_urls.spotify);
+                setPreviewURL(track.preview_url);
+
                 //prepare song to be saved
                 const songData = {
                     title: track.name,
                     artist: track.artists.map(artist => artist.name).join(', '),
-                    albumCover: track.album.images[0].url,                    
+                    albumCover: track.album.images[0].url,      
+                    spotifyURL: track.external_urls.spotify,         
+                    previewURL: track.preview_url,   
                     comments: [],
                     rating: StarRating,
                 }
@@ -83,9 +91,10 @@ function UserPost() {
             return; // If they don't confirm, do nothing further
         }
         
-        const post = { postusername, imageData, email, title, artist, rating: selectedRating, caption };
+        const post = { postusername, imageData, email, title, artist, rating: selectedRating, caption, spotifyURL, previewURL};
         console.log(post);
         
+        console.log("Preview URL: ", previewURL);
         try {
             const response = await fetch('/api/posts', {
                 method: 'POST',
@@ -174,7 +183,7 @@ function UserPost() {
                                     setEmail(user.email);
                                     setTitle(recentTrack.title);
                                     setArtist(recentTrack.artist);
-                                    
+                                    // setSpotifyURL(recentTrack.external_urls.spotify)
                                     setRating(selectedRating);
                                     fetch(recentTrack.albumCover).then(response => response.blob()).then(blob => 
                                         {
