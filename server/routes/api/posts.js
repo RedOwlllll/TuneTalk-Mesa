@@ -10,6 +10,11 @@ const
 
 router.get('/getallpost', getAllPosts)
 router.get('/getuserpost', getUserPosts)
+
+// router.get('/', getAllPosts)
+
+// router.get('/:id', getPost)
+
 router.post('/', createPost)
 
 module.exports = router
