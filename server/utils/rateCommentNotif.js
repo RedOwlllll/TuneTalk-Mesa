@@ -9,7 +9,7 @@ dotenv.config();
 sgMail.setApiKey(process.env.API_KEY);
 
 //To the send the email notification to the user
-function rateComNotifEmail(userEmail, username, friend, comment) {
+function rateComNotifEmail(userEmail, username, friend, comment, rating) {
     const notification = {
         to: userEmail,
         from: {
@@ -18,8 +18,8 @@ function rateComNotifEmail(userEmail, username, friend, comment) {
         },
         subject: '!TIME TO TUNE IN!',
         text: 'It is time to post your current/recently played song for your friends to see!',
-        html: `<h2>Hello ${username}!</h2><p>${friend}: ${comment}!
-        <br><br><a href="http://localhost:3000/account/feed">Post here</a></p>`
+        html: `<h2>Hello ${username}!</h2><p>${friend} commented: ${comment} <br> rating: ${rating}
+        <br><br><a href="http://localhost:3000/feed">See the comment here!</a></p>`
     };
 
     sgMail
