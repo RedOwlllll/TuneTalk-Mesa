@@ -111,7 +111,7 @@ const PostDetails = ({post}) => {
     
     
     const [newComment, setNewComment] = useState('');
-    const [user] = useUser();
+    
     const [isPlaying, setIsPlaying] = useState(false); // State to manage play status
     const audioRef = useRef(null);
 
@@ -202,6 +202,7 @@ const PostDetails = ({post}) => {
                 
             </div>
         </div>
+      </div>
     );
 }
 
