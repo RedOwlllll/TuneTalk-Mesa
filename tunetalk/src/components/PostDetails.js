@@ -1,8 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "../css/App.css";
 import "../css/PostDetails.css";
-import { handleCommentSubmit } from "../pages/Post";
-import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "../authentication/UserState";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
