@@ -2,6 +2,8 @@ const sgMail = require('@sendgrid/mail');
 const notifier = require('node-notifier');
 const path = require('path');
 const dotenv = require('dotenv');
+//const { sendNotificationEmail, pushNotification } = require('./sendNotificationEmail');
+const nodeCron = require('node-cron');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -42,8 +44,32 @@ function pushNotification() {
     });
 }
 
+//For presentation purposes
 function randomDelayGenerator(minSec, maxSec) {
     return Math.floor(Math.random() * (maxSec - minSec + 1)) + minSec;
 }
 
-module.exports = { sendNotificationEmail, pushNotification,randomDelayGenerator};
+//For the real purpose of the app
+//Generate a time 
+function generateRandomTime(){
+    const hour = Math.floor(Math.random() * 24);
+    const min = Math.floor(Math.random() * 60);
+    const sec = Math.floor(Math.random() * 60);
+
+    return {hour, min, sec};
+}
+
+//Schedule in the generated time of daily song post
+function scheduleTime(userEmail, username) {
+    const { hour, min, sec } = generateRandomTime();
+    const time = `${sec} ${min} ${hour} * * *`; // run at random time everyday
+
+    nodeCron.schedule(time, () => {
+        sendNotificationEmail(userEmail, username);
+        pushNotification();
+    })
+
+    console.log(`Posting time is scheduled at ${hour}:${min}:${sec}`);
+}
+
+module.exports = { sendNotificationEmail, pushNotification,randomDelayGenerator, scheduleTime};
