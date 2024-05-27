@@ -26,36 +26,36 @@ export const Profile = () => {
         }
     }, [user]);
     
-
+    
 
     return (
         <div className="user">
             <div className="user-page">
                 {user.isAuthenticated && (
-                    <div className="profile-container">
-                        <div className="profile-section">
-                            <div className="profile-image-container">
-                                <img className="profile-image" src={user.profileImage || AccountLogo} alt="Profile" />
-                            </div>
-                            <br></br>
-                            <div className="user-details">
-                                <p><strong>Username: </strong> {user.username}</p>
-                                {user.bio && <p><strong>Bio:</strong> {user.bio}</p>}
-                            </div>
-                            <br></br>
+                   <>
+                    <div className="profile-section">
+                        <div className="profile-image-container">
+                            <img className="profile-image" src={user.profileImage || AccountLogo} alt="Profile" />
+                        </div>
+                        <br></br>
+                        <div className="user-details">
+                            <p><strong>Username: </strong> {user.username}</p>
+                            {user.bio && <p><strong>Bio:</strong> {user.bio}</p>}
+                        </div>
+                        <br></br>
                             <button className="edit-button" onClick={(e) => navigate("/account/edit-profile")}>Edit Profile</button>
-                        </div>
-                        <div className="post-section">
-                            <center><h1>My Posts:</h1></center><br></br>
-                            {posts && posts.map((post) => (
-                                <PostDetails key={post._id} post={post} />
-                            ))}
-                        </div>
-                        <div className="song-recommendations">
+                    </div>
+                    <div className="post-section">
+                        <center><h1>My Posts:</h1></center><br></br>
+                        {posts && posts.map((post) => (
+                            <PostDetails key={post._id} post={post} />
+                        ))}
+                    </div>
+                    <div className="song-recommendations">
                             <center><h1>Song Recommendations:</h1></center>
                             {/* Add song recommendations content here */}
-                        </div>
                     </div>
+                </>
                 )}
             </div>
         </div>  
