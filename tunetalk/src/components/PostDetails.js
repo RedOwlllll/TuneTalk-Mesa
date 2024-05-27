@@ -12,10 +12,8 @@ import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-
 
 
 const PostDetails = ({post}) => {
-    // const [newComment, setNewComment] = useState('');
-    // const [comments, setComments] = useState([]);
-    // const username = 'testname'
-    const [commentText, setCommentText] = useState('');
+
+    const [comment, setComment] = useState('');
     const [rating, setRating] = useState(0);
     const [user] = useUser(); 
     const [isVisible, setIsVisible] = useState(false);
@@ -23,17 +21,6 @@ const PostDetails = ({post}) => {
     const [averageRating, setAverageRating] = useState(0);
     const toggleVisibility = () => setIsVisible(!isVisible); // Collapse comment box
 
-    // const handleCommentSubmit = (e) => {
-
-    //     e.preventDefault(); 
-
-    //     const commentData = {
-    //         text: newComment,
-    //         user: username
-    //     };
-
-       
-    // };
 
     const handleRating = (rate) => {
         setRating(rate);
@@ -50,18 +37,13 @@ const PostDetails = ({post}) => {
         });
       };
 
+
       useEffect(() => {
         if (post._id) {
             fetchComments(post._id);
         }
     }, [post._id]);
     
-
-      useEffect(() => {
-        if (post._id) {
-          fetchComments(post._id);
-        }
-      }, [post._id]);
 
       const fetchComments = async (postId) => {
         try {
@@ -78,26 +60,26 @@ const PostDetails = ({post}) => {
       
 
       const handleSubmit = async (e) => {
-        e.preventDefault();
+        //e.preventDefault();
         if (!user) {
             alert('You must be logged in to post comments.');
             return;
         }
         try {
-            //const post = {postusername,imageData,email,title,artist,rating,caption}
+          
 
-            console.log(commentText)
+            console.log(comment)
             console.log("chan")
             const commentData = {
-                postId: post._id,  // Ensure this is the MongoDB _id of the post
+                postId: post._id,  
                 commentusername: user.username,
-                commentbody: commentText, // This should be the text of the new comment
+                commentbody: comment,
                 commentrating: rating
             };
             const response = await axios.post('http://localhost:8082/api/postsongs/comment', commentData);
             console.log('Comment added:', response.data);
             console.log(commentData)
-            setCommentText('');
+            setComment('');
             setRating(1);
         } catch (error) {
             console.error('Failed to post comment:', error);
@@ -131,7 +113,7 @@ const PostDetails = ({post}) => {
 
 
             
-            {/* <h4>Username: {post.postusername}</h4> */}
+           
             <h4>Email: {post.email}</h4>
             <h4>Title: {post.title}</h4>
             <h4>Artist: {post.artist}</h4>
@@ -151,7 +133,7 @@ const PostDetails = ({post}) => {
             
             {/* Comment form */}
             <form onSubmit={handleSubmit}>
-          <input class="post-comment-input" type = "text" value={commentText} onChange={(e) => setCommentText(e.target.value)} placeholder="Write a comment..." required />
+          <input class="post-comment-input" type = "text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
           <div className="rating">
               {[1, 2, 3, 4, 5].map((star) => (
                 <label key={star}>
@@ -169,22 +151,25 @@ const PostDetails = ({post}) => {
         </form>
         
         <div className="community-comments-container">
-        <div className="toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
-        <strong>{commentText.username}</strong> <h5>View {isVisible ? 'less' : 'more'} comments <FontAwesomeIcon icon={isVisible ? faChevronCircleDown : faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
-        </div>
-        <div className={`collapsible-content ${isVisible ? 'open' : ''}`}>
-            {isVisible && (
-            <div>
-                <h4>Average Rating: <StarRating rating={averageRating} /></h4>
-                {comments.map((commentText, index) => (
-                <div key={index} className="comment">
-                    <p><strong>{commentText.username}</strong></p><StarRating rating={commentText.rating} /> : <span>{commentText.body}</span>
+                <div className="toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
+                    <strong>{comment.commentusername}</strong> <h5>View {isVisible ? 'less' : 'more'} comments <FontAwesomeIcon icon={isVisible ? faChevronCircleDown : faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
                 </div>
-                ))}
+            <div className={`collapsible-content ${isVisible ? 'open' : ''}`}> {isVisible && (
+                <div>
+             
+                    <div> </div>
+                    {comments.map((comment, index) => (
+                    <div key={index} className="comment">
+                        <p><strong>{comment.commentusername}</strong></p><StarRating rating={comment.commentrating} /> : <span>{comment.commentbody}</span>
+                    </div>
+                    ))}
+                </div>
+                )}
             </div>
-            )}
         </div>
-        </div>
+
+
+        
 
      
         

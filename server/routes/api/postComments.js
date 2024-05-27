@@ -29,25 +29,10 @@ router.post('/postsongs/comment', async (req, res) => {
 
 
 
-// // Endpoint to get comments for a post
-// router.get('/postsongs/comments/:id', async (req, res) => {
-//     try {
-//         const { id: postId } = req.params.id; // Corrected from _id to id to match the route parameter
-//         const userPostSong = await Post.findOne({ id: postId });
-//         if (!userPostSong) {
-//             return res.status(404).send('Song not found');
-//         }
-//         res.json({ comments: userPostSong.comments });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('Error fetching comments');
-//     }
-// });
-
 router.get('/postsongs/comments/:id', async (req, res) => {
     try {
-        const postId = req.params.id;  // Correct way to get id from params
-        const userPostSong = await Post.findOne({ _id: postId });  // Use _id for querying MongoDB
+        const postId = req.params.id;  
+        const userPostSong = await Post.findOne({ _id: postId });  
         if (!userPostSong) {
             return res.status(404).send('Song not found');
         }
