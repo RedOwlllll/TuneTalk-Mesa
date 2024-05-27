@@ -82,26 +82,27 @@ const PostDetails = ({ post }) => {
         setNewComment('');
     };
 
-        // Function to toggle audio playback
-        const togglePlay = () => {
-            if (audioRef.current) {
-                if (isPlaying) {
-                    audioRef.current.pause();
-                } else {
-                    audioRef.current.play();
-                }
-                setIsPlaying(!isPlaying);
+    // Function to toggle audio playback
+    const togglePlay = () => {
+        if (audioRef.current) {
+            if (isPlaying) {
+                audioRef.current.pause();
+            } else {
+                audioRef.current.play();
             }
-        };
+            setIsPlaying(!isPlaying);
+        }
+    };
 
     // Created function to format date better in the post
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`;
     };
-    
+
     console.log("Preview URL:", post.previewURL);
-    
+    console.log("Spotify URL:", post.spotifyURL);
+
     return (
         <div className="post-details-container">
             <div className="post-details">
@@ -116,10 +117,10 @@ const PostDetails = ({ post }) => {
                     alt="Post Image"
                 />
                 {post.previewURL && (
-                <audio controls src={post.previewURL}>
-                    Your browser does not support the audio element.
-                </audio>
-            )}
+                    <audio controls src={post.previewURL}>
+                        Your browser does not support the audio element.
+                    </audio>
+                )}
                 <h4>Caption: {post.caption}</h4>
                 <h4>Personal Rating: {post.rating}</h4>
                 <h4>Date & Time Posted: {formatDate(post.createdAt)}</h4>
@@ -128,6 +129,12 @@ const PostDetails = ({ post }) => {
                         <button onClick={togglePlay}>{isPlaying ? "Pause Preview" : "Play Preview"}</button>
                         <audio ref={audioRef} src={post.previewURL} onEnded={() => setIsPlaying(false)} />
                     </div>
+                )}
+                {post.spotifyURL && (
+                    <a href={post.spotifyURL || "#"} target="_blank" rel="noopener noreferrer" className="spotify-button">
+                        Listen on Spotify
+                    </a>
+
                 )}
                 {/* Comment form */}
                 <form onSubmit={handleNewCommentSubmit}>

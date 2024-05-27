@@ -53,8 +53,8 @@ function UserPost() {
                     artist: track.artists.map(artist => artist.name).join(', '), //join multiple artists the a comma
                     title: track.name, //title 
                     albumCover: track.album.images[0].url, // URL of album image
-                    spotifyURL: track.external_urls.spotify,
-                    previewURL: track.preview_url
+                    spotifyURL: track.external_urls.spotify, // URL of the spotify song
+                    previewURL: track.preview_url // URL of 30s song preview
                 });
                 
                 setSpotifyURL(track.external_urls.spotify);
@@ -94,6 +94,7 @@ function UserPost() {
         const post = { postusername, imageData, email, title, artist, rating: selectedRating, caption, spotifyURL, previewURL};
         console.log(post);
         
+        console.log("Preview URL: ", previewURL);
         try {
             const response = await fetch('/api/posts', {
                 method: 'POST',
@@ -192,6 +193,7 @@ function UserPost() {
                                     setTitle(recentTrack.title);
                                     setArtist(recentTrack.artist);
                                     // setSpotifyURL(recentTrack.external_urls.spotify)
+                                    setPreviewURL(recentTrack.preview_url);
                                     setRating(selectedRating);
                                     fetch(recentTrack.albumCover).then(response => response.blob()).then(blob => 
                                         {
