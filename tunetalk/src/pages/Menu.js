@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../authentication/UserState";
 import "../css/App.css";
 
-
 export const Menu = () => {
     const [user] = useUser(); 
     const navigate = useNavigate();

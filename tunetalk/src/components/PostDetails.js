@@ -65,6 +65,7 @@ import "../css/App.css";
 import "../css/PostDetails.css";
 import { useUser } from "../authentication/UserState";
 
+
 const PostDetails = ({ post }) => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
@@ -100,8 +101,24 @@ const PostDetails = ({ post }) => {
         return `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`;
     };
 
-    console.log("Preview URL:", post.previewURL);
-    console.log("Spotify URL:", post.spotifyURL);
+    function StarRating({ rating }) {
+        const totalStars = 5;
+        let stars = [];
+    
+        // Create filled stars up to the rating
+        for (let i = 1; i <= totalStars; i++) {
+          if (i <= rating) {
+            stars.push(<i key={i} className="fas fa-star" style={{ color: '#ffc107' }}></i>);
+          } else if (i > rating && i - 1 < rating) {
+            // Handle half star for fractions
+            stars.push(<i key={i} className="fas fa-star-half-alt" style={{ color: '#ffc107' }}></i>);
+          } else {
+            stars.push(<i key={i} className="far fa-star" style={{ color: '#ffc107' }}></i>);
+          }
+        }
+    
+        return <div>{stars}</div>;
+    }
 
     return (
         <div className="post-details-container">
@@ -139,7 +156,7 @@ const PostDetails = ({ post }) => {
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
                     />
-                    <button type="submit" className="submit-comment">Post</button>
+                    <button type="submit" className="submit-comment">Comment</button>
                 </form>
             </div>
         </div>

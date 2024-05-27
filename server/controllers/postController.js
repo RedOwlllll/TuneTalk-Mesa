@@ -29,8 +29,7 @@ const getAllPosts = async (req, res) => {
 
         // Convert the Set back to an array for the database query
         const friendList = Array.from(friendUsernames);
-
-        console.log(friendList)
+        
         // Fetch posts made by friends
         const posts = await Post.find({ 'postusername': { $in: friendList } }).sort({ createdAt: -1 });
         res.status(200).json(posts);
