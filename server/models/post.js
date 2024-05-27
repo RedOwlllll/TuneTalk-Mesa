@@ -31,10 +31,18 @@ const postSchema = new Schema({
     },
 
     caption: {
-        type: String
+        type: String,
         
-    }
+    },
+
+    spotifyURL: {
+        type: String,
+
+    },
     
+    previewURL: {
+        type: String
+    },
 
 }, {timestamps:true})
 
