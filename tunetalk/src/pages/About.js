@@ -43,6 +43,8 @@ export const About = () => {
             <p>Welcome to TuneTalk! This platform is designed to connect music FREAKS from all around the world. Share your favorite tunes, connect with friends, and explore new music together.</p>
             <p>Our mission is to create a vibrant community where music FREAKS can share their passion and discover new artists, albums, and genres.</p>
             <p>Thank you for being a part of our community!</p>
+            <br></br><br></br>
+            <p>Please note all music previews can only be listened to on our website if you have a premium Spotify account. But don't worry if you don't have a premium account, you can still listen to the songs through Spotify!</p>
             <button className="link-btn" onClick={() => setModalOpen(true)}>View Terms and Conditions</button>
             <Modal
                 isOpen={modalOpen}

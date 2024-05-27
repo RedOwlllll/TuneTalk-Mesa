@@ -2,9 +2,6 @@ import React from "react";
 import TuneTalkLogo from "../assets/TuneTalkLogoBlack.svg";
 import { useNavigate } from "react-router-dom";
 import "../css/App.css";
-import Post from "./Post";
-
-
 
 export const Menu = () => {
     const navigate = useNavigate();

@@ -1,61 +1,87 @@
-import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
+import React, { useState } from "react";
+import "../css/App.css";
 import "../css/PostDetails.css";
-import { handleCommentSubmit } from "../pages/Post";
-import React, { useEffect, useState } from "react";
+import { useUser } from "../authentication/UserState";
 
-const PostDetails = ({post}) => {
+
+const PostDetails = ({ post }) => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
-    const username = 'testname'
+    const [user] = useUser();
 
-    const handleCommentSubmit = (e) => {
+    const handleNewCommentSubmit = (e) => {
+        e.preventDefault();
 
-        e.preventDefault(); 
+        if (!newComment.trim()) return; // Prevent submitting empty comments
 
-        const commentData = {
-            text: newComment,
-            user: username
-        };
-
-       
+        const newComments = [...comments, { text: newComment, user: user.username }];
+        setComments(newComments);
+        setNewComment('');
     };
+
+    // Created function to format date better in the post
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`;
+    };
+
+    function StarRating({ rating }) {
+        const totalStars = 5;
+        let stars = [];
     
+        // Create filled stars up to the rating
+        for (let i = 1; i <= totalStars; i++) {
+          if (i <= rating) {
+            stars.push(<i key={i} className="fas fa-star" style={{ color: '#ffc107' }}></i>);
+          } else if (i > rating && i - 1 < rating) {
+            // Handle half star for fractions
+            stars.push(<i key={i} className="fas fa-star-half-alt" style={{ color: '#ffc107' }}></i>);
+          } else {
+            stars.push(<i key={i} className="far fa-star" style={{ color: '#ffc107' }}></i>);
+          }
+        }
+    
+        return <div>{stars}</div>;
+    }
+
     return (
-        
-        <div className="post-details">
+        <div className="post-details-container">
+            <div className="post-details">
+                <div className="username-detail"><h2>{post.postusername}</h2></div>
+                <div className="post-track">
+                    
+                    <h4> {post.image}</h4>
+                    <img
+                        src={post.imageData}
+                        className="feed-card-image"
+                        style={{ width: "300px", height: "300px" }}
+                        alt="Post Image"
+                    />
+                    <div className="track-details">
+                        <div className="track-title">{post.title}</div>
+                        <div className="track-artist">{post.artist}</div>
+                    </div>
+                </div>
+                <div className="caption-rating-box">
+                    <h4>{post.caption}</h4>
+                    <div className="post-stars"><StarRating rating={post.rating} /></div>
+                </div>
+                <h5>{formatDate(post.createdAt)}</h5>
 
-
-            
-            {/* <h4>Username: {post.postusername}</h4> */}
-            <h4>Email: {post.email}</h4>
-            <h4>Title: {post.title}</h4>
-            <h4>Artist: {post.artist}</h4>
-            <h4>Rating: {post.rating}</h4>
-            <h4>Caption: {post.caption}</h4>
-            <h4>Image: {post.image}</h4>
-            <img
-            src={post.imageData}
-            className="post-card-image"
-            style={{ width: "500px", height: "500px" }}
-            alt="Post Image"
-            />
-            
-
-            <h4>Timestamp: {post.createdAt}</h4>
-            
-            {/* Comment form */}
-            <form onSubmit={(e) => handleCommentSubmit(e, username, newComment, setComments, setNewComment)}>
-                            <input
-                                type="text"
-                                className="comment-input"
-                                placeholder="Add a comment..."
-                                value={newComment}
-                                onChange={(e) => setNewComment(e.target.value)}
-                            />
-                            <button type="submit" className="submit-comment">Post</button>
-            </form>
+                {/* Comment form */}
+                <form onSubmit={handleNewCommentSubmit}>
+                    <input
+                        type="text"
+                        className="comment-input"
+                        placeholder="Add a comment..."
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                    />
+                    <button type="submit" className="submit-comment">Comment</button>
+                </form>
+            </div>
         </div>
-    )
+    );
 }
 
-export default PostDetails
+export default PostDetails;

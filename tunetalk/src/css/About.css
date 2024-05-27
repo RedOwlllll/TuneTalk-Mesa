@@ -1,6 +1,7 @@
 .about-page {
     padding: 20px;
     text-align: center;
+    justify-content: center;
 }
 
 .about-page h1 {

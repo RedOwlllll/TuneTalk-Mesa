@@ -4,7 +4,6 @@ import "../css/Post.css"; // NOTE: put 2 . ("..") since this file is in it's own
 import "../components/PostDetails";
 
 import PostDetails from "../components/PostDetails";
-import PostForm from "../components/PostForm";
 import UserPost from "./UserPost";
 
 export const Feed = () => {

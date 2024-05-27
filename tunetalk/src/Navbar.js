@@ -56,6 +56,7 @@ export const Navbar = () => {
                     // First displays menu and login navlinks for when user is not logged in / authenticated
                     <>
                         <li><NavLink to="/menu">Menu</NavLink></li>
+                        <li><NavLink to="/about">About</NavLink></li>
                         
                         <li>
                             <div className="account-dropdown">
@@ -79,22 +80,22 @@ export const Navbar = () => {
                         <li><NavLink to="/friends">Friends</NavLink></li>
                         <li><NavLink to="/community">Community</NavLink></li>
                         <li><NavLink to="/about">About</NavLink></li>
-                        {user.isAuthenticated && (
+                        {user?.isAuthenticated && (
                             <li>
                                 <div className="account-dropdown">
-                                    <button className="account-button" onClick={toggleDropdown}>
-                                        <h3 className="account-image"> 
-                                        <img src={AccountLogo} className="account-logo" alt="Account" />
-                                        </h3>
-                                    </button>
+                                    <div className="profile-image-section" style={{justifyContent: 'center', alignItems: 'center', width: '50px', height: '45px'}}>
+                                        <div className="profile-image-container" style={{justifyContent: 'center', alignItems: 'center', width: '45px', height: '45px'}}>
+                                        <img className="profile-image" src={user.profileImage || AccountLogo} alt="Profile" />
+                                        </div>
+                                    </div>
                                     <div className="dropdown-content">
-                                        <NavLink to="/account/user" className="dropdown-link">
+                                        <NavLink to="/account/profile" className="dropdown-link">
                                         <div>
                                             {/* Will display both the user email and username in one div/navlink */}
                                             Email: {user.email} <br/> Username: {user.username} <br/> Spotify: {user.spotifyAccount}
                                         </div>
                                         </NavLink>
-                                        <button className="logout-btn" onClick={handleLogout}><h4>Log Out</h4></button>
+                                        <center><button className="logout-btn" onClick={handleLogout}><h4>Log Out</h4></button></center>
                                     </div>
                                 </div>
                             </li>
