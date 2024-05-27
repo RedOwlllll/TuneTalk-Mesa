@@ -141,9 +141,6 @@ const PostDetails = ({post}) => {
         return `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`;
     };
 
-    console.log("Preview URL:", post.previewURL);
-    console.log("Spotify URL:", post.spotifyURL);
-
     return (
         <div className="post-details-container">
             <div className="post-details">
