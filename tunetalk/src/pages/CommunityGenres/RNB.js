@@ -28,26 +28,33 @@ function RNB() {
 
   const toggleVisibility = () => setIsVisible(!isVisible); // Collapse comment box
 
+  //Confirmation prompt if user wants to add the community to their profile when they click the button
   const handleFollowClick = async () => {
-    if (!isFollowing){
-      try {
+    if (!isFollowing) {
+      const confirmed = window.confirm("Do you want to add the RNB page to your profile?");
+      if (confirmed) {
+        try {
           await axios.post(`http://localhost:8082/api/community/follow/${encodeURIComponent(user.username)}`, {
             community: 'rnb',
             followStatus: true
           });
           setIsFollowing(true);
-      } catch (err) {
+        } catch (err) {
           console.error("Error updating follow status:", err);
+        }
       }
     } else {
-      try {
-        await axios.post(`http://localhost:8082/api/community/un-follow/${encodeURIComponent(user.username)}`, {
-          community: 'rnb',
-          followStatus: false
-        });
-        setIsFollowing(false);
-      } catch (err) {
-        console.error("Error updating un-follow status:", err);
+      const confirmed = window.confirm("Do you want to remove the RNB page from your profile?");
+      if (confirmed) {
+        try {
+          await axios.post(`http://localhost:8082/api/community/un-follow/${encodeURIComponent(user.username)}`, {
+            community: 'rnb',
+            followStatus: false
+          });
+          setIsFollowing(false);
+        } catch (err) {
+          console.error("Error updating un-follow status:", err);
+        }
       }
     }
   };
