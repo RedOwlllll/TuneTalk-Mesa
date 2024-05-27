@@ -24,6 +24,7 @@ const PostDetails = ({post}) => {
 
     const handleRating = (rate) => {
         setRating(rate);
+
         // Update class for each star
         const stars = document.querySelectorAll('.rating i');
         stars.forEach((star, idx) => {
@@ -95,7 +96,8 @@ const PostDetails = ({post}) => {
           if (i <= rating) {
             stars.push(<i key={i} className="fas fa-star" style={{ color: '#ffc107' }}></i>);
           } else if (i > rating && i - 1 < rating) {
-            // Handle half star for fractions
+
+        
             stars.push(<i key={i} className="fas fa-star-half-alt" style={{ color: '#ffc107' }}></i>);
           } else {
             stars.push(<i key={i} className="far fa-star" style={{ color: '#ffc107' }}></i>);
@@ -150,14 +152,13 @@ const PostDetails = ({post}) => {
           <button class="post-comment-btn" type="submit">Post Comment and Rating</button>
         </form>
         
-        <div className="community-comments-container">
+        <div className="post-comments-container">
                 <div className="toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
                     <strong>{comment.commentusername}</strong> <h5>View {isVisible ? 'less' : 'more'} comments <FontAwesomeIcon icon={isVisible ? faChevronCircleDown : faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
                 </div>
             <div className={`collapsible-content ${isVisible ? 'open' : ''}`}> {isVisible && (
                 <div>
              
-                    <div> </div>
                     {comments.map((comment, index) => (
                     <div key={index} className="comment">
                         <p><strong>{comment.commentusername}</strong></p><StarRating rating={comment.commentrating} /> : <span>{comment.commentbody}</span>
