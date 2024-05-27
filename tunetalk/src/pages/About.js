@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./../css/About.css";
 
 export const About = () => {
-
     const [modalOpen, setModalOpen] = useState(false);
 
     const Modal = ({ isOpen, onClose, title, children }) => {
@@ -19,6 +18,7 @@ export const About = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                textAlign: 'center',
                 zIndex: 1000,
             }}>
                 <div style={{
@@ -26,10 +26,12 @@ export const About = () => {
                     background: '#fff',
                     borderRadius: 5,
                     maxWidth: '600px',
-                    width: '100%',
-                    position: 'relative'
+                    width: '80%', // Adjusted for responsive width
+                    position: 'relative',
+                    margin: 'auto', // Helps with further centering if needed
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)' // Optional shadow for better focus
                 }}>
-                    <h2>{title}</h2>
+                    <h2 style={{ marginBottom: '20px' }}>{title}</h2>
                     <div>{children}</div>
                     <button onClick={onClose} style={{ position: 'absolute', top: 10, right: 10 }}>Close</button>
                 </div>
@@ -44,18 +46,20 @@ export const About = () => {
             <p>Our mission is to create a vibrant community where music FREAKS can share their passion and discover new artists, albums, and genres.</p>
             <p>Thank you for being a part of our community!</p>
             <br></br><br></br>
-            <p>Please note all music previews can only be listened to on our website if you have a premium Spotify account. But don't worry if you don't have a premium account, you can still listen to the songs through Spotify!</p>
             <button className="link-btn" onClick={() => setModalOpen(true)}>View Terms and Conditions</button>
             <Modal
                 isOpen={modalOpen}
                 onClose={() => setModalOpen(false)}
                 title="Terms and Conditions"
             >
-                    <p>WARNING!! WARNING!!!
-                        <br></br><br></br>
-                        IF YOURE NOT A FREAKAZOID,<br></br><br></br>
-                        PLEASE LEAVE FOR UR OWN GOOD.
-                    </p>
+                <br></br>
+                WARNING!! WARNING!!!
+                <br></br><br></br>
+                IF YOU'RE NOT A FREAKAZOID,
+                <br></br><br></br>
+                PLEASE LEAVE FOR UR OWN GOOD.
+                <br></br>
+                    
             </Modal>
         </div>
     );

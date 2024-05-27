@@ -59,9 +59,10 @@ const PostDetails = ({ post }) => {
                         Your browser does not support the audio element.
                     </audio>
                 )}
+                <h4>Date & Time Posted: {formatDate(post.createdAt)}</h4>
                 <h4>Caption: {post.caption}</h4>
                 <h4>Personal Rating: {post.rating}</h4>
-                <h4>Date & Time Posted: {formatDate(post.createdAt)}</h4>
+                <br></br>
                 {post.spotifyURL && (
                     <a href={post.spotifyURL || "#"} target="_blank" rel="noopener noreferrer" className="spotify-button">
                         Listen on Spotify

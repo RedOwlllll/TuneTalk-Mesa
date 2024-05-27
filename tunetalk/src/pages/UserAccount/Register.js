@@ -67,7 +67,6 @@ export const Register = () => {
                     setUser({
                         email: data.email, // Refer to email object directly (since the email is being registered it should not be in mongodb yet)
                         username: data.username, // Likewise w/ username
-                        // isAuthenticated: true - commented out so that when on the register page, protected routes are still protected (they need to connect to spotify).
                     });
                     console.log("user registration authenticated in TuneTalk");
                 }
@@ -113,9 +112,9 @@ export const Register = () => {
                 }}>
                     <h2>{title}</h2>
                     {children}
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 20 }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
                         <button onClick={() => { setTermsAccepted(true); onClose(); }} style={{ marginRight: 10 }}>Accept</button>
-                        <button onClick={() => {setTermsAccepted(false); onClose()}}>Don't Accept</button>
+                        <button onClick={() => {setTermsAccepted(false); onClose(); }}>Don't Accept</button> 
                     </div>
                 </div>
             </div>
@@ -135,7 +134,7 @@ export const Register = () => {
                 <label>Password:</label><br />
                 <input value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} type="password" id="registerPassword" placeholder="*********" required /><br />
                 <br />
-                <button type="submit">register</button><br></br><br></br>
+                <button type="submit" className="register-button">register</button><br></br><br></br>
                 {alertMessage && (
                     <div className="alert">{alertMessage}</div>
                 )} <br />
@@ -145,10 +144,13 @@ export const Register = () => {
                     onClose={() => setTermsModalOpen(false)}
                     title="Terms and Conditions"
                 >
-                    <p>WARNING!! WARNING!!!
+                    <p><br></br>
+                        WARNING!! WARNING!!!
                         <br></br><br></br>
-                        IF YOURE NOT A FREAKAZOID,<br></br><br></br>
+                        IF YOURE NOT A FREAKAZOID,
+                        <br></br><br></br>
                         PLEASE LEAVE FOR UR OWN GOOD.
+                        <br></br>
                     </p>
                 </Modal>
                 <button className="link-btn" type="button" onClick={() => navigate('/account/login')}>Already have an account? Sign in here.</button><br /><br />
