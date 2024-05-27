@@ -1,7 +1,7 @@
 const express = require('express') 
 const router = express.Router()
 const Post = require('../../models/post')
-
+const { rateComNotifEmail, pushRateCommentNotif} = require('../../utils/rateCommentNotif');
 
 // Endpoint to comment an existing post
 
@@ -12,13 +12,13 @@ router.post('/postsongs/comment', async (req, res) => {
         if (!userPostSong) {
             return res.status(404).send('Song not found');
         }
-
-
             // No existing comment from this user, add new
-            userPostSong.comments.push({ commentusername, commentbody, commentrating, date: new Date() });
-            
-
+        userPostSong.comments.push({ commentusername, commentbody, commentrating, date: new Date() });
         await userPostSong.save(); // Save the updated song document
+
+        rateComNotifEmail(userPostSong.userEmail, userPostSong.username, commentusername, commentbody);
+        pushRateCommentNotif();
+
         res.json(userPostSong);
     } catch (error) {
         console.error(error);
