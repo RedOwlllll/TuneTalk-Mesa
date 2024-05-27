@@ -165,12 +165,11 @@ const PostDetails = ({post}) => {
                 <h4>Date & Time Posted: {formatDate(post.createdAt)}</h4>
                 <h4>Caption: {post.caption}</h4>
                 <h4>Personal Rating: {post.rating}</h4>
-                <br></br>
+                <br />
                 {post.spotifyURL && (
                     <a href={post.spotifyURL || "#"} target="_blank" rel="noopener noreferrer" className="spotify-button">
                         Listen on Spotify
                     </a>
-
                 )}
                 {/* Comment form */}
                 <form onSubmit={handleNewCommentSubmit}>
@@ -181,27 +180,27 @@ const PostDetails = ({post}) => {
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
                     />
-                    <button type="submit" className="submit-comment">Post</button>
+                    <button type="submit" className="submit-comment">Comment</button>
                 </form>
+                <br />
                 <div className="post-comments-container">
-                <div className="toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
-                    <strong>{comment.commentusername}</strong> <h5>View {isVisible ? 'less' : 'more'} comments <FontAwesomeIcon icon={isVisible ? faChevronCircleDown : faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
-                </div>
-            <div className={`collapsible-content ${isVisible ? 'open' : ''}`}> {isVisible && (
-                <div>
-             
-                    {comments.map((comment, index) => (
-                    <div key={index} className="comment">
-                        <p><strong>{comment.commentusername}</strong></p><StarRating rating={comment.commentrating} /> : <span>{comment.commentbody}</span>
+                    <div className="toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
+                        <strong>{comment.commentusername}</strong> <h5>View {isVisible ? 'less' : 'more'} comments <FontAwesomeIcon icon={faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
                     </div>
-                    ))}
+                    <div className={`collapsible-content ${isVisible ? 'open' : ''}`}>
+                        {isVisible && (
+                            <div>
+                                {comments.map((comment, index) => (
+                                    <div key={index} className="comment">
+                                        <p><strong>{comment.commentusername}</strong></p><StarRating rating={comment.commentrating} /> : <span>{comment.commentbody}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
-                )}
-            </div>
-                
             </div>
         </div>
-      </div>
     );
 }
 

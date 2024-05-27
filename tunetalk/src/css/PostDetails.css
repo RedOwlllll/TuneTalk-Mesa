@@ -115,3 +115,8 @@
     min-width: 120px; 
     padding: 8px 16px;
 }
+
+
+.post-comments-container {
+    margin-bottom: 50px;
+}
