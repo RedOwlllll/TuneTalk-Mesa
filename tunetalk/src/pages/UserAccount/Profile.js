@@ -52,7 +52,7 @@ export const Profile = () => {
                             ))}
                         </div>
                         <div className="song-recommendations">
-                            <center><h1>Song Recommendations</h1></center>
+                            <center><h1>Song Recommendations:</h1></center>
                             {/* Add song recommendations content here */}
                         </div>
                     </div>
