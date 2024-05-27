@@ -46,27 +46,38 @@ h4 {
 }
 
 .spotify-login-container {
-    color: white;
-    background: black;
+    color: white; 
+    background: black; 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 85vh; /* Minimum height of the page to fill the viewport */
+    width: 100vw; 
+    height: 100vh; 
     text-align: center;
 }
 
 
-button[type=submit] {
+.menu-button,
+.login-button,
+.register-button,
+.spotify-button {
     border-radius: 30px;
     border: 1px solid #004d39;
-    background-color: #6D968F;
+    background-color: #6D968F; 
     color: #ffffff;
     font-weight: bold;
     cursor: pointer;
     padding: 12px 30px;
     width: auto;
     text-transform: uppercase;
+}
+
+.menu-button:hover,
+.login-button:hover,
+.register-button:hover,
+.spotify-button:hover {
+    background-color: #45a049; /* Darker green on hover */
 }
 
 input {

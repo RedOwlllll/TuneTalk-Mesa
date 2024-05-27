@@ -1,6 +1,9 @@
 /* STYLING FOR NAVBAR CLASS */
 
 /* Div for the backround of the navbar component */
+
+
+
 nav {
     display: flex; /* places content to the right */
     justify-content: space-between; 
@@ -100,6 +103,7 @@ nav .menu {
     right: -30px; /* Ensures theres a gap between the right edge and the full screen */
     padding-bottom: 10px;
     font-size: 20px;
+    align-items: center;
 }
 
 /* Show the dropdown menu on hover */
@@ -122,6 +126,23 @@ nav .menu {
 /* Change color of dropdown links on hover */
 .dropdown-content .dropdown-link:hover {
     background-color: #333333;
+}
+
+/* Logout button inside dropdown menu */
+.logout-btn {
+    background-color: #007BFF; /* Blue button for actions */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding: 12px 100px;
+}
+
+.logout-btn:hover {
+    background: #333333; /* Background color when link is hovered */
+    cursor: pointer;
+    border-radius: 0.5rem; /* Makes the border curvy */
 }
 
 /* Media query that handles navigation menu when screen is smaller */

@@ -3,19 +3,30 @@ import { FaCheck, FaPlus } from 'react-icons/fa'; // FontAwesome icons
 import '../../css/Community.css';
 import { useUser } from "../../authentication/UserState";
 import axios from "axios";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
+
 
 const CLIENT_ID = "a8c9857ace8449f290ed14c54c878e1f";
 const CLIENT_SECRET = "c747a0da53124c4ba8bc12a0e88d859b";
 
-function Kkpop() {
+function Kpop() {
   const [isFollowing, setIsFollowing] = useState(false);
   const [accessToken, setAccessToken] = useState('');
-  const [kpopPlaylists, setKkpopPlaylists] = useState([]);
+  const [kpopPlaylists, setKpopPlaylists] = useState([]);
   const [featuredTrack, setFeaturedTrack] = useState(null);  // State to store the featured track
   const [user] = useUser(); 
   const [followerCount, setFollowerCount] = useState(0);
   const [followers, setFollowers] = useState([]);
   const [showFollowers, setShowFollowers] = useState(false);
+  const [comment, setComment] = useState('');
+  const [rating, setRating] = useState(0);
+  const [comments, setComments] = useState([]);
+  const [averageRating, setAverageRating] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  
+
+  const toggleVisibility = () => setIsVisible(!isVisible); // Collapse comment box
 
   const handleFollowClick = async () => {
     if (!isFollowing){
@@ -77,9 +88,18 @@ function Kkpop() {
     getAccessToken();
   }, []);
 
+  const fetchComments = async (spotifyUrl) => {
+    try {
+      const response = await axios.get(`http://localhost:8082/api/songs/comments/${encodeURIComponent(spotifyUrl)}`);
+      setComments(response.data.comments);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  };
+
   useEffect(() => {
-    // Function to fetch Kkpop playlists using the access token
-    const fetchKkpopMusic = async () => {
+    // Function to fetch Kpop playlists using the access token
+    const fetchKpopMusic = async () => {
       if (!accessToken) return;
 
       const response = await fetch('https://api.spotify.com/v1/browse/categories/kpop/playlists', {
@@ -91,10 +111,10 @@ function Kkpop() {
       }
 
       const data = await response.json();
-      setKkpopPlaylists(data.playlists.items);
+      setKpopPlaylists(data.playlists.items);
     };
 
-    fetchKkpopMusic().catch(error => {
+    fetchKpopMusic().catch(error => {
       console.error('Fetching kpop playlists failed:', error);
     });
   }, [accessToken]);
@@ -157,6 +177,27 @@ function Kkpop() {
     fetchFollowers();
   }, []);
 
+  useEffect(() => {
+    // Post the featured track to your backend
+    const postFeaturedTrack = async () => {
+      if (!featuredTrack) return;
+
+      await axios.post('http://localhost:8082/api/songs', {
+        spotifyUrl: featuredTrack.external_urls.spotify
+      }).then(response => {
+        console.log('Song added:', response.data);
+      }).catch(error => {
+        if (error.response && error.response.status === 409) {
+          console.log('Song already exists.');
+        } else {
+          console.error('Error posting featured track:', error);
+        }
+      });
+    };
+
+    postFeaturedTrack();
+  }, [featuredTrack]);
+
   function FollowerListModal({ followers, onClose }) {
     return (
         <div className="follower-modal">
@@ -171,16 +212,90 @@ function Kkpop() {
     );
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      alert('You must be logged in to post comments.');
+      return;
+    }
+    try {
+      const response = await axios.post('http://localhost:8082/api/songs/comment', {
+        spotifyUrl: featuredTrack.external_urls.spotify,
+        username: user.username,
+        comment,
+        rating
+      });
+      console.log('Comment added:', response.data);
+      setComment('');
+      setRating(1);
+    } catch (error) {
+      console.error('Failed to post comment:', error);
+    }
+  };
+
+  // Handle star click
+  const handleRating = (rate) => {
+    setRating(rate);
+    // Update class for each star
+    const stars = document.querySelectorAll('.rating i');
+    stars.forEach((star, idx) => {
+      if (idx < rate) {
+        star.classList.remove('far');
+        star.classList.add('fas');
+      } else {
+        star.classList.remove('fas');
+        star.classList.add('far');
+      }
+    });
+  };
+
+  function StarRating({ rating }) {
+    const totalStars = 5;
+    let stars = [];
+
+    // Create filled stars up to the rating
+    for (let i = 1; i <= totalStars; i++) {
+      if (i <= rating) {
+        stars.push(<i key={i} className="fas fa-star" style={{ color: '#ffc107' }}></i>);
+      } else if (i > rating && i - 1 < rating) {
+        // Handle half star for fractions
+        stars.push(<i key={i} className="fas fa-star-half-alt" style={{ color: '#ffc107' }}></i>);
+      } else {
+        stars.push(<i key={i} className="far fa-star" style={{ color: '#ffc107' }}></i>);
+      }
+    }
+
+    return <div>{stars}</div>;
+  }
+
+  useEffect(() => {
+    if (featuredTrack) {
+      fetchComments(featuredTrack.external_urls.spotify);
+    }
+  }, [featuredTrack]);
+
+  useEffect(() => {
+    if (comments.length > 0) {
+      const totalRating = comments.reduce((acc, comment) => acc + comment.rating, 0);
+      const averageRating = totalRating / comments.length;
+      setAverageRating(Math.round(averageRating * 2) / 2); // Rounds to nearest 0.5
+    } else {
+      setAverageRating(0);
+    }
+  }, [comments]);
+
   return (
     <div className="container-page">
-      <h1>Kkpop Music</h1>
-      <button onClick={handleFollowClick} className="follow-button">
-        {isFollowing ? <><FaCheck /> Following</> : <><FaPlus /> Follow</>}
-      </button>
-      <div className="follower-info">
-            <span className="follower-count" onClick={() => setShowFollowers(true)}>
-                {followerCount} followers
-            </span>
+      <div className="follow-container">
+        <h1>Kpop Music</h1>
+        <button onClick={handleFollowClick} className="follow-button">
+          {isFollowing ? <><FaCheck /> Following</> : <><FaPlus /> Follow</>}
+        </button>
+        <div className="follower-info">
+          <span className="follower-count" onClick={() => setShowFollowers(true)}>
+            {followerCount} followers
+          </span>
+        </div>
       </div>
       {showFollowers && <FollowerListModal followers={followers} onClose={() => setShowFollowers(false)} />}
       <div className="featured-track-container">
@@ -191,18 +306,58 @@ function Kkpop() {
               <div className="track-info">
                 <div className="track-title">{featuredTrack.name}</div>
                 <div className="track-artist">{featuredTrack.artists.map(artist => artist.name).join(', ')}</div>
+                <div>
+                <a href={featuredTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">
+                  Listen on Spotify
+                </a>
+                </div>
               </div>
             </div>
           )}
+        <h4 className="community-h4">Comment and rate the song</h4>
+        <form onSubmit={handleSubmit}>
+          <input class="community-input" type = "text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
+          <div className="rating">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <label key={star}>
+                  <input
+                    type="radio"
+                    name="rating"
+                    value={star}
+                    onClick={() => handleRating(star)}
+                  />
+                  <i className={star <= rating ? 'fas fa-star' : 'far fa-star'}></i>
+                </label>
+              ))}
+            </div>
+          <button class="community-btn" type="submit">Post Comment and Rating</button>
+        </form>
+      </div>
+      <div className="community-comments-container">
+        <div className= "toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
+        <strong>{comment.username}</strong> <h5>Tap to {isVisible ? 'hide' : 'view'} comment <FontAwesomeIcon icon={isVisible ? faChevronCircleDown : faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
+        </div>
+        <div className={`collapsible-content ${isVisible ? 'open' : ''}`}>
+          {isVisible && (
+          <div>
+            <h4 className="community-h4">Average Rating: <StarRating rating={averageRating} /></h4>
+            {comments.map((comment, index) => (
+            <div key={index} className="comment">
+              <p><strong>{comment.username}</strong></p><StarRating rating={comment.rating} /> : <span>{comment.body}</span>
+            </div>
+            ))}
+          </div>
+          )}
+        </div>
       </div>
       <div className="playlists-container">
           {kpopPlaylists.map((playlist) => (
             <div key={playlist.id} className="playlist-card">
-                <img src={playlist.images[0].url} alt={playlist.name} className="playlist-image" />
-                <div className="playlist-info">
-                    <h3>{playlist.name}</h3>
-                    <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="playlist-link">Listen on Spotify</a>
-                </div>
+              <img src={playlist.images[0].url} alt={playlist.name} className="playlist-image" />
+              <div className="playlist-info">
+                <h3>{playlist.name}</h3>
+                <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="playlist-link">Listen on Spotify</a>
+              </div>
             </div>
           ))}
       </div>
@@ -210,4 +365,4 @@ function Kkpop() {
   );
 }
 
-export default Kkpop;
+export default Kpop;

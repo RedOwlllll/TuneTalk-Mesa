@@ -49,7 +49,16 @@ router.post("/", async(req,res) => {
                 pushNotification();
             }, timer * 1000); //Convert seconds to milliseconds
             // Return user's email along with token
-            return res.json({status: "ok", user: {email: existingUser.email, username: existingUser.username}, token });
+            return res.json({
+                status: "ok", 
+                user: {
+                    email: existingUser.email, 
+                    username: existingUser.username,
+                    bio: existingUser.bio,
+                    profileImage: existingUser.profileImage
+                }, 
+                token 
+            });
         }
         res.json({status: "error", error: "incorrect_password"});
     }
