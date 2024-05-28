@@ -15,7 +15,7 @@ function RNB() {
   const [accessToken, setAccessToken] = useState('');
   const [rnbPlaylists, setRNBPlaylists] = useState([]);
   const [featuredTrack, setFeaturedTrack] = useState(null);  // State to store the featured track
-  const [user] = useUser(); 
+  const [user, setUser] = useUser(); 
   const [followerCount, setFollowerCount] = useState(0);
   const [followers, setFollowers] = useState([]);
   const [showFollowers, setShowFollowers] = useState(false);
@@ -36,9 +36,15 @@ function RNB() {
         try {
           await axios.post(`http://localhost:8082/api/community/follow/${encodeURIComponent(user.username)}`, {
             community: 'rnb',
-            followStatus: true
+            followStatus: true,
+            featuredTrack: featuredTrack
           });
           setIsFollowing(true);
+          // Update the user's recommendations in the state
+          setUser(prevUser => ({
+            ...prevUser,
+            recommendations: [...(prevUser.recommendations || []), featuredTrack]
+          }));
         } catch (err) {
           console.error("Error updating follow status:", err);
         }
@@ -52,6 +58,11 @@ function RNB() {
             followStatus: false
           });
           setIsFollowing(false);
+          // Remove the track from the user's recommendations in the state
+          setUser(prevUser => ({
+            ...prevUser,
+            recommendations: (prevUser.recommendations || []).filter(track => track.id !== featuredTrack.id)
+          }));
         } catch (err) {
           console.error("Error updating un-follow status:", err);
         }

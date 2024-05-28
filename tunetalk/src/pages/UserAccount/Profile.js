@@ -9,7 +9,7 @@ import { useState } from "react";
 import PostDetails from "../../components/PostDetails";
 
 export const Profile = () => {
-    const [user] = useUser();
+    const [user, setUser] = useUser();
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
 
@@ -54,6 +54,17 @@ export const Profile = () => {
                     <div className="song-recommendations">
                             <center><h1>Song Recommendations:</h1></center>
                             {/* Add song recommendations content here */}
+                            {user.recommendations && user.recommendations.map((track, index) => (
+                                <div key={index} className="featured-track-container">
+                                    <div className="track-card">
+                                        <img src={track.album.images[0].url} alt={track.name} className="track-image" />
+                                        <div className="track-info">
+                                            <p className="track-title">{track.name}</p>
+                                            <p className="track-artist">by {track.artists.map(artist => artist.name).join(', ')}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
                     </div>
                 </>
                 )}
