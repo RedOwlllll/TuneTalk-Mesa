@@ -2,6 +2,7 @@ const sgMail = require('@sendgrid/mail');
 const notifier = require('node-notifier');
 const path = require('path');
 const dotenv = require('dotenv');
+const { exec } = require('child_process');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -38,7 +39,15 @@ function pushNotification() {
         appName: 'Tune Talk',
         title: '!TIME TO TUNE IN!',
         message: "It's time to post your current/recently played song!",
-        icon: path.join('http://localhost:3000/static/media/TuneTalkLogoBlack.16d0f5c9352a06b53052641b8fab2fac.svg')
+        icon: path.join('http://localhost:3000/static/media/TuneTalkLogoBlack.16d0f5c9352a06b53052641b8fab2fac.svg'),
+        wait: true,
+        actions: ['Open']
+    }, (err, response, metadata) => {
+        if (metadata.activationType === 'actionClicked') {
+            const url = 'http://localhost:3000/feed';
+            exec(`start "" "${url}"`); // For Windows
+            // exec(`open "${url}"`); // For macOS
+        }
     });
 }
 
