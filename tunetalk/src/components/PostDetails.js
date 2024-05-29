@@ -4,6 +4,7 @@ import "../css/PostDetails.css";
 import axios from "axios";
 import { useUser } from "../authentication/UserState";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AccountLogo from "../assets/AccountLogo.svg"
 
 
 
@@ -144,10 +145,20 @@ const PostDetails = ({post}) => {
     return (
         <div className="post-details-container">
             <div className="post-details">
-                <h4>Username: {post.postusername}</h4>
-                <h4>Email: {post.email}</h4>
-                <h4>Title: {post.title}</h4>
-                <h4>Artist: {post.artist}</h4>
+                
+                
+                {/* <h4>Email: {post.email}</h4> */}
+                
+                {/* <h4>Artist: /h4> */}
+                <div className="post-username-songtitle-display">
+                  <div className="profile-image-container">
+                            <img className="profile-image" src={user.profileImage || AccountLogo} alt="Profile" />
+                  </div>
+                  <h4>♫ {post.title} - {post.artist}</h4>
+                  <h4>{post.postusername}</h4>
+                  
+                  
+                </div>
                 <img
                     src={post.imageData}
                     className="post-card-image"
