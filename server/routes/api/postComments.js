@@ -7,6 +7,7 @@ const { rateComNotifEmail, pushRateCommentNotif} = require('../../utils/rateComm
 
 router.post('/postsongs/comment', async (req, res) => {
     const { postId, commentusername, commentbody, commentrating } = req.body;
+
     try {
         let userPostSong = await Post.findById({ _id: postId });
         if (!userPostSong) {
@@ -20,7 +21,7 @@ router.post('/postsongs/comment', async (req, res) => {
         if (commentusername !== userPostSong.postusername) {
             //Send notification email and push notification to the post owner
             rateComNotifEmail(userPostSong.email, userPostSong.postusername, commentusername, commentbody, commentrating);
-            pushRateCommentNotif(commentusername);
+            pushRateCommentNotif(commentusername, userPostSong.postusername);
         }
 
         res.json(userPostSong);

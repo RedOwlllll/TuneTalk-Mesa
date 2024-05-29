@@ -2,6 +2,7 @@ const sgMail = require('@sendgrid/mail');
 const notifier = require('node-notifier');
 const path = require('path');
 const dotenv = require('dotenv');
+const { exec } = require('child_process');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -33,7 +34,11 @@ function rateComNotifEmail(userEmail, username, friend, comment, rating) {
 }
 
 //To push a notification to the user's device 
-function pushRateCommentNotif(friend) {
+function pushRateCommentNotif(friend, postOwnerUsername) {
+    if (friend === postOwnerUsername) {
+        return;
+    } 
+    
     notifier.notify({
         appName: 'Tune Talk',
         title: '!TIME TO TUNE IN!',
@@ -43,7 +48,7 @@ function pushRateCommentNotif(friend) {
         actions: ['Open']
     });
 
-    notifier.on('click', function(notifierObject, options, event){
+    notifier.on('click', function(notifierObject, options, event) {
         const url = 'http://localhost:3000/feed';
         const { exec } = require('child_process');
         exec(`start "" "${url}"`);
