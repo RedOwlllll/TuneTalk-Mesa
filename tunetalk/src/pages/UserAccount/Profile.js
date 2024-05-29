@@ -57,10 +57,16 @@ export const Profile = () => {
                             {user.recommendations && user.recommendations.map((track, index) => (
                                 <div key={index} className="featured-track-container">
                                     <div className="track-card">
-                                        <img src={track.album.images[0].url} alt={track.name} className="track-image" />
+                                        {/* Add conditional rendering for track images */}
+                                        {track.album && track.album.images && track.album.images.length > 0 &&
+                                            <img src={track.album.images[0].url} alt={track.name} className="track-image" />
+                                        }
                                         <div className="track-info">
                                             <p className="track-title">{track.name}</p>
-                                            <p className="track-artist">by {track.artists.map(artist => artist.name).join(', ')}</p>
+                                            {/* Add conditional rendering for track artists */}
+                                            {track.artists && track.artists.length > 0 &&
+                                                <p className="track-artist">by {track.artists.map(artist => artist.name).join(', ')}</p>
+                                            }
                                         </div>
                                     </div>
                                 </div>
