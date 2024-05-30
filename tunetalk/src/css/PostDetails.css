@@ -118,5 +118,14 @@
 
 
 .post-comments-container {
+    padding-top: 10px;
     margin-bottom: 50px;
+}
+
+.post-comment-btn {
+    margin-top: 25px;
+}
+
+.post-comment-input {
+    margin-bottom: 25px;
 }

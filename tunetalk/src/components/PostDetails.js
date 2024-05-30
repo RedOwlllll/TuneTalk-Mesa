@@ -144,10 +144,10 @@ const PostDetails = ({post}) => {
     return (
         <div className="post-details-container">
             <div className="post-details">
-                <h4>Username: {post.postusername}</h4>
-                <h4>Email: {post.email}</h4>
-                <h4>Title: {post.title}</h4>
-                <h4>Artist: {post.artist}</h4>
+                <h4>{post.postusername}</h4>
+                {/* <h4>Email: {post.email}</h4> */}
+                <h4>♫ {post.title} - {post.artist}</h4>
+                
                 <img
                     src={post.imageData}
                     className="post-card-image"
@@ -159,9 +159,10 @@ const PostDetails = ({post}) => {
                         Your browser does not support the audio element.
                     </audio>
                 )}
-                <h4>Date & Time Posted: {formatDate(post.createdAt)}</h4>
-                <h4>Caption: {post.caption}</h4>
-                <h4>Personal Rating: {post.rating}</h4>
+                <h4>{formatDate(post.createdAt)}</h4>
+                <h4>{post.postusername}: {post.caption}</h4>
+                <h4>Rating: {post.rating}</h4>  
+                {/* Implement graphical star display soon  */}
                 <br />
                 {post.spotifyURL && (
                     <a href={post.spotifyURL || "#"} target="_blank" rel="noopener noreferrer" className="spotify-button">
