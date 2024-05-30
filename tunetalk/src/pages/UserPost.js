@@ -22,6 +22,7 @@ function UserPost() {
     const [user] = useUser();
     const[ previewURL, setPreviewURL] = useState('');
     const [username] = user.username;
+    const [isEnabled, setIsEnabled] = useState(false);
 
     const [selectedRating, setSelectedRating] = useState(0); // State variable to store the selected rating
 
@@ -121,12 +122,36 @@ function UserPost() {
         }
     };
 
+    function TimeSensitiveButton() {
+        
+    
+        useEffect(() => {
+            const interval = setInterval(() => {
+                axios.get('/api/check-time')
+                    .then(response => {
+                        setIsEnabled(response.data.isEnabled);
+                    })
+                    .catch(error => console.error('Error fetching time data:', error));
+            }, 10000); // Check every minute
+    
+            return () => clearInterval(interval);
+        }, []);
+    
+        return (
+            <button disabled={!isEnabled}>
+                Special Action
+            </button>
+        );
+    }
+    
+
     return (
         <div className="poster-container">
             
             <div className="button-container">
                 <div className="button-box">
-                    <button onClick={getRecentTrack}>POST NOW!</button>
+                    <TimeSensitiveButton/>
+                    <button className={!isEnabled ? 'hidden' : ''} onClick={getRecentTrack} disabled={!isEnabled}>POST NOW!</button>
                 </div>
             </div>
 
