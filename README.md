@@ -3,8 +3,7 @@ TuneTalk is a web-based platform that is designed to connect music FREAKS from a
 
 **NOTE:** Please be aware that since this project is still in its development stage and has not yet been deployed, access via Spotify accounts is currently limited. Only Spotify accounts that have been pre-approved and added to our Spotify Developer Dashboard will be able to log in.
 
-**NOTE TO MARKERS:** please refer to our team's Trello Board for the user and spotify account to test our project. 
-
+**NOTE TO MARKERS:** please refer to our team's Trello Board (Sprint 2 Documentation -> TuneTalk User and Spotify account for testing/marking) for the user and spotify account to test our project. 
 ---
 
 ## Prerequisites
@@ -17,23 +16,19 @@ Before you begin, ensure you have the following installed:
 Optional but helpful tools:
 - **MongoDB Compass**: For managing MongoDB data. Available at [MongoDB Compass](https://www.mongodb.com/products/compass).
 - **Postman**: For API testing. Download from [Postman](https://www.postman.com/downloads/).
-
 ----
 
 ## Installation
 - To start this project, you will need to clone this repository and open the folders on Visual Studio Code.
 - Ensure you are on the **"release"** branch to get the latest code. 
-
 ---
 
 ## Setup
 Before starting ensure both the tunetalk folder (the client folder) and the server folder have the correct packages installed: ***npm install***.
-
 ---
 
 ## Usage
 Once the project and the correct packages have been installed, to run the project you will need to run ***npm start*** on both the tunetalk and server folders. (Note: You can also use ***nodemon app*** to start the server folder if you have nodemon installed).
-
 ---
 
 ## Contributing
@@ -42,7 +37,6 @@ This is an open source project open to contributions. To contribute:
 2. Make your changes.
 3. Ensure your fork is up-to-date with the main branch to avoid merge conflicts.
 4. Submit a pull request to the main branch and request a review from the listed authors.
-
 ---
 
 ## Authors
@@ -52,7 +46,6 @@ This project was developed by the following developers:
 - Joel Hillmann
 - Maxinne Santico
 - Tabitha Leyson
-
 ---
 
 ## License
