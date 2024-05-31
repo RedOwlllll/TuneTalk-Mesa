@@ -52,28 +52,28 @@ export const Profile = () => {
                         ))}
                     </div>
                     <div className="song-recommendations">
-                            <center><h1>Song Recommendations:</h1></center>
-                            {/* Add song recommendations content here */}
-                            {user.recommendations && user.recommendations.map((track, index) => (
-                                <div key={index} className="featured-track-container">
-                                    <div className="track-card">
-                                        {/* Add conditional rendering for track images */}
-                                        {track.album && track.album.images && track.album.images.length > 0 &&
-                                            <img src={track.album.images[0].url} alt={track.name} className="track-image" />
-                                        }
-                                        <div className="track-info">
-                                            <p className="track-title">{track.name}</p>
-                                            {/* Add conditional rendering for track artists */}
-                                            {track.artists && track.artists.length > 0 &&
-                                                <p className="track-artist">by {track.artists.map(artist => artist.name).join(', ')}</p>
-                                            }
-                                        </div>
-                                    </div>
+                    <center><h1>Song Recommendations:</h1></center>
+                        {console.log('recs', user.recommendations)}
+                        {user.recommendations && user.recommendations.map((track, index) => (
+                        track && (
+                            <div key={index} className="featured-track-container">
+                            <div className="track-card">
+                                {track.album && track.album.images && track.album.images.length > 0 &&
+                                <img src={track.album.images[0].url} alt={track.name} className="track-image" />
+                                }
+                                <div className="track-info">
+                                <p className="track-title">{track.name}</p>
+                                {track.artists && track.artists.length > 0 &&
+                                    <p className="track-artist">by {track.artists.map(artist => artist.name).join(', ')}</p>
+                                }
                                 </div>
-                            ))}
-                    </div>
-                </>
-                )}
+                            </div>
+                            </div>
+                        )
+                        ))}
+                        </div>
+                    </>
+                    )}
             </div>
         </div>  
     );
