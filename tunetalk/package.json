@@ -23,6 +23,15 @@
     "spotify-web-api-node": "^5.0.2",
     "web-vitals": "^2.1.4"
   },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+      "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/src/assets/$1"
+    }
+  },  
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

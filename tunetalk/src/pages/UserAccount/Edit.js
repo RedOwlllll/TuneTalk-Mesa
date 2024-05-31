@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../authentication/UserState";
 import axios from "axios"; 
-import AccountLogo from "../../assets/AccountLogo.svg"
+// import AccountLogo from "../../assets/AccountLogo.svg"
 import "../../css/App.css"; 
 import "../../css/Profile.css"; 
 
@@ -12,7 +12,7 @@ export const Edit = () => {
     const [username, setUsername] = useState(user.username);
     const [email, setEmail] = useState(user.email);
     const [bio, setBio] = useState(user.bio);
-    const [newProfileImage, setNewProfileImage] = useState(user.profileImage || AccountLogo);
+    const [newProfileImage, setNewProfileImage] = useState(user.profileImage);
     const [newProfileFile, setNewProfileFile] = useState(null);
     const [alertMessage, setAlertMessage] = useState("");
     const navigate = useNavigate();
@@ -74,7 +74,7 @@ export const Edit = () => {
                         username: data.user.username,
                         email: data.user.email,
                         bio: data.user.bio,
-                        profileImage: data.user.profileImage || AccountLogo
+                        profileImage: data.user.profileImage
                     });
                     navigate("/account/profile");
                 }
