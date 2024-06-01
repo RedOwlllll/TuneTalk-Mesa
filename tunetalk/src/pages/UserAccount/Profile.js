@@ -12,19 +12,53 @@ export const Profile = () => {
     const [user, setUser] = useUser();
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
+    const [recommendations, setRecommendations] = useState([]);
 
+    // useEffect(() => {
+    //     const fetchPosts = async () => {
+    //         const response = await fetch(`/api/posts/getuserpost?username=${user.username}`);
+    //         const json = await response.json();
+    //         if (response.ok) {
+    //             setPosts(json);
+    //             setRecommendations(user.recommendations || []);
+    //         }
+    //     }
+    //     if (user.isAuthenticated) {
+    //         fetchPosts();
+    //     }
+    // }, [user]);
     useEffect(() => {
         const fetchPosts = async () => {
-            const response = await fetch(`/api/posts/getuserpost?username=${user.username}`);
-            const json = await response.json();
-            if (response.ok) {
-                setPosts(json);
+            try {
+                const response = await fetch(`/api/posts/getuserpost?username=${user.username}`);
+                const json = await response.json();
+                if (response.ok) {
+                    setPosts(json);
+                }
+            } catch (error) {
+                console.error("Error fetching user posts:", error);
             }
-        }
+        };
+
+        const fetchUserDetails = async () => {
+            try {
+                const response = await fetch(`/api/users/details?username=${user.username}`);
+                const userData = await response.json();
+                if (response.ok) {
+                    setUser(userData); // Update user state
+                    setRecommendations(userData.recommendations || []);
+                }
+            } catch (error) {
+                console.error("Error fetching user details:", error);
+            }
+        };
+
         if (user.isAuthenticated) {
             fetchPosts();
+            fetchUserDetails();
         }
-    }, [user]);
+    }, [user, setUser]);
+
     
     
 

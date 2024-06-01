@@ -41,6 +41,10 @@ const UserDetailsSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'SongPost'
     }],
+    recommendations: {
+        type: [Object],
+        default: []
+    },
 });
 
 const UserDetails = mongoose.model("UserDetails", UserDetailsSchema);

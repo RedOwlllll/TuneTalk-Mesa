@@ -29,86 +29,6 @@ function RNB() {
   const toggleVisibility = () => setIsVisible(!isVisible); // Collapse comment box
 
   //Confirmation prompt if user wants to add the community to their profile when they click the button
-  // const handleFollowClick = async () => {
-  //   if (!isFollowing) {
-  //     const confirmed = window.confirm("By following the RNB community, song recommendations will show in your profile");
-  //     if (confirmed) {
-  //       try {
-  //         if (!accessToken) {
-  //           console.error("No access token available.");
-  //           return;
-  //         }
-  
-  //         // Fetch RNB playlists
-  //         const response = await fetch('https://api.spotify.com/v1/browse/categories/rnb/playlists', {
-  //           headers: { 'Authorization': `Bearer ${accessToken}` },
-  //         });
-  
-  //         if (!response.ok) {
-  //           throw new Error(`HTTP error! status: ${response.status}`);
-  //         }
-  
-  //         const data = await response.json();
-  //         const playlists = data.playlists.items;
-  
-  //         if (playlists.length > 0) {
-  //           const playlistId = playlists[0].id;
-  
-  //           // Fetch tracks from the chosen playlist
-  //           const tracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-  //             headers: { 'Authorization': `Bearer ${accessToken}` },
-  //           });
-  
-  //           if (!tracksResponse.ok) {
-  //             throw new Error(`HTTP error! status: ${tracksResponse.status}`);
-  //           }
-  
-  //           const tracksData = await tracksResponse.json();
-  //           if (tracksData.items.length > 0) {
-  //             const randomIndex = Math.floor(Math.random() * tracksData.items.length);
-  //             const randomTrack = tracksData.items[randomIndex].track;
-  
-  //             await axios.post(`http://localhost:8082/api/community/follow/${encodeURIComponent(user.username)}`, {
-  //               community: 'rnb',
-  //               followStatus: true,
-  //               featuredTrack: randomTrack // Use randomTrack here
-  //             });
-  
-  //             setIsFollowing(true);
-  //             // Update the user's recommendations in the state
-  //             setUser(prevUser => ({
-  //               ...prevUser,
-  //               recommendations: [...(prevUser.recommendations || []), randomTrack] // Use randomTrack here
-  //             }));
-  //             setRandomTrack(randomTrack); // Store the randomTrack
-  //           }
-  //         }
-  //       } catch (err) {
-  //         console.error("Error updating follow status:", err);
-  //       }
-  //     }
-  //   } else {
-  //     const confirmed = window.confirm("By unfollowing the RNB paage, songs recommended will be removed");
-  //     if (confirmed) {
-  //       try {
-  //         await axios.post(`http://localhost:8082/api/community/un-follow/${encodeURIComponent(user.username)}`, {
-  //           community: 'rnb',
-  //           followStatus: false
-  //         });
-  
-  //         setIsFollowing(false);
-  //         // Clear all recommendations from the user's state
-  //         setUser(prevUser => ({
-  //           ...prevUser,
-  //           recommendations: [] // Clear all recommendations
-  //         }));
-  //         setRandomTrack(null); // Clear the randomTrack
-  //       } catch (err) {
-  //         console.error("Error updating un-follow status:", err);
-  //       }
-  //     }
-  //   }
-  // };
   const handleFollowClick = async () => {
     if (!isFollowing) {
       const confirmed = window.confirm("By following the RNB community, song recommendations will show in your profile");
@@ -125,7 +45,7 @@ function RNB() {
           });
   
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error status: ${response.status}`);
           }
   
           const data = await response.json();

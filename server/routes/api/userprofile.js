@@ -29,6 +29,56 @@ const fileFilter = (req, file, cb) => {
 }
 const upload = multer({ storage, fileFilter });
 
+// Follow Community
+router.post('/community/follow/:username', async (req, res) => {
+    const { username } = req.params;
+    const { community, featuredTrack } = req.body;
+
+    try {
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (!user.communities.includes(community)) {
+            user.communities.push(community);
+
+            const recommendation = {
+                track: featuredTrack,
+                addedBy: user._id
+            };
+            user.recommendations.push(recommendation);
+            const savedUser = await user.save();
+
+            res.status(201).json(savedUser.recommendations);
+        } else {
+            res.status(200).json({ message: 'Already following this community' });
+        }
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+// Unfollow Community
+router.post('/community/unfollow/:username', async (req, res) => {
+    const { username } = req.params;
+    const { community } = req.body;
+
+    try {
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.communities = user.communities.filter(comm => comm !== community);
+        user.recommendations = user.recommendations.filter(recommendation => recommendation.addedBy.toString() !== user._id.toString());
+        const savedUser = await user.save();
+
+        res.status(201).json(savedUser.recommendations);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
 
 // Update Profile
 router.put('/edit-profile', upload.single('profileImage'), async (req, res) => {
