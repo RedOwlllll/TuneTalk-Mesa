@@ -120,13 +120,15 @@ export const Friends = () => {
                 />
                 <div>
                     {searchResults.map((user, index) => (
-                    <div key={index} className="search-result">
+                    <div key={index} className="friend">
                         <img className = "profile-thumbnail" src={user.profileImage || AccountLogo } alt={user.username + "'s profile image"} />
                         <p>{user.username}</p>
                         <button onClick={() => sendFriendRequest(user.username)}>Add Friend</button>
                     </div>
                     ))}
-                </div>              
+                    
+                </div>  
+                            
             </div>
             <section className="requests-list">
                 <h2>Pending Friend Requests</h2>
