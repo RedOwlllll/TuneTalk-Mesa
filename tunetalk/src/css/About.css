@@ -1,0 +1,30 @@
+.about-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh; /* Minimum height of the page to fill the viewport */
+    text-align: center;
+    padding: 20px;
+}
+
+.about-page h1 {
+    margin-bottom: 20px;
+    font-size: 2.5em;
+}
+
+.about-page p {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    width: 50%;
+    
+}
+
+.link-btn {
+    color: black;
+    background: none;
+    text-decoration: underline;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}

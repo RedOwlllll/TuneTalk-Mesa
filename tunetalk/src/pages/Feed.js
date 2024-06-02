@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
-import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
 import "../css/Post.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
 import "../components/PostDetails";
-
+import { useUser } from "../authentication/UserState";
 import PostDetails from "../components/PostDetails";
-import PostForm from "../components/PostForm";
 import UserPost from "./UserPost";
 
 export const Feed = () => {
 
     const [posts, setPosts] = useState(null)
+    const [user] = useUser();
 
     useEffect(() => {
         const fetchPosts = async () => {
-            const response = await fetch('/api/posts/')
+            const response = await fetch(`/api/posts/getallpost/?username=${user.username}`)
             const json = await response.json()
 
             if (response.ok) {
@@ -27,31 +26,14 @@ export const Feed = () => {
 
     return (
         <div className="feed-page">
-            <h1>Post</h1>
-
-
-            <UserPost />
-            <div>
-
-            </div>
-
-            <h1>Feed</h1>
-
-            <div className="song-display-form">
-                {/* <UserPost /> */}
-
-            </div>
-
-            <div className="post-form">
-                {/* <PostForm /> */}
-
-            </div>
             
+            <div>
+            <UserPost />
+            </div>
 
             <div className="posts">
                 {posts && posts.map((post) => (
                     <PostDetails key={post._id} post={post} />
-            
                 ))}
             </div>
         </div>

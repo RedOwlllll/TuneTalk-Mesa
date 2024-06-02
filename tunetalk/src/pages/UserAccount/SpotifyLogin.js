@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../authentication/UserState";
+import "../../css/App.css"; 
 
 const SPOTIFY_AUTH = "https://accounts.spotify.com/authorize";
-//const REDIRECT_URI = "http://localhost:3000/home";
 const REDIRECT_URI = "http://localhost:3000/account/spotify"; // Needed to change the uri to this as there was issues with redirecting to the home page right after spotify user is authenticated
 const CLIENT_ID = "82051e28a62540019c2de5c903d8bca1";
 
@@ -95,14 +95,15 @@ export const SpotifyLogin = () => {
                     .then((res) => {
                         const data = res.data;
                         console.log(data, "spotifyUserLogin");
-
+                        localStorage.setItem("userSpotifyInfo", spotifyUserInfo);
                         if(data.status === "ok") {
                             // Now, update the user state
-                            setUser((prevUser) => ({
-                                ...prevUser,
+                            setUser({
+                                ...user,
                                 isAuthenticated: true,
                                 spotifyAccount: spotifyUserInfo.username, 
-                            }));
+                
+                            });
                             setAlertMessage("Spotify account connected!");
                             navigate("/account/spotify");
                         } else {
@@ -122,13 +123,13 @@ export const SpotifyLogin = () => {
             }
         };
         getUserSpotifyInfo();
-    }, []);
+    }, [navigate, setUser, user]);
 
     useEffect(() => {
         if (user?.isAuthenticated) {
             navigate("/account/spotify");
         }
-    }, []); // Allows useEffect hook to render only once. 
+    }, [navigate, user?.isAuthenticated]); // Allows useEffect hook to render only once. 
 
 
     return (
@@ -145,7 +146,7 @@ export const SpotifyLogin = () => {
                         <p><b>Username:</b> {userInfo.username}</p>
                         <p><b>Email:</b> {userInfo.email}</p>
                         <br/><br/><br/>
-                        <button type="submit" onClick={() => navigate('/feed')}>Go to your Home Page!</button>
+                        <button type="submit" onClick={() => navigate('/feed')}>View your feed!</button>
                     </div>
                 </div>
                 </>
@@ -154,7 +155,7 @@ export const SpotifyLogin = () => {
                 <div className="spotify-login-container">
                     <h3>Nearly there! <br/> You need to connect your Spotify Account with TuneTalk</h3>
                     <br/>
-                    <button type="submit" onClick={handleLogin}>Login to your Spotify Account</button>
+                    <button type="submit" className="spotify-button" onClick={handleLogin}>Login to your Spotify Account</button>
                     <br/><br/>
                 </div>
                 </>

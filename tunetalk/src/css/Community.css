@@ -1,4 +1,22 @@
-h4 {
+/* For the community page */
+.container-page{
+  align-items: center; 
+  justify-content: center; 
+  margin-top: 80px;
+}
+
+.community-description {
+  font-size: 16px;
+  text-align: center;
+  justify-content: center;
+}
+
+.community-description p {
+  font-size: 18px;
+}
+
+/* h4 tag for community pages - had to define a className as it was overriding other css classes w h4 tags */
+.community-h4 {
   margin-top:25px;
   text-align: center;
   color: #333;
@@ -27,6 +45,7 @@ h5 {
   padding: 0;
   margin: 0 auto;
   max-width: 960px;
+  margin-top: 15px;
 }
   
 .genre-card {
@@ -239,6 +258,7 @@ input.community-input {
   border: none;
   transition: background-color 0.3s ease;
   text-transform: none;
+  border-radius: 20px;
 }
 
 .container-page .community-btn:hover {
