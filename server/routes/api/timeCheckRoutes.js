@@ -16,27 +16,6 @@ const instanceTime = new Date(today.getFullYear(), today.getMonth(), today.getDa
 const startTime = new Date(instanceTime.getTime() + 1 * 60000); //1 Minute later
 const endTime = new Date(startTime.getTime() + 5 * 60000); // 5 minutes later
 
-//const startTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), randomHour, randomMinute + 1);
-
-// router.get('/check-time', (req, res) => {
-//     const now = new Date();
-//     if (now >= startTime && now <= endTime) {
-//         res.json({ isEnabled: true });
-//         console.log('\x1b[31m%s\x1b[0m', 'TIME WITHIN WINDOW VALID');
-//         console.log('\x1b[31m%s\x1b[0m', 'IT IS TIME TO TUNETALK');
-//         console.log(`Time Start: ${startTime}`);
-//         console.log(`Time End  : ${endTime}`);
-
-
-   
-//     } else {
-//         res.json({ isEnabled: false });
-//         console.log('\x1b[31m%s\x1b[0m', 'TIME WINDOW INVALID (Cannot post)');
-//         console.log('\x1b[31m%s\x1b[0m', 'Chosen Time Window:');
-//         console.log(`Time Start: ${startTime}`);
-//         console.log(`Time End  : ${endTime}`);
-//     }
-// });
 
 
 const TimeWindow = require('../../models/TimeWindow'); // adjust the path as necessary
@@ -63,16 +42,7 @@ router.get('/check-time', async (req, res) => {
     }
 });
 
-// Route to set/update the time window
-// router.post('/set-time-window', async (req, res) => {
-//     const { startTime, endTime } = req.body; // Assume these are ISO string dates
-//     const newTimeWindow = new TimeWindow({
-//         startTime: new Date(startTime),
-//         endTime: new Date(endTime)
-//     });
-//     await newTimeWindow.save();
-//     res.send('Time window set successfully!');
-// });
+
 
 
 
