@@ -2,7 +2,8 @@ const sgMail = require('@sendgrid/mail');
 const notifier = require('node-notifier');
 const path = require('path');
 const dotenv = require('dotenv');
-const { exec } = require('child_process');
+//const nodeCron = require('node-cron');
+const open = require('open');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -34,22 +35,37 @@ function sendNotificationEmail(userEmail, username) {
 }
 
 //To push a notification to the user's device 
+// function pushNotification() {
+//     notifier.notify({
+//         appName: 'Tune Talk',
+//         title: '!TIME TO TUNE IN!',
+//         message: "It's time to post your current/recently played song!",
+//         icon: path.join('http://localhost:3000/static/media/TuneTalkLogoBlack.16d0f5c9352a06b53052641b8fab2fac.svg'),
+//         wait: true,
+//         actions: ['Open']
+//     }, (err, response, metadata) => {
+//         if (metadata.activationType === 'actionClicked') {
+//             const url = 'http://localhost:3000/feed';
+//             exec(`start "" "${url}"`); // For Windows
+//             // exec(`open "${url}"`); // For macOS
+//         }
+//     });
+// }
 function pushNotification() {
     notifier.notify({
-        appName: 'Tune Talk',
-        title: '!TIME TO TUNE IN!',
+        title: "!IT'S TIME TO TUNE IN!",
         message: "It's time to post your current/recently played song!",
-        icon: path.join('http://localhost:3000/static/media/TuneTalkLogoBlack.16d0f5c9352a06b53052641b8fab2fac.svg'),
-        wait: true,
-        actions: ['Open']
-    }, (err, response, metadata) => {
-        if (metadata.activationType === 'actionClicked') {
-            const url = 'http://localhost:3000/feed';
-            exec(`start "" "${url}"`); // For Windows
-            // exec(`open "${url}"`); // For macOS
-        }
+        icon: path.join(__dirname, 'path/to/TuneTalkLogoBlack.16d0f5c9352a06b53052641b8fab2fac.svg'), // Update with the correct path
+        sound: true,
+        wait: true
+    });
+
+    notifier.on('click', function () {
+        open('http://localhost:3000/feed'); // Open the URL in the default browser
     });
 }
+
+
 
 function randomDelayGenerator(minSec, maxSec) {
     return Math.floor(Math.random() * (maxSec - minSec + 1)) + minSec;
