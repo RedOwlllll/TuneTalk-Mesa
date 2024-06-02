@@ -6,7 +6,7 @@ import axios from "axios";
 
 export const Register = () => {
 
-    /* State variables for the input types - useState hook will first get the user input then set that input into the second variable */
+    // State variables for the input types - useState hook will first get the user input then set that input into the second variable.
     const [registerEmail, setRegisterEmail] = useState("");
     const [registerUsername, setRegisterUsername] = useState("");
     const [registerPassword, setRegisterPassword] = useState("");
@@ -14,32 +14,31 @@ export const Register = () => {
     const [user, setUser] = useUser();
     const [termsModalOpen, setTermsModalOpen] = useState(false);
     const [termsAccepted, setTermsAccepted] = useState(false); 
-
-    // Variables to store pattern regex for password and email (dont add semicolon)
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()\-_=+{};:,<.>`~]{8,}$/
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-    const usernameRegex = /^[a-zA-Z0-9]{1,15}$/ // Removed underscore and full stop for simplicity
-
     // Vairiable to user import useNavigate 
     const navigate = useNavigate();
 
-    // Function that handles what happens signup button is clicked.
-    const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevents page from reloading on empty 
-        console.log(registerEmail, registerUsername, registerPassword);
+    // Single enumerated object to store REGEX patterns for the input fields in the registration form.
+    const REGEX = {
+        email: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        username: /^[a-zA-Z0-9]{1,15}$/,
+        password:  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()\-_=+{};:,<.>`~]{8,}$/
+    }
 
+    // Helper method to check the pattern regex for the input fields - call in the handleSubmit function to avoid clutter.
+    const inputRegexValidation = () => {
         let incorrectMessage = "";
 
-        // Check the pattern regex for email, username and password is correct before making API call 
-        if (!emailRegex.test(registerEmail)) {
+        // Check the pattern regex for email, username and password is correct before making API call .
+        // Created multiple if statements so that more than one message can be displayed together if the validation errors apply.
+        if (!REGEX.email.test(registerEmail)) {
             incorrectMessage += "Invalid email address. (Ensure there are no spaces in your email address.) \n";
         }
 
-        if (!usernameRegex.test(registerUsername)) {
+        if (!REGEX.username.test(registerUsername)) {
             incorrectMessage += "Invalid username. (Ensure there are no spaces or special characters in your email address.) \n";
         }
 
-        if (!passwordRegex.test(registerPassword)) {
+        if (!REGEX.password.test(registerPassword)) {
             incorrectMessage += "Password must contain a minimum of eight characters, at least one uppercase letter and one number.\n";
         }
 
@@ -47,17 +46,19 @@ export const Register = () => {
             incorrectMessage += "You must accept the terms and conditions to register.\n";
         }
 
-        if (incorrectMessage) {
-            setAlertMessage(incorrectMessage);
-            return;
-        }
+        return incorrectMessage;
+    }
 
-        // Connect to tunetalksignup api
-        axios.post("http://localhost:8082/api/tunetalkregister", {
-            email: registerEmail,
-            username: registerUsername,
-            password: registerPassword,
-        })
+    // Helper method for the API request to tunetalkregister in the server folder.
+    const apiRequest = () => {
+         // Added the try-catch block for more security as suggested in the code review.
+         try {
+            // Connect to tunetalksignup api
+            axios.post("http://localhost:8082/api/tunetalkregister", {
+                email: registerEmail,
+                username: registerUsername,
+                password: registerPassword,
+            })
             .then((res) => {
                 const data = res.data;
                 console.log(data, "userRegister");
@@ -65,8 +66,8 @@ export const Register = () => {
                 if (data.status === "ok") {
                     setAlertMessage("You are now registered with TuneTalk!");
                     setUser({
-                        email: data.email, // Refer to email object directly (since the email is being registered it should not be in mongodb yet)
-                        username: data.username, // Likewise w/ username
+                        email: data.email, // Refer to email object directly (since the email is being registered it should not be in mongodb yet).
+                        username: data.username, // Likewise w/ username.
                     });
                     console.log("user registration authenticated in TuneTalk");
                 }
@@ -77,9 +78,32 @@ export const Register = () => {
                     setAlertMessage("Username is registered already. Please login instead or choose another username.");
                 }
             });
+        }
+        catch (e) {
+            console.error("Error connecting to server:", e.message);
+            setAlertMessage("Failed to connect to server try again later.");
+        }
     }
 
-    // When user email and username is ok, will prompt them to the spotify account page
+    // Function that handles what happens signup button is clicked.
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // Prevents page from reloading on empty 
+        console.log(registerEmail, registerUsername, registerPassword);
+
+        // Create an instance of the helper function.
+        const inputValidation = inputRegexValidation(); 
+
+        // Displays alert message for input that is incorrect.
+        if (inputValidation) {
+            setAlertMessage(inputValidation);
+            return;
+        }
+
+        // Call the apiRequest helper method to confirm registration to the server. 
+        await apiRequest(); 
+    }
+
+    // When user email and username is ok, will prompt them to the spotify account page.
     useEffect(() => {
         if (user.email && user.username) {
             navigate("/account/spotify");

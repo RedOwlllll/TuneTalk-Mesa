@@ -4,14 +4,18 @@ const Song = require('../../models/Song');
 const router = express.Router();
 
 // Endpoint to add a new song
+
+
+
 router.post('/songs', async (req, res) => {
     try {
-        const { spotifyUrl } = req.body;
+        const { spotifyUrl, previewURL } = req.body;
+        // console.log(req.body); 
         let song = await Song.findOne({ spotifyUrl });
         if (song) {
             return res.status(409).json({ message: 'Song already exists' });
         }
-        song = new Song({ spotifyUrl });
+        song = new Song({ spotifyUrl, previewURL }); // Pass the previewURL 
         await song.save();
         res.status(201).json(song);
     } catch (error) {
@@ -19,6 +23,10 @@ router.post('/songs', async (req, res) => {
         res.status(500).send('Error adding song');
     }
 });
+
+
+
+
 
 // Endpoint to comment and rate the song
 router.post('/songs/comment', async (req, res) => {
