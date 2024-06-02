@@ -123,29 +123,33 @@ export const Profile = () => {
 
     return (
         <div className="user">
-            <div className="user-page">
-                {user.isAuthenticated && (
-                   <>
-                    <div className="profile-section">
-                        <div className="profile-image-container">
-                            <img className="profile-image" src={user.profileImage || AccountLogo} alt="Profile" />
-                        </div>
-                        <br></br>
-                        <div className="user-details">
-                            <p><strong>Username: </strong> {user.username}</p>
-                            {user.bio && <p><strong>Bio:</strong> {user.bio}</p>}
-                        </div>
-                        <br></br>
-                            <button className="edit-button" onClick={(e) => navigate("/account/edit-profile")}>Edit Profile</button>
+        <div className="user-page">
+            {user.isAuthenticated && (
+               <>
+                <div className="profile-section">
+                    <div className="profile-image-container">
+                        <img className="profile-image" src={user.profileImage || AccountLogo} alt="Profile" />
                     </div>
-                    <div className="post-section">
-                        <center><h1>My Posts:</h1></center><br></br>
+                    <br />
+                    <div className="user-details">
+                        <p><strong>Username: </strong> {user.username}</p>
+                        {user.bio && <p><strong>Bio:</strong> {user.bio}</p>}
+                    </div>
+                    <br />
+                    <button className="edit-button" onClick={(e) => navigate("/account/edit-profile")}>Edit Profile</button>
+                </div>
+                <div className="content-container">
+                    <div className="left-column">
+                        <center><h1>My Posts:</h1></center>
+                        <br />
                         {posts && posts.map((post) => (
                             <PostDetails key={post._id} post={post} />
                         ))}
                     </div>
-                    <div className="song-recommendations-2">
+                    <div className="right-column">
                         <center><h1>Song Recommendations:</h1></center>
+                        <br></br>
+                        <br></br>
                         {featuredTrack ? (
                             <div className="track-card">
                                 <img src={featuredTrack.album.images[0].url} alt={featuredTrack.name} className="track-image" />
@@ -159,9 +163,10 @@ export const Profile = () => {
                             <center><h5>To have songs recommended, follow a community!</h5></center>
                         )}
                     </div>
-                    </>
-                    )}
-            </div>
-        </div>  
+                </div>
+                </>
+            )}
+        </div>
+    </div>    
     );
 };
