@@ -79,20 +79,34 @@ export const Profile = () => {
 
     useEffect(() => {
         const fetchRecommendations = async (genres) => {
-            try {
-                const spotifyGenres = genres.map(genre => genreMapping[genre] || genre); // Use the mapped genre or default to the original
-                const genreString = spotifyGenres.join(",");  // Assuming genres can be combined, adjust if needed
-                const recommendationsResponse = await axios.get(`https://api.spotify.com/v1/recommendations?limit=1&seed_genres=${genreString}`, {
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`
+            const spotifyGenres = genres.map(genre => genreMapping[genre] || genre); 
+            const genreString = spotifyGenres.join(","); 
+            let retryCount = 0;
+            const maxRetries = 3;
+    
+            while (retryCount < maxRetries) {
+                try {
+                    const recommendationsResponse = await axios.get(`https://api.spotify.com/v1/recommendations?limit=1&seed_genres=${genreString}`, {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`
+                        }
+                    });
+    
+                    if (recommendationsResponse.data.tracks.length > 0) {
+                        setFeaturedTrack(recommendationsResponse.data.tracks[0]);
+                        return;
                     }
-                });
-                const recommendationsData = recommendationsResponse.data;
-                if (recommendationsData.tracks.length > 0) {
-                    setFeaturedTrack(recommendationsData.tracks[0]);  // Set the first track from recommendations as the featured track
+                } catch (error) {
+                    if (error.response && error.response.status === 429) {
+                        const retryAfter = error.response.headers['retry-after'] ? parseInt(error.response.headers['retry-after'], 10) : Math.pow(2, retryCount) * 60;
+                        console.error(`Rate limit exceeded, retrying in ${retryAfter} seconds.`);
+                        await new Promise(resolve => setTimeout(resolve, retryAfter * 1000));
+                        retryCount++;
+                    } else {
+                        console.error('Error fetching recommendations:', error);
+                        break;
+                    }
                 }
-            } catch (error) {
-                console.error('Error fetching recommendations:', error);
             }
         };
     
@@ -101,7 +115,7 @@ export const Profile = () => {
                 .then(statusResponse => {
                     const followedCommunities = Object.keys(statusResponse.data).filter(community => statusResponse.data[community]);
                     if (followedCommunities.length > 0) {
-                        fetchRecommendations(followedCommunities);  // Fetch recommendations based on the followed communities    
+                        fetchRecommendations(followedCommunities); 
                     }
                 }).catch(error => console.error('Error fetching followed communities:', error));
         }
