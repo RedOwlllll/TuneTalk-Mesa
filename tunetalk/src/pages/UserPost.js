@@ -22,7 +22,7 @@ function UserPost() {
     const [user] = useUser();
     const[ previewURL, setPreviewURL] = useState('');
     const [username] = user.username;
-    const [isEnabled, setIsEnabled] = useState(false);
+    const [isEnabled, setIsEnabled] = useState('');
     const buttonEnabled = useTimeSensitiveButton();
    
     const [statusText, setStatusText] = useState("Cannot post yet.");
@@ -126,9 +126,27 @@ function UserPost() {
     };
 
     function useTimeSensitiveButton() {
-        
+        const [alertShown, setAlertShown] = useState(false);
+
+        const checkTimeWindow = () => {
+            axios.get('/api/check-time')
+                .then(response => {
+                    if (response.data.isEnabled) {
+                        if (!alertShown) {
+                            alert("TIME TO TUNETALK 5 MINS TO POST");
+                            setAlertShown(true); // Set the alert to shown
+                        }
+                        setIsEnabled(true);
+                    } else {
+                        setIsEnabled(false);
+                        setAlertShown(false); // Reset alert for next available time
+                    }
+                })
+                .catch(error => console.error('Error fetching time data:', error));
+        };
     
         useEffect(() => {
+            checkTimeWindow();
             const interval = setInterval(() => {
                 axios.get('/api/check-time')
                     .then(response => {
@@ -140,6 +158,7 @@ function UserPost() {
             return () => clearInterval(interval);
         }, []);
     
+       
         return isEnabled;
     }
     
@@ -149,12 +168,18 @@ function UserPost() {
             
             <div className="button-container">
                 <div className="button-box">
+                <button 
+                    
+                    onClick={getRecentTrack} >
+                    
+                    Override Post Now (For testing)
+                </button>
                     
                     <button 
                     className={!buttonEnabled ? 'hidden' : ''} 
                     onClick={getRecentTrack} 
                     disabled={!buttonEnabled}>
-                    POST NOW!
+                    Time To Post your TuneTalk!
                 </button>
                 </div>
             </div>
