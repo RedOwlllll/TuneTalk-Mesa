@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useUser } from "../authentication/UserState";
 import '../css/Friends.css';
+import AccountLogo from "../assets/AccountLogo.svg"
 
 export const Friends = () => {
     const [friends, setFriends] = useState([]);
@@ -103,12 +104,14 @@ export const Friends = () => {
                 <h2>My Friends</h2>
                 {friends.map((friend, index) => (
                     <div key={index} className="friend">
-                        <p>{friend.requesterUsername === user.username ? friend.recipientUsername : friend.requesterUsername}</p>
-                        <button onClick={() => removeFriend(friend.requesterUsername === user.username ? friend.recipientUsername : friend.requesterUsername)}>Remove Friend</button>
+                        <img className = "profile-thumbnail" src={friend.profileImage || AccountLogo } alt={friend.username + "'s profile image"} />
+                        <p>{friend.username}</p>
+                        <button onClick={() => removeFriend(friend.username)}>Remove Friend</button>
                     </div>
                 ))}
             </section>
             <div className="add-friend">
+                <h2>Search people</h2>
                 <input
                 type="text"
                 value={searchTerm}
@@ -118,6 +121,7 @@ export const Friends = () => {
                 <div>
                     {searchResults.map((user, index) => (
                     <div key={index} className="search-result">
+                        <img className = "profile-thumbnail" src={user.profileImage || AccountLogo } alt={user.username + "'s profile image"} />
                         <p>{user.username}</p>
                         <button onClick={() => sendFriendRequest(user.username)}>Add Friend</button>
                     </div>
@@ -128,6 +132,7 @@ export const Friends = () => {
                 <h2>Pending Friend Requests</h2>
                 {pendingRequests.map((request, index) => (
                     <div key={index} className="friend-request">
+                        <img className = "profile-thumbnail" src={request.profileImage || AccountLogo } alt={request.username + "'s profile image"} />
                         <p>{request.requesterUsername}</p>
                         <button onClick={() => handleResponse(request._id, 'accepted')}>Accept</button>
                         <button onClick={() => handleResponse(request._id, 'declined')}>Decline</button>
