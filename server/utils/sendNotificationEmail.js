@@ -3,7 +3,7 @@ const notifier = require('node-notifier');
 const path = require('path');
 const dotenv = require('dotenv');
 //const { sendNotificationEmail, pushNotification } = require('./sendNotificationEmail');
-const nodeCron = require('node-cron');
+//const nodeCron = require('node-cron');
 
 // Load environment variables from .env file
 dotenv.config();
