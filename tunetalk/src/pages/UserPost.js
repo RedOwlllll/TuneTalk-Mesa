@@ -23,6 +23,9 @@ function UserPost() {
     const[ previewURL, setPreviewURL] = useState('');
     const [username] = user.username;
     const [isEnabled, setIsEnabled] = useState(false);
+    const buttonEnabled = useTimeSensitiveButton();
+   
+    const [statusText, setStatusText] = useState("Cannot post yet.");
 
     const [selectedRating, setSelectedRating] = useState(0); // State variable to store the selected rating
 
@@ -122,7 +125,7 @@ function UserPost() {
         }
     };
 
-    function TimeSensitiveButton() {
+    function useTimeSensitiveButton() {
         
     
         useEffect(() => {
@@ -132,16 +135,12 @@ function UserPost() {
                         setIsEnabled(response.data.isEnabled);
                     })
                     .catch(error => console.error('Error fetching time data:', error));
-            }, 10000); // Check every minute
+            }, 10000); // Check every 10 seconds
     
             return () => clearInterval(interval);
         }, []);
     
-        return (
-            <button disabled={!isEnabled}>
-                Special Action
-            </button>
-        );
+        return isEnabled;
     }
     
 
@@ -150,8 +149,13 @@ function UserPost() {
             
             <div className="button-container">
                 <div className="button-box">
-                    <TimeSensitiveButton/>
-                    <button className={!isEnabled ? 'hidden' : ''} onClick={getRecentTrack} disabled={!isEnabled}>POST NOW!</button>
+                    
+                    <button 
+                    className={!buttonEnabled ? 'hidden' : ''} 
+                    onClick={getRecentTrack} 
+                    disabled={!buttonEnabled}>
+                    POST NOW!
+                </button>
                 </div>
             </div>
 
@@ -165,7 +169,7 @@ function UserPost() {
                     <div className="post-card-image-container">
                         <img src={recentTrack.albumCover} alt={`${recentTrack.title} Album Cover`} className="post-card-image" />
                         <StarRating onRating={(rate) => {console.log(rate); setSelectedRating(rate)}} />
-                    </div>
+                    </div>s
                     <div className="post-card-content">
                         {/* Comment form */}
                         <form onSubmit={handleSubmission}>

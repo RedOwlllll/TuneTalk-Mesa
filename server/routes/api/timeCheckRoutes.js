@@ -5,6 +5,7 @@ const router = express.Router();
 const today = new Date();
 const randomHour = Math.floor(Math.random() * 13) + 9;  // Generates a number from 9 to 21
 const randomMinute = Math.floor(Math.random() * 60);
+
 const startTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes());
 const endTime = new Date(startTime.getTime() + 5 * 60000); // 5 minutes later
 
@@ -17,6 +18,8 @@ router.get('/check-time', (req, res) => {
         console.log("POST YOUR SHIT NOW ");
         console.log(Date(startTime.getTime))
         console.log(Date(endTime.getTime))
+
+        
         //alert("TIME IS IN POST YOUR SHIT")
     } else {
         res.json({ isEnabled: false });
