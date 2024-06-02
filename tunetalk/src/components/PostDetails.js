@@ -170,25 +170,17 @@ const PostDetails = ({post}) => {
                     </a>
                 )}
                 {/* Comment form */}
-                <form onSubmit={handleSubmit}>
-          <input class="post-comment-input" type = "text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
-          <div className="rating">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <label key={star}>
-                  <input
-                    type="radio"
-                    name="rating"
-                    value={star}
-                    onClick={() => handleRating(star)}
-                  />
-                  <i className={star <= rating ? 'fas fa-star' : 'far fa-star'}></i>
-                </label>
-              ))}
-            </div>
-          <button class="post-comment-btn" type="submit">Post Comment and Rating</button>
-        </form>
-
-
+                <form onSubmit={handleNewCommentSubmit}>
+                    <input
+                        type="text"
+                        className="comment-input"
+                        placeholder="Add a comment..."
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                    />
+                    <button type="submit" className="submit-comment">Comment</button>
+                </form>
+                <br />
                 <div className="post-comments-container">
                     <div className="toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
                         <strong>{comment.commentusername}</strong> <h5>View {isVisible ? 'less' : 'more'} comments <FontAwesomeIcon icon={faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
