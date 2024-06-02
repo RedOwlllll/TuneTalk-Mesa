@@ -159,7 +159,7 @@
 }
 
 /* Content layout */
-.content-container {
+.content-container-profile {
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -173,7 +173,7 @@
     width: 48%;
 }
 
-.track-card {
+.track-card-profile {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -184,7 +184,7 @@
     overflow: hidden;
 }
 
-.track-card img.track-image {
+.track-card-profile img.track-image {
     width: 100%;
     max-width: 300px; /* Adjust as needed */
     height: auto;
@@ -192,22 +192,22 @@
     margin-bottom: 15px;
 }
 
-.track-info {
+.track-info-profile {
     text-align: center;
 }
 
-.track-title {
+.track-title-profile {
     font-size: 20px;
     font-weight: bold;
     margin: 10px 0;
 }
 
-.track-artist {
+.track-artist-profile {
     font-size: 16px;
     margin: 10px 0;
 }
 
-.spotify-play-button {
+.spotify-play-button-profile {
     background-color: #1DB954;
     color: white;
     padding: 10px 20px;
@@ -218,6 +218,12 @@
     transition: background-color 0.3s;
 }
 
-.spotify-play-button:hover {
+.spotify-play-button-profile:hover {
     background-color: #1ed760;
+}
+
+.star-feed i {
+    font-size: 30px !important;
+    padding: 0 10px;
+    margin-bottom: 10px;
 }

@@ -202,6 +202,7 @@ h5 {
   font-weight: bold;
   cursor: pointer;
   margin-bottom: 20px;
+  margin-top: 10px;
   min-width: 120px; 
   padding: 8px 16px;
 }

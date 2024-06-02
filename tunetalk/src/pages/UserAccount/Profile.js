@@ -138,7 +138,7 @@ export const Profile = () => {
                             <br />
                             <button className="edit-button" onClick={(e) => navigate("/account/edit-profile")}>Edit Profile</button>
                         </div>
-                        <div className="content-container">
+                        <div className="content-container-profile">
                             <div className="left-column">
                                 <center><h1>My Posts:</h1></center>
                                 <br />
@@ -151,11 +151,11 @@ export const Profile = () => {
                                 <br></br>
                                 <br></br>
                                 {featuredTrack ? (
-                                    <div className="track-card">
-                                        <img src={featuredTrack.album.images[0].url} alt={featuredTrack.name} className="track-image" />
+                                    <div className="track-card-profile">
+                                        <img src={featuredTrack.album.images[0].url} alt={featuredTrack.name} className="track-image-profile" />
                                         <div className="track-info">
-                                            <p className="track-title">{featuredTrack.name}</p>
-                                            <p className="track-artist">{featuredTrack.artists.map(artist => artist.name).join(', ')}</p>
+                                            <p className="track-title-profile">{featuredTrack.name}</p>
+                                            <p className="track-artist-profile">{featuredTrack.artists.map(artist => artist.name).join(', ')}</p>
                                             <br></br>
                                             <a href={featuredTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">Listen on Spotify</a>
                                             <br></br><br></br>
