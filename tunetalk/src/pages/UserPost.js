@@ -4,6 +4,9 @@ import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own 
 import "../css/Post.css";
 import StarRating from "./StarRating";
 import { useUser } from "../authentication/UserState";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function UserPost() {
 
@@ -133,10 +136,12 @@ function UserPost() {
                 .then(response => {
                     if (response.data.isEnabled) {
                         if (!alertShown) {
+                            toast("TIME TO TUNETALK 5 MINS TO POST");
                             alert("TIME TO TUNETALK 5 MINS TO POST");
                             setAlertShown(true); // Set the alert to shown
                         }
                         setIsEnabled(true);
+                        toast("TIME TO TUNETALK 5 MINS TO POST");
                     } else {
                         setIsEnabled(false);
                         setAlertShown(false); // Reset alert for next available time
@@ -168,11 +173,26 @@ function UserPost() {
             
             <div className="button-container">
                 <div className="button-box">
+                
+                <ToastContainer
+position="top-center"
+autoClose={300000}
+limit={1}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick={false}
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="dark"
+
+/>
                 <button 
                     
                     onClick={getRecentTrack} >
                     
-                    Override Post Now (For testing)
+                    MANUAL Post Now (For testing)
                 </button>
                     
                     <button 

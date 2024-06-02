@@ -11,7 +11,7 @@ const randomMinute = Math.floor(Math.random() * 60);
 // const endTime = new Date(startTime.getTime() + 5 * 60000); // 5 minutes later
 
 
-//THIS CODE IS FOR MANUAL TESTING, IT WILL CREATE A 5MIN WINDOW INSTANCE FROM THE MOMENT THE SERVER IS STARTED
+//THIS CODE IS FOR MANUAL TESTING, IT WILL CREATE A 5MIN WINDOW INSTANCE 1 MIN FROM THE MOMENT THE SERVER IS STARTED
 const instanceTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes());
 const startTime = new Date(instanceTime.getTime() + 1 * 60000); //1 Minute later
 const endTime = new Date(startTime.getTime() + 5 * 60000); // 5 minutes later
@@ -28,7 +28,7 @@ router.get('/check-time', (req, res) => {
         console.log(`Time End  : ${endTime}`);
 
 
-        //alert("TIME IS IN POST YOUR SHIT")
+   
     } else {
         res.json({ isEnabled: false });
         console.log('\x1b[31m%s\x1b[0m', 'TIME WINDOW INVALID (Cannot post)');
