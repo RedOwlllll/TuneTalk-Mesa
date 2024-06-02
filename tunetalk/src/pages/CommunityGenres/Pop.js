@@ -6,7 +6,6 @@ import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 
-
 const CLIENT_ID = "a8c9857ace8449f290ed14c54c878e1f";
 const CLIENT_SECRET = "c747a0da53124c4ba8bc12a0e88d859b";
 
@@ -24,7 +23,7 @@ function Pop() {
   const [comments, setComments] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  
+  const [previewURL, setPreviewURL] = useState('');
 
   const toggleVisibility = () => setIsVisible(!isVisible); // Collapse comment box
 
@@ -137,6 +136,7 @@ function Pop() {
       if (tracksData.items.length > 0) {
         const featuredTrack = tracksData.items[0].track; // Simplistically choosing the first track
         setFeaturedTrack(featuredTrack);
+        setPreviewURL(featuredTrack.preview_url); // Set the preview URL in the state
       }
     };
 
@@ -184,9 +184,11 @@ function Pop() {
 
       await axios.post('http://localhost:8082/api/songs', {
         spotifyUrl: featuredTrack.external_urls.spotify,
-        previewURL: featuredTrack.preview_url
+        previewURL: previewURL // PASS PREVIEWURL (set in fetchFeaturedTrack)
+
       }).then(response => {
         console.log('Song added:', response.data);
+        console.log(featuredTrack); // Check if previewURL is present
       }).catch(error => {
         if (error.response && error.response.status === 409) {
           console.log('Song already exists.');
@@ -197,7 +199,7 @@ function Pop() {
     };
 
     postFeaturedTrack();
-  }, [featuredTrack]);
+  }, [featuredTrack, previewURL]);
 
   function FollowerListModal({ followers, onClose }) {
     return (
@@ -286,24 +288,6 @@ function Pop() {
   }, [comments]);
 
 
-  const [isPlaying, setIsPlaying] = useState(false); // State to manage play status
-  const audioRef = useRef(null);
-
-
-  // Function to toggle audio playback
-  const togglePlay = () => {
-      if (audioRef.current) {
-          if (isPlaying) {
-              audioRef.current.pause();
-          } else {
-              audioRef.current.play();
-          }
-          setIsPlaying(!isPlaying);
-      }
-  };
-
-
-
   return (
     <div className="container-page">
       <div className="follow-container">
@@ -320,72 +304,73 @@ function Pop() {
       {showFollowers && <FollowerListModal followers={followers} onClose={() => setShowFollowers(false)} />}
       <div className="featured-track-container">
         <h2>Todays Featured Track</h2>
-          {featuredTrack && (
-            <div className="track-card">
-              <img src={featuredTrack.album.images[0].url} alt={featuredTrack.name} className="track-image" />
-              <div className="track-info">
-                <div className="track-title">{featuredTrack.name}</div>
-                <div className="track-artist">{featuredTrack.artists.map(artist => artist.name).join(', ')}</div>
-                <div>
+        {featuredTrack && (
+          <div className="track-card">
+            <img src={featuredTrack.album.images[0].url} alt={featuredTrack.name} className="track-image" />
+            <div className="track-info">
+              <div className="track-title">{featuredTrack.name}</div>
+              <div className="track-artist">{featuredTrack.artists.map(artist => artist.name).join(', ')}</div>
+              <div>
+                <br></br>
                 <a href={featuredTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">
                   Listen on Spotify
                 </a>
-
-                {featuredTrack.previewURL && (
-                    <audio controls src={featuredTrack.previewURL}>
-                        Your browser does not support the audio element.
-                    </audio>
+                <br></br><br></br>
+                {previewURL && (
+                  <audio controls src={previewURL}>
+                    Your browser does not support the audio element.
+                  </audio>
                 )}
-                </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
         <h4 className="community-h4">Comment and rate the song</h4>
         <form onSubmit={handleSubmit}>
-          <input class="community-input" type = "text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
+          <input className="community-input" type="text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
           <div className="rating">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <label key={star}>
-                  <input
-                    type="radio"
-                    name="rating"
-                    value={star}
-                    onClick={() => handleRating(star)}
-                  />
-                  <i className={star <= rating ? 'fas fa-star' : 'far fa-star'}></i>
-                </label>
-              ))}
-            </div>
-          <button class="community-btn" type="submit">Post Comment and Rating</button>
+            {[1, 2, 3, 4, 5].map((star) => (
+              <label key={star}>
+                <input
+                  type="radio"
+                  name="rating"
+                  value={star}
+                  onClick={() => handleRating(star)}
+                />
+                <i className={star <= rating ? 'fas fa-star' : 'far fa-star'}></i>
+              </label>
+            ))}
+          </div>
+          <button className="community-btn" type="submit">Post Comment and Rating</button>
         </form>
       </div>
       <div className="community-comments-container">
-        <div className= "toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
-        <strong>{comment.username}</strong> <h5>Tap to {isVisible ? 'hide' : 'view'} comment <FontAwesomeIcon icon={isVisible ? faChevronCircleDown : faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
+        <div className="toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
+          <strong>{comment.username}</strong> <h5>Tap to {isVisible ? 'hide' : 'view'} comment <FontAwesomeIcon icon={isVisible ? faChevronCircleDown : faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
         </div>
         <div className={`collapsible-content ${isVisible ? 'open' : ''}`}>
           {isVisible && (
-          <div>
-            <h4 className="community-h4">Average Rating: <StarRating rating={averageRating} /></h4>
-            {comments.map((comment, index) => (
-            <div key={index} className="comment">
-              <p><strong>{comment.username}</strong></p><StarRating rating={comment.rating} /> : <span>{comment.body}</span>
+            <div>
+              <h4 className="community-h4">Average Rating: <StarRating rating={averageRating} /></h4>
+              {comments.map((comment, index) => (
+                <div key={index} className="comment">
+                  <p><strong>{comment.username}</strong></p><StarRating rating={comment.rating} /> : <span>{comment.body}</span>
+                </div>
+              ))}
             </div>
-            ))}
-          </div>
           )}
         </div>
       </div>
       <div className="playlists-container">
-          {popPlaylists.map((playlist) => (
-            <div key={playlist.id} className="playlist-card">
-              <img src={playlist.images[0].url} alt={playlist.name} className="playlist-image" />
-              <div className="playlist-info">
-                <h3>{playlist.name}</h3>
-                <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="playlist-link">Listen on Spotify</a>
-              </div>
+        {popPlaylists.map((playlist) => (
+          <div key={playlist.id} className="playlist-card">
+            <img src={playlist.images[0].url} alt={playlist.name} className="playlist-image" />
+            <div className="playlist-info">
+              <h3>{playlist.name}</h3>
+              <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="playlist-link">Listen on Spotify</a>
             </div>
-          ))}
+          </div>
+        ))}
       </div>
     </div>
   );

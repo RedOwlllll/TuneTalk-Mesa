@@ -24,7 +24,7 @@ function RNB() {
   const [comments, setComments] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  
+  const [previewURL, setPreviewURL] = useState('');
 
   const toggleVisibility = () => setIsVisible(!isVisible); // Collapse comment box
 
@@ -137,6 +137,7 @@ function RNB() {
       if (tracksData.items.length > 0) {
         const featuredTrack = tracksData.items[0].track; // Simplistically choosing the first track
         setFeaturedTrack(featuredTrack);
+        setPreviewURL(featuredTrack.preview_url); // Set the preview URL in the state
       }
     };
 
@@ -183,9 +184,12 @@ function RNB() {
       if (!featuredTrack) return;
 
       await axios.post('http://localhost:8082/api/songs', {
-        spotifyUrl: featuredTrack.external_urls.spotify
+        spotifyUrl: featuredTrack.external_urls.spotify,
+        previewURL: previewURL // PASS PREVIEWURL (set in fetchFeaturedTrack)
+
       }).then(response => {
         console.log('Song added:', response.data);
+        console.log(featuredTrack); // Check if previewURL is present
       }).catch(error => {
         if (error.response && error.response.status === 409) {
           console.log('Song already exists.');
@@ -196,7 +200,7 @@ function RNB() {
     };
 
     postFeaturedTrack();
-  }, [featuredTrack]);
+  }, [featuredTrack, previewURL]);
 
   function FollowerListModal({ followers, onClose }) {
     return (
@@ -307,9 +311,16 @@ function RNB() {
                 <div className="track-title">{featuredTrack.name}</div>
                 <div className="track-artist">{featuredTrack.artists.map(artist => artist.name).join(', ')}</div>
                 <div>
-                <a href={featuredTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">
-                  Listen on Spotify
-                </a>
+                  <br></br>
+                  <a href={featuredTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">
+                    Listen on Spotify
+                  </a>
+                  <br></br><br></br>
+                  {previewURL && (
+                    <audio controls src={previewURL}>
+                      Your browser does not support the audio element.
+                    </audio>
+                  )}
                 </div>
               </div>
             </div>
