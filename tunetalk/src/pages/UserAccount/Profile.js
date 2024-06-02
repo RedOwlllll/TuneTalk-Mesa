@@ -10,8 +10,8 @@ import PostDetails from "../../components/PostDetails";
 import axios from "axios";
 
 
-const CLIENT_ID = "a8c9857ace8449f290ed14c54c878e1f";
-const CLIENT_SECRET = "c747a0da53124c4ba8bc12a0e88d859b";
+const CLIENT_ID = "fed33d2e0da4477c9bfa5d6b80b06cc1";
+const CLIENT_SECRET = "d429104cf4b2470794d90179df216895";
 
 export const Profile = () => {
     const [user, setUser] = useUser();
