@@ -69,7 +69,7 @@ function Pop() {
   };
 
   useEffect(() => {
-    // Function to retrieve the access token
+    // Function to retrieve the access token 
     const getAccessToken = async () => {
       const authParameters = {
         method: 'POST',
