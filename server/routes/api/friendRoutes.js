@@ -50,13 +50,25 @@ router.put('/response', async (req, res) => {
 router.get('/list/:username', async (req, res) => {
     try {
         const { username } = req.params;
-        const friends = await Friend.find({
+        
+        // Find friends where the current user is either the requester or recipient and the status is 'accepted'
+        const friendsRelationships = await Friend.find({
             $or: [
                 { requesterUsername: username, status: 'accepted' },
                 { recipientUsername: username, status: 'accepted' }
             ]
         });
-        res.json(friends);
+
+        // Extract usernames from the relationships - if the requester is the user, pick the recipient, and vice versa
+        const usernames = friendsRelationships.map(fr => 
+            fr.requesterUsername === username ? fr.recipientUsername : fr.requesterUsername
+        );
+
+        // Fetch UserDetails for these usernames, selecting only the username and profile image fields
+        const friendsProfiles = await User.find({ username: { $in: usernames } }).select('username profileImage');
+
+        // Respond with the user details of friends
+        res.json(friendsProfiles);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
