@@ -26,7 +26,7 @@ export const Profile = () => {
         }
     }, [user]);
     
-
+    
 
     return (
         <div className="user">
