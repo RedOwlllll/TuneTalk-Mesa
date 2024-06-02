@@ -29,41 +29,33 @@ const fileFilter = (req, file, cb) => {
 }
 const upload = multer({ storage, fileFilter });
 
-
-// Update Profile
-router.put('/edit-profile', upload.single('profileImage'), async (req, res) => {
-    const { username, email, bio } = req.body;
+// Follow Community
+router.post('/community/follow/:username', async (req, res) => {
+    const { username } = req.params;
+    const { community, featuredTrack } = req.body;
 
     try {
-        const userprofile = await user.findOne({ email: email }); // Use the current email to find the user
-        if (!userprofile) {
-            return res.status(404).json({ status: "error", message: 'User not found' });
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
 
-        // Update user details; only update if provided
-        userprofile.username = username || userprofile.username;
-        userprofile.email = email || userprofile.email;
-        userprofile.bio = bio !== "" ? bio : userprofile.bio;
+        if (!user.communities.includes(community)) {
+            user.communities.push(community);
 
-        // Update the profile image if a new one was uploaded
-        if (req.file) {
-            userprofile.profileImage = `http://localhost:8082/uploads/${req.file.filename}`;
+            const recommendation = {
+                track: featuredTrack,
+                addedBy: user._id
+            };
+            user.recommendations.push(recommendations);
+            const savedUser = await user.save();
+
+            res.status(201).json(savedUser.recommendations);
+        } else {
+            res.status(200).json({ message: 'Already following this community' });
         }
-
-        await userprofile.save();
-
-        return res.json({
-            status: "ok",
-            user: {
-                username: userprofile.username,
-                email: userprofile.email,
-                bio: userprofile.bio,
-                profileImage: userprofile.profileImage
-            }
-        });
     } catch (error) {
-        console.error("Error updating profile:", error);
-        return res.status(500).json({ status: "error", message: "Server error" });
+        res.status(500).send(error.message);
     }
 });
 

@@ -15,7 +15,7 @@ function RNB() {
   const [accessToken, setAccessToken] = useState('');
   const [rnbPlaylists, setRNBPlaylists] = useState([]);
   const [featuredTrack, setFeaturedTrack] = useState(null);  // State to store the featured track
-  const [user] = useUser(); 
+  const [user, setUser] = useUser(); 
   const [followerCount, setFollowerCount] = useState(0);
   const [followers, setFollowers] = useState([]);
   const [showFollowers, setShowFollowers] = useState(false);
@@ -27,12 +27,13 @@ function RNB() {
   const [previewURL, setPreviewURL] = useState('');
 
   const toggleVisibility = () => setIsVisible(!isVisible); // Collapse comment box
-
+  
+  //Confirmation prompt if user wants to add the community to their profile when they click the button
   const handleFollowClick = async () => {
     if (!isFollowing){
       try {
           await axios.post(`http://localhost:8082/api/community/follow/${encodeURIComponent(user.username)}`, {
-            community: 'rnb',
+            community: 'pop',
             followStatus: true
           });
           setIsFollowing(true);
@@ -42,7 +43,7 @@ function RNB() {
     } else {
       try {
         await axios.post(`http://localhost:8082/api/community/un-follow/${encodeURIComponent(user.username)}`, {
-          community: 'rnb',
+          community: 'pop',
           followStatus: false
         });
         setIsFollowing(false);
