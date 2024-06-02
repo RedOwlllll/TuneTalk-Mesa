@@ -82,7 +82,7 @@ router.post('/set-time-window', async (req, res) => {
     // Here you can also accept startTime and endTime from the request body if dynamic setting is needed
     const now = new Date();
     const startTime = new Date(now.getTime() + 20 * 60000); // 1 minutes from now
-    const endTime = new Date(startTime.getTime() + 25 * 60000); // 6 minutes from startTime
+    const endTime = new Date(startTime.getTime() + 5 * 60000); // 6 minutes from startTime
 
     const newTimeWindow = new TimeWindow({
         startTime: startTime,
