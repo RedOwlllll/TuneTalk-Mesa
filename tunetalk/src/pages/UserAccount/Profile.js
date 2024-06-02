@@ -24,21 +24,9 @@ export const Profile = () => {
         "kpop": "k-pop",
         "hiphop" : "hip-hop",
         "rnb" : "r-n-b",
-        // Add more mappings as needed because spotify api is dumb
+        // Add more mappings as needed 
     };
-    // useEffect(() => {
-    //     const fetchPosts = async () => {
-    //         const response = await fetch(`/api/posts/getuserpost?username=${user.username}`);
-    //         const json = await response.json();
-    //         if (response.ok) {
-    //             setPosts(json);
-    //             setRecommendations(user.recommendations || []);
-    //         }
-    //     }
-    //     if (user.isAuthenticated) {
-    //         fetchPosts();
-    //     }
-    // }, [user]);
+    
     useEffect(() => {
         const fetchPosts = async () => {
             try {
@@ -142,42 +130,19 @@ export const Profile = () => {
                             <PostDetails key={post._id} post={post} />
                         ))}
                     </div>
-                    <div className="song-recommendations">
-                    <center><h1>Song Recommendations:</h1></center>
-                    {user.recommendations && user.recommendations.length > 0 ? (
-                        user.recommendations.map((track, index) => (
-                            <div key={index} className="featured-track-container">
-                                <div className="track-card">
-                                    {track.album && track.album.images && track.album.images.length > 0 &&
-                                        <img src={track.album.images[0].url} alt={track.name} className="track-image" />
-                                    }
-                                    <div className="track-info">
-                                        <p className="track-title">{track.name}</p>
-                                        {track.artists && track.artists.length > 0 &&
-                                            <p className="track-artist">by {track.artists.map(artist => artist.name).join(', ')}</p>
-                                        }
-                                        <a href={track.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">Listen on Spotify</a>
-                                    </div>
-                                </div>
-                            </div>
-                            ))
-                        ) : (
-                            <center><h5>To have songs recommended, follow a community!</h5></center>
-                        )}
-                    </div>
-                    <div className="song-recommendations 2">
-                        <h1>Song Recommendations 2:</h1>
-                        {featuredTrack && (
+                    <div className="song-recommendations-2">
+                        <center><h1>Song Recommendations:</h1></center>
+                        {featuredTrack ? (
                             <div className="track-card">
                                 <img src={featuredTrack.album.images[0].url} alt={featuredTrack.name} className="track-image" />
                                 <div className="track-info">
                                     <p className="track-title">{featuredTrack.name}</p>
                                     <p className="track-artist">{featuredTrack.artists.map(artist => artist.name).join(', ')}</p>
-                                    <a href={featuredTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">
-                                        Listen on Spotify
-                                    </a>
+                                    <a href={featuredTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">Listen on Spotify</a>
                                 </div>
                             </div>
+                        ) : (
+                            <center><h5>To have songs recommended, follow a community!</h5></center>
                         )}
                     </div>
                     </>

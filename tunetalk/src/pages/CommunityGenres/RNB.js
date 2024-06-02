@@ -27,7 +27,7 @@ function RNB() {
   const [randomTrack, setRandomTrack] = useState(null); // State to store the random track
 
   const toggleVisibility = () => setIsVisible(!isVisible); // Collapse comment box
-
+  
   //Confirmation prompt if user wants to add the community to their profile when they click the button
   const handleFollowClick = async () => {
     if (!isFollowing) {

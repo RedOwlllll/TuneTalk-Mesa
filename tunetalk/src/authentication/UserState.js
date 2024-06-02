@@ -21,45 +21,21 @@ const initialUser = {
 const UserContext = createContext(initialUser);
 
 // UserProvider component
-// export const UserProvider = ({ children }) => {
-//   const [user, setUser] = useState((initialUser) => {
-//     // Retrieve the user from localStorage if it exists
-//     const storedUser = localStorage.getItem('user');
-//     console.log(localStorage.getItem('user'));
-//     //return initialUser;
-//     return storedUser ? JSON.parse(storedUser) : initialUser; // KEEP THIS HERE OTHERWISE THE TUNETALK EMAIL AND USERNAME WILL NOT BE SAVED IN THE DROPDOWN MENU AFTER REDIRECTING TO ACCOUNT/SPOTIFY
-//   });
-//   // Effect to store user in localStorage whenever it changes
-//   useEffect(() => {
-//     localStorage.setItem('user', JSON.stringify(user));
-//   }, [user]);
-
-  
-//   // Wrap children components with the user context provider
-//   return (
-//     <UserContext.Provider value={[user, setUser]}>
-//       {children}
-//     </UserContext.Provider>
-//   );
-// };
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
+  const [user, setUser] = useState((initialUser) => {
+    // Retrieve the user from localStorage if it exists
     const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      try {
-        return JSON.parse(storedUser);
-      } catch (error) {
-        console.error("Error parsing user from localStorage:", error);
-        return initialUser;
-      }
-    }
-    return initialUser;
+    console.log(localStorage.getItem('user'));
+    //return initialUser;
+    return storedUser ? JSON.parse(storedUser) : initialUser; // KEEP THIS HERE OTHERWISE THE TUNETALK EMAIL AND USERNAME WILL NOT BE SAVED IN THE DROPDOWN MENU AFTER REDIRECTING TO ACCOUNT/SPOTIFY
   });
-
+  // Effect to store user in localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('user', JSON.stringify(user));
   }, [user]);
 
+  
+  // Wrap children components with the user context provider
   return (
     <UserContext.Provider value={[user, setUser]}>
       {children}
