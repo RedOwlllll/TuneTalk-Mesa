@@ -24,7 +24,6 @@ function RNB() {
   const [comments, setComments] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [randomTrack, setRandomTrack] = useState(null); // State to store the random track
 
   const toggleVisibility = () => setIsVisible(!isVisible); // Collapse comment box
   
