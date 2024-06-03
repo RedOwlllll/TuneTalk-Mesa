@@ -6,6 +6,7 @@ import StarRating from "./StarRating";
 import { useUser } from "../authentication/UserState";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Push from 'push.js';
 
 
 function UserPost() {
@@ -125,6 +126,40 @@ function UserPost() {
         } catch (error) {
             console.error('Error posting:', error);
             alert("An error occurred while posting. Please try again."); // if theres any error with posting 
+        }
+    };
+
+    //To send notification when comment is submitted
+    const handleCommentSubmission = async (commentData) => {
+        try {
+            const response = await fetch('/api/postsongs/comment', {
+                method: 'POST',
+                body: JSON.stringify(commentData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const json = await response.json();
+    
+            if (response.ok) {
+                console.log('Comment added:', json);
+    
+                // Send a push notification to the post owner
+                Push.create("TuneTalk", {
+                    body: `Your post received a new comment from ${commentData.commentusername}`,
+                    timeout: 4000,
+                    onClick: function () {
+                        window.focus();
+                        this.close();
+                    }
+                });
+    
+                // Optionally, reload comments or update the UI
+            } else {
+                console.error('Failed to add comment:', json.error);
+            }
+        } catch (error) {
+            console.error('Error adding comment:', error);
         }
     };
 
@@ -275,7 +310,28 @@ theme="dark"
                                         })
                                 
                                 
-                                }}>Post</button>
+                                }}>Post</button>            
+                        </form>
+                        {/* Comment form */}
+                        <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            const commentData = {
+                                postId: recentTrack._id, // Ensure you have the postId
+                                commentusername: user.username,
+                                commentbody: newComment,
+                                commentrating: selectedRating
+                            };
+                            await handleCommentSubmission(commentData);
+                            setNewComment('');
+                        }}>
+                            <input
+                                type="text"
+                                className="comment-input"
+                                placeholder="Add a comment..."
+                                value={newComment}
+                                onChange={(e) => setNewComment(e.target.value)}
+                            />
+                            <button type="submit" className="submit-comment">Comment</button>
                         </form>
                     </div>
                 </div>
