@@ -174,16 +174,23 @@ const PostDetails = ({post}) => {
                 <div className = "star-feed"><StarRating rating={post.rating} /></div>
                 <h5>{formatDate(post.createdAt)}</h5>  
                 {/* Comment form */}
-                <form onSubmit={handleNewCommentSubmit}>
-                    <input
-                        type="text"
-                        className="comment-input"
-                        placeholder="Add a comment..."
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                    />
-                    <button type="submit" className="submit-comment">Comment</button>
-                </form>
+
+
+                <form onSubmit={handleSubmit}>
+          <input class="post-comment-input" type = "text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
+          
+          <button class="post-comment-btn" type="submit">Post Comment and Rating</button>
+        </form>
+
+
+
+
+
+
+
+                
+
+
                 <br />
                 <div className="post-comments-container">
                     <div className="toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
