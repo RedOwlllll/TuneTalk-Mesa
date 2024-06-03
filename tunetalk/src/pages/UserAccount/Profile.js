@@ -4,6 +4,7 @@ import { useUser } from "../../authentication/UserState";
 import AccountLogo from "../../assets/AccountLogo.svg";
 import "../../css/App.css"; 
 import "../../css/Profile.css"; 
+import "../../css/PostDetails.css";
 import PostDetails from "../../components/PostDetails";
 import axios from "axios";
 
@@ -137,45 +138,48 @@ export const Profile = () => {
                             </div>
                             <br />
                             <button className="edit-button" onClick={(e) => navigate("/account/edit-profile")}>Edit Profile</button>
+                        </div>  
+    
+                        <div className="posts-container">
+                            <br></br><br></br>
+                            <center><h1>My Posts:</h1></center>
+                            <br />
+                            {posts && posts.map((post) => (
+                                <PostDetails key={post._id} post={post} />
+                            ))}
                         </div>
-                        <div className="content-container-profile">
-                            <div className="left-column">
-                                <center><h1>My Posts:</h1></center>
-                                <br />
-                                {posts && posts.map((post) => (
-                                    <PostDetails key={post._id} post={post} />
-                                ))}
-                            </div>
-                            <div className="right-column">
-                                <center><h1>Song Recommendations:</h1></center>
-                                <br></br>
-                                <br></br>
-                                {featuredTrack ? (
-                                    <div className="track-card-profile">
-                                        <img src={featuredTrack.album.images[0].url} alt={featuredTrack.name} className="track-image-profile" />
-                                        <div className="track-info">
-                                            <p className="track-title-profile">{featuredTrack.name}</p>
-                                            <p className="track-artist-profile">{featuredTrack.artists.map(artist => artist.name).join(', ')}</p>
-                                            <br></br>
-                                            <a href={featuredTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">Listen on Spotify</a>
-                                            <br></br><br></br>
-                                            {previewURL && (
-                                                <audio controls src={previewURL}>
-                                                    Your browser does not support the audio element.
-                                                </audio>
-                                            )}
-                                        </div>
+    
+                        <div className="song-recommendations">
+                            <br></br><br></br>
+                            <center><h1>Song Recommendations:</h1></center>
+                            <br/>
+                            {featuredTrack ? (
+                                <div className="track-card">
+                                    <img src={featuredTrack.album.images[0].url} alt={featuredTrack.name} className="track-image" />
+                                    <div className="track-info">
+                                        <p className="track-title">{featuredTrack.name}</p>
+                                        <p className="track-artist">{featuredTrack.artists.map(artist => artist.name).join(', ')}</p>
+                                        <br />
+                                        <a href={featuredTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">Listen on Spotify</a>
+                                        <br /><br />
+                                        {previewURL && (
+                                            <audio controls src={previewURL}>
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                        )}
                                     </div>
-                                ) : (
-                                    <center><h5>To have songs recommended, follow a community!</h5></center>
-                                )}
-                            </div>
+                                </div>
+                            ) : (
+                                <center><h5>To have songs recommended, follow a community!</h5></center>
+                            )}
                         </div>
                     </>
                 )}
             </div>
         </div>
     );
+    
+    
 };
 
 export default Profile;
