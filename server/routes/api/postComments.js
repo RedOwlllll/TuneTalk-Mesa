@@ -21,7 +21,7 @@ router.post('/postsongs/comment', async (req, res) => {
         if (commentusername !== userPostSong.postusername) {
             //Send notification email and push notification to the post owner
             rateComNotifEmail(userPostSong.email, userPostSong.postusername, commentusername, commentbody, commentrating);
-            pushRateCommentNotif(commentusername, userPostSong.postusername);
+            pushRateCommentNotif(userPostSong.postusername, commentusername);
         }
 
         res.json(userPostSong);

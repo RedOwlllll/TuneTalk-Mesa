@@ -34,15 +34,16 @@ function rateComNotifEmail(userEmail, username, friend, comment, rating) {
 }
 
 //To push a notification to the user's device 
-function pushRateCommentNotif(friend, postOwnerUsername) {
-    if (friend === postOwnerUsername) {
+function pushRateCommentNotif(postOwnerUsername, commentUsername) {
+    console.log(`Notification Function Called: postOwnerUsername=${postOwnerUsername}, commenterUsername=${commentUsername}`);
+    if (postOwnerUsername === commentUsername) {
         return;
     } 
     
     notifier.notify({
         appName: 'Tune Talk',
         title: '!TIME TO TUNE IN!',
-        message: `${friend} commented and rated your post!`,
+        message: `${commentUsername} commented and rated your post!`,
         icon: path.join('http://localhost:3000/static/media/TuneTalkLogoBlack.16d0f5c9352a06b53052641b8fab2fac.svg'),
         wait: true,
         actions: ['Open']
