@@ -35,7 +35,6 @@ function rateComNotifEmail(userEmail, username, friend, comment, rating) {
 
 //To push a notification to the user's device 
 function pushRateCommentNotif(postOwnerUsername, commentUsername) {
-    console.log(`Notification Function Called: postOwnerUsername=${postOwnerUsername}, commenterUsername=${commentUsername}`);
     if (postOwnerUsername === commentUsername) {
         return;
     } 
