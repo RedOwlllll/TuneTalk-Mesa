@@ -153,25 +153,27 @@ export const Profile = () => {
                             <br></br><br></br>
                             <center><h1>Song Recommendations:</h1></center>
                             <br/>
-                            {featuredTrack ? (
-                                <div className="track-card">
-                                    <img src={featuredTrack.album.images[0].url} alt={featuredTrack.name} className="track-image" />
-                                    <div className="track-info">
-                                        <p className="track-title">{featuredTrack.name}</p>
-                                        <p className="track-artist">{featuredTrack.artists.map(artist => artist.name).join(', ')}</p>
-                                        <br />
-                                        <a href={featuredTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">Listen on Spotify</a>
-                                        <br /><br />
-                                        {previewURL && (
-                                            <audio controls src={previewURL}>
-                                                Your browser does not support the audio element.
-                                            </audio>
-                                        )}
+                            <div className="featured-track-container">
+                                {featuredTrack ? (
+                                    <div className="track-card">
+                                        <img src={featuredTrack.album.images[0].url} alt={featuredTrack.name} className="track-image" />
+                                        <div className="track-info">
+                                            <p className="track-title">{featuredTrack.name}</p>
+                                            <p className="track-artist">{featuredTrack.artists.map(artist => artist.name).join(', ')}</p>
+                                            <br />
+                                            <a href={featuredTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">Listen on Spotify</a>
+                                            <br /><br />
+                                            {previewURL && (
+                                                <audio controls src={previewURL}>
+                                                    Your browser does not support the audio element.
+                                                </audio>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                            ) : (
-                                <center><h5>To have songs recommended, follow a community!</h5></center>
-                            )}
+                                ) : (
+                                    <center><h5>To have songs recommended, follow a community!</h5></center>
+                                )}
+                            </div>
                         </div>
                     </>
                 )}

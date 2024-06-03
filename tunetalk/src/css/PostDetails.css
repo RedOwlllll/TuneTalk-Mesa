@@ -105,10 +105,6 @@
 }
 
 
-.post-comments-container {
-    padding-top: 10px;
-    margin-bottom: 50px;
-}
 
 .post-comment-btn {
     margin-top: 25px;
@@ -120,4 +116,25 @@
 
 .Audio-feed {
     margin-bottom: 10px;
+}
+
+.caption-box-feed {
+    padding-top : 5px;
+    background-color: white;
+    border-radius: 5px;
+    margin-top : 25px;
+}
+
+.caption-box-feed h4 {
+    margin-top : 0px;
+}
+
+.comment-feed{
+    text-align: left;
+    display: flex;
+    gap: 5px;
+}
+
+.display-feed-comment {
+    margin-top: 5px;
 }

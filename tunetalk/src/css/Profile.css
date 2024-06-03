@@ -1,6 +1,5 @@
 .user-page {
     display: flex;
-    justify-content: space-between;
     padding: 20px;
     flex-wrap: wrap;
 }
@@ -234,7 +233,16 @@
     width: 50%;
 }
 
+.posts-container .featured-track-container{
+    width: 80%;
+}
+
+
 .song-recommendations {
     margin-right: 50px;
     width: 40%;
+}
+
+.song-recommendations .featured-track-container{
+    width: 100%;
 }

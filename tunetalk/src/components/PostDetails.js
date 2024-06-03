@@ -170,8 +170,11 @@ const PostDetails = ({post}) => {
                         </div>
                     </div>
                 </div>
-                <h4 className="community-h4">{post.postusername}: {post.caption}</h4>
-                <div className = "star-feed"><StarRating rating={post.rating} /></div>
+                <div className="caption-box-feed">
+                    <h4 className="community-h4">{post.caption}</h4>
+                    <div className = "star-feed"><StarRating rating={post.rating} /></div>
+                </div>
+                
                 <h5>{formatDate(post.createdAt)}</h5>  
                 {/* Comment form */}
                 <form onSubmit={handleNewCommentSubmit}>
@@ -191,9 +194,9 @@ const PostDetails = ({post}) => {
                     </div>
                     <div className={`collapsible-content ${isVisible ? 'open' : ''}`}>
                         {isVisible && (
-                            <div>
+                            <div className="display-feed-comment">
                                 {comments.map((comment, index) => (
-                                    <div key={index} className="comment">
+                                    <div key={index} className="comment-feed">
                                         <p><strong>{comment.commentusername}</strong></p> : <span>{comment.commentbody}</span>
                                     </div>
                                 ))}
