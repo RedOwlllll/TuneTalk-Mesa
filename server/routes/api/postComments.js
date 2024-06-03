@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Post = require('../../models/post')
 const { rateComNotifEmail, pushRateCommentNotif} = require('../../utils/rateCommentNotif');
+const { sendNotification } = require('../../utils/oneSignalService');
 
 // Endpoint to comment an existing post
 
@@ -19,9 +20,10 @@ router.post('/postsongs/comment', async (req, res) => {
 
         //If the comment is made by someone other than the post owner
         if (commentusername !== userPostSong.postusername) {
-            //Send notification email and push notification to the post owner
-            rateComNotifEmail(userPostSong.email, userPostSong.postusername, commentusername, commentbody, commentrating);
-            pushRateCommentNotif(userPostSong.postusername, commentusername);
+            console.log('Sending notification to post owner');
+            await sendNotification(userPostSong.postusername, commentusername);
+        } else {
+            console.log('No notification needed as the commenter is the post owner');
         }
 
         res.json(userPostSong);
