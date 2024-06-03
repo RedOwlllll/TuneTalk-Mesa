@@ -156,10 +156,9 @@
     width: 100%;
     max-width: 1200px;
     margin-top: 20px;
+    margin: 20px auto; 
     gap: 20px; /* Adds space between the two columns */
 }
-
-
 
 
 .left-column {
@@ -231,16 +230,17 @@
 
 .posts-container {
     width: 50%;
+    margin-left: 25px; /* hard coded for when using small screen */
 }
 
 .posts-container .featured-track-container{
-    width: 80%;
+    width: 90%;
 }
 
 
 .song-recommendations {
     margin-right: 50px;
-    width: 40%;
+    width: 45%;
 }
 
 .song-recommendations .featured-track-container{
