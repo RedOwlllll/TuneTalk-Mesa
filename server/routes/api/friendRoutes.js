@@ -2,6 +2,30 @@ const express = require('express');
 const router = express.Router();
 const Friend = require('../../models/Friend');
 const User = require('../../models/UserDetails');
+const UserDetails = require('../../models/UserDetails');
+
+// Endpoint to get user details by username
+router.get('/users/:username', async (req, res) => {
+    try {
+        const username = req.params.username;
+        console.log(`Fetching details for username: ${username}`); // Log the username being fetched
+
+        // Execute the query
+        const user = await UserDetails.findOne({ username: username });
+
+        // Log the result of the query
+        if (user) {
+            console.log("User found:", user); // Log the user details
+            res.json(user);
+        } else {
+            console.log("User not found");
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (err) {
+        console.error("Error fetching user details:", err); // Log any errors
+        res.status(500).json({ message: err.message });
+    }
+});
 
 // Send Friend Request
 router.post('/request', async (req, res) => {

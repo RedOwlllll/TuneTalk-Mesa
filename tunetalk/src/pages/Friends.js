@@ -3,6 +3,9 @@ import axios from "axios";
 import { useUser } from "../authentication/UserState";
 import '../css/Friends.css';
 import AccountLogo from "../assets/AccountLogo.svg"
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root'); // To prevent screen readers from reading the background content
 
 export const Friends = () => {
     const [friends, setFriends] = useState([]);
@@ -11,6 +14,8 @@ export const Friends = () => {
     const [user] = useUser();  // Get user from context
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null); // State to store selected user details
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Function to handle sending friend requests
     const sendFriendRequest = async (recipientUsername) => {
@@ -97,13 +102,28 @@ export const Friends = () => {
         return () => clearTimeout(delayDebounce);
     }, [searchTerm]);
 
+    const fetchUserDetails = async (username) => {
+        try {
+            const response = await axios.get(`http://localhost:8082/api/friends/users/${encodeURIComponent(username)}`);
+            setSelectedUser(response.data);
+            setIsModalOpen(true);
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedUser(null);
+    };
+
     return (
         <div className="friends-page">
             <h1 className="friends-title">Friends</h1>
             <section className="friends-list">
                 <h2>My Friends</h2>
                 {friends.map((friend, index) => (
-                    <div key={index} className="friend">
+                    <div key={index} className="friend" onClick={() => fetchUserDetails(friend.username)}>
                         <img className = "profile-thumbnail" src={friend.profileImage || AccountLogo } alt={friend.username + "'s profile image"} />
                         <p>{friend.username}</p>
                         <button onClick={() => removeFriend(friend.username)}>Remove Friend</button>
@@ -120,7 +140,7 @@ export const Friends = () => {
                 />
                 <div>
                     {searchResults.map((user, index) => (
-                    <div key={index} className="friend">
+                    <div key={index} className="friend" onClick={() => fetchUserDetails(user.username)}>
                         <img className = "profile-thumbnail" src={user.profileImage || AccountLogo } alt={user.username + "'s profile image"} />
                         <p>{user.username}</p>
                         <button onClick={() => sendFriendRequest(user.username)}>Add Friend</button>
@@ -133,7 +153,7 @@ export const Friends = () => {
             <section className="requests-list">
                 <h2>Pending Friend Requests</h2>
                 {pendingRequests.map((request, index) => (
-                    <div key={index} className="friend-request">
+                    <div key={index} className="friend-request" onClick={() => fetchUserDetails(request.username)}>
                         <img className = "profile-thumbnail" src={request.profileImage || AccountLogo } alt={request.username + "'s profile image"} />
                         <p>{request.requesterUsername}</p>
                         <button onClick={() => handleResponse(request._id, 'accepted')}>Accept</button>
@@ -141,6 +161,23 @@ export const Friends = () => {
                     </div>
                 ))}
             </section>
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={closeModal}
+                contentLabel="User Details"
+                className="Modal"
+                overlayClassName="Overlay"
+            >
+                {selectedUser && (
+                    <div className="selected-user-details">
+                        <h2>{selectedUser.username} Profile</h2>
+                        <img src={selectedUser.profileImage || AccountLogo} alt={selectedUser.username + "'s profile image"} />
+                        <p><strong>Username:</strong> {selectedUser.username}</p>
+                        <p><strong>Bio:</strong> {selectedUser.bio}</p>
+                        <button onClick={closeModal} className="friend-modal-button">Close</button>
+                    </div>
+                )}
+            </Modal>
         </div>
     );
 };

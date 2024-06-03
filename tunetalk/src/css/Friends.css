@@ -165,3 +165,40 @@ button:hover {
     border-radius: 50%;  
     margin-right: 10px;
 }
+
+.Modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    outline: none;
+    text-align : center;
+}
+
+.Modal img {
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+    transform: translateY(10px);
+    margin-bottom: 10px;
+}
+
+.Modal .friend-modal-button {
+    margin-top: 5px;
+}
+
+.Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+}
