@@ -9,6 +9,7 @@ const commentSchema = new mongoose.Schema({
 
 const songSchema = new mongoose.Schema({
     spotifyUrl: { type: String, required: true, unique: true },
+    previewURL: { type: String},
     comments: [commentSchema],
     addedAt: { type: Date, default: Date.now }
 });

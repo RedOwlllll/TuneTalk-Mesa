@@ -3,7 +3,10 @@ import axios from 'axios';
 import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
 import "../css/Post.css";
 import StarRating from "./StarRating";
-import { useUser } from "../authentication/UserState";;
+import { useUser } from "../authentication/UserState";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function UserPost() {
 
@@ -22,6 +25,10 @@ function UserPost() {
     const [user] = useUser();
     const[ previewURL, setPreviewURL] = useState('');
     const [username] = user.username;
+    const [isEnabled, setIsEnabled] = useState('');
+    const buttonEnabled = useTimeSensitiveButton();
+   
+    const [statusText, setStatusText] = useState("Cannot post yet.");
 
     const [selectedRating, setSelectedRating] = useState(0); // State variable to store the selected rating
 
@@ -121,12 +128,79 @@ function UserPost() {
         }
     };
 
+    function useTimeSensitiveButton() {
+        const [alertShown, setAlertShown] = useState(false);
+
+        const checkTimeWindow = () => {
+            axios.get('/api/check-time')
+                .then(response => {
+                    if (response.data.isEnabled) {
+                        if (!alertShown) {
+                            toast("TIME TO TUNETALK 5 MINS TO POST");
+                            alert("TIME TO TUNETALK 5 MINS TO POST");
+                            setAlertShown(true); // Set the alert to shown
+                        }
+                        setIsEnabled(true);
+                        toast("TIME TO TUNETALK 5 MINS TO POST");
+                    } else {
+                        setIsEnabled(false);
+                        setAlertShown(false); // Reset alert for next available time
+                    }
+                })
+                .catch(error => console.error('Error fetching time data:', error));
+        };
+    
+        useEffect(() => {
+            checkTimeWindow();
+            const interval = setInterval(() => {
+                axios.get('/api/check-time')
+                    .then(response => {
+                        setIsEnabled(response.data.isEnabled);
+                    })
+                    .catch(error => console.error('Error fetching time data:', error));
+            }, 10000); // Check every 10 seconds
+    
+            return () => clearInterval(interval);
+        }, []);
+    
+       
+        return isEnabled;
+    }
+    
+
     return (
         <div className="poster-container">
             
             <div className="button-container">
                 <div className="button-box">
-                    <button onClick={getRecentTrack}>POST NOW!</button>
+                
+                <ToastContainer
+position="top-center"
+autoClose={300000}
+limit={1}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick={false}
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="dark"
+
+/>
+                <button 
+                    
+                    onClick={getRecentTrack} >
+                    
+                    MANUAL Post Now (For testing)
+                </button>
+                    
+                    <button 
+                    className={!buttonEnabled ? 'hidden' : ''} 
+                    onClick={getRecentTrack} 
+                    disabled={!buttonEnabled}>
+                    Time To Post your TuneTalk!
+                </button>
                 </div>
             </div>
 

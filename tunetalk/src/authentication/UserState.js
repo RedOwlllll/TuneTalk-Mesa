@@ -12,6 +12,7 @@ const initialUser = {
   bio: '',
   profileImage: '',
   isAuthenticated: false,
+  recommendations: [],
 };
 
 /* Passing initialUser object as the default value - if user info 

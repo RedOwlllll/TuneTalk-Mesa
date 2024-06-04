@@ -2,6 +2,30 @@ const express = require('express');
 const router = express.Router();
 const Friend = require('../../models/Friend');
 const User = require('../../models/UserDetails');
+const UserDetails = require('../../models/UserDetails');
+
+// Endpoint to get user details by username
+router.get('/users/:username', async (req, res) => {
+    try {
+        const username = req.params.username;
+        console.log(`Fetching details for username: ${username}`); // Log the username being fetched
+
+        // Execute the query
+        const user = await UserDetails.findOne({ username: username });
+
+        // Log the result of the query
+        if (user) {
+            console.log("User found:", user); // Log the user details
+            res.json(user);
+        } else {
+            console.log("User not found");
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (err) {
+        console.error("Error fetching user details:", err); // Log any errors
+        res.status(500).json({ message: err.message });
+    }
+});
 
 // Send Friend Request
 router.post('/request', async (req, res) => {
@@ -50,13 +74,25 @@ router.put('/response', async (req, res) => {
 router.get('/list/:username', async (req, res) => {
     try {
         const { username } = req.params;
-        const friends = await Friend.find({
+        
+        // Find friends where the current user is either the requester or recipient and the status is 'accepted'
+        const friendsRelationships = await Friend.find({
             $or: [
                 { requesterUsername: username, status: 'accepted' },
                 { recipientUsername: username, status: 'accepted' }
             ]
         });
-        res.json(friends);
+
+        // Extract usernames from the relationships - if the requester is the user, pick the recipient, and vice versa
+        const usernames = friendsRelationships.map(fr => 
+            fr.requesterUsername === username ? fr.recipientUsername : fr.requesterUsername
+        );
+
+        // Fetch UserDetails for these usernames, selecting only the username and profile image fields
+        const friendsProfiles = await User.find({ username: { $in: usernames } }).select('username profileImage');
+
+        // Respond with the user details of friends
+        res.json(friendsProfiles);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
