@@ -1,5 +1,4 @@
 const express = require("express");
-const app = express();
 const http = require("http");
 const socketIo = require("socket.io");
 const connectDB = require("./config/db");
@@ -19,9 +18,15 @@ const commentRouter = require('./routes/api/postComments'); // Adjust the path a
 //const commentRoutes = require('./routes/commentRoutes');
 
 // routes / api
-//const registerRouter = require("./routes/register");
+const app = express();
 const server = http.createServer(app); // Create HTTP server
 const io = socketIo(server); // Attach Socket.io to the server
+
+// Middleware to attach io to the request object
+app.use((req, res, next) => {
+    req.io = io;
+    next();
+  });
 
 connectDB(); // Call connectDB import so mongoDB is connected
 console.log("DB connected")
@@ -56,17 +61,14 @@ app.use("/api", commentRouter);
 io.on('connection', (socket) => {
     console.log('A user connected');
 
-    // socket.on('comment', (data) => {
-    //     console.log('Comment received:', data);
-    //     // io.emit('notification', {
-    //     //     message: `New comment from ${data.username}: ${data.comment}`,
-    //     //     user: data.friendUsername
-    //     // });
-    //     socket.broadcast.emit('notification', data)
-    // });
-
     socket.on('disconnect', () => {
         console.log('A user disconnected');
+    });
+
+    socket.on('comment', (data)=> {
+        console.log("New comment sent: ", data.message)
+
+        io.emit('comment', {message: data.message});
     });
 });
 

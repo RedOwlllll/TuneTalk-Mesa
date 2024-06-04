@@ -206,7 +206,6 @@ function UserPost() {
                     </div>
                 </div>
             )}
-            <ToastContainer />
         </div> 
     );
 }
