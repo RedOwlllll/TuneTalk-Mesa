@@ -20,7 +20,7 @@ Optional but helpful tools:
 
 ## Installation
 - To start this project, you will need to clone this repository and open the folders on Visual Studio Code.
-- Ensure you are on the **"release"** branch to get the latest code. 
+- Ensure you are on the **"Release"** branch to get the latest code. 
 
 
 ## Setup
