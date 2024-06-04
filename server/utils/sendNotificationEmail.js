@@ -50,4 +50,4 @@ function pushNotification() {
     });
 }
 
-module.exports = { sendNotificationEmail, pushNotification,randomDelayGenerator, scheduleTime};
+module.exports = { sendNotificationEmail, pushNotification };
