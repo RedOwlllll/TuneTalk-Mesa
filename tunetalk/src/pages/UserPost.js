@@ -137,7 +137,7 @@ function UserPost() {
                     if (response.data.isEnabled) {
                         if (!alertShown) {
                             toast("TIME TO TUNETALK 5 MINS TO POST");
-                            //alert("TIME TO TUNETALK 5 MINS TO POST");
+                            alert("TIME TO TUNETALK 5 MINS TO POST");
                             setAlertShown(true); // Set the alert to shown
                         }
                         setIsEnabled(true);
