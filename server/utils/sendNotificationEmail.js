@@ -19,7 +19,7 @@ function sendNotificationEmail(userEmail, username) {
         subject: '!TIME TO TUNE IN!',
         text: 'It is time to post your current/recently played song for your friends to see!',
         html: `<h2>Hello ${username}!</h2><p>It is time to post! <br><br>Click the link to post your current/recently played song for your friends to see!
-        <br><br><a href="http://localhost:3000/account/home">Post here</a></p>`
+        <br><br><a href="http://localhost:3000/feed">Post here</a></p>`
     };
 
     sgMail
