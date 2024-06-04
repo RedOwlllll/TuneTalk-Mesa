@@ -15,14 +15,13 @@ const profileRouter = require("./routes/api/userprofile");
 const commentRouter = require('./routes/api/postComments'); 
 const timeCheckRoutes = require('./routes/api/timeCheckRoutes');
 
+const http = require("http");
+const socketIo = require("socket.io");
 
-
-//const commentRoutes = require('./routes/commentRoutes');
+const server = http.createServer(app);
+const io = socketIo(server);
 
 // routes / api
-//const registerRouter = require("./routes/register");
-
-
 connectDB(); // Call connectDB import so mongoDB is connected
 console.log("DB connected")
 
@@ -50,7 +49,19 @@ app.use("/api/userprofile", profileRouter);
 app.use("/api", commentRouter);
 app.use("/api", timeCheckRoutes);
 
+io.on("connection", (socket) => {
+    console.log("User is connected");
 
+    socket.on("disconnect", () => {
+        console.log("User is disconnected");
+    });
+
+    socket.on("new_user_comment", (data) => {
+        console.log("ran 2nd");
+
+        io.emit("new_user_comment", { message: data.message });
+    });
+})
 
 // print server is running when starting server - nodemon app
 app.listen(8082, () => {

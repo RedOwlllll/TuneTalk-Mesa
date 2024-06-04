@@ -4,8 +4,9 @@ import "../css/PostDetails.css";
 import axios from "axios";
 import { useUser } from "../authentication/UserState";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-
+import io from 'socket.io-client'; 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 
@@ -57,7 +58,25 @@ const PostDetails = ({post}) => {
         }
     };
     
-      
+    const runEvent = () => {
+      const socket = io("http://localhost:3003", { transports: ["websocket"] });
+
+      console.log("ran 1st");
+      socket.emit("new_user_comment", { message: "User has commented" })
+    }
+
+    useEffect(() => {
+      const socket = io("http://localhost:3003", { transports: ["websocket"] }); 
+      socket.on("connection", () => {
+        console.log("Connected to Socket io");
+      });
+
+      socket.on("new_user_comment", (data) => {
+        toast.info(data.message, {
+          position: toast.Position.TOP
+        })
+      });
+    }, []);
 
     const handleSubmit = async (e) => {
         //e.preventDefault();
@@ -140,6 +159,7 @@ const PostDetails = ({post}) => {
 
     return (
         <div className="featured-track-container">
+          <ToastContainer />
             <h2>{post.postusername}</h2>
                 
                 
@@ -179,7 +199,7 @@ const PostDetails = ({post}) => {
                 <form onSubmit={handleSubmit}>
           <input class="post-comment-input" type = "text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
           
-          <button class="post-comment-btn" type="submit">Post Comment</button>
+          <button class="post-comment-btn" type="submit" onClick={() => runEvent()}>Post Comment</button>
         </form>
 
 
