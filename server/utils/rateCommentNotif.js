@@ -18,7 +18,7 @@ function rateComNotifEmail(userEmail, username, friend, comment, rating) {
         },
         subject: '!TIME TO TUNE IN!',
         text: 'It is time to post your current/recently played song for your friends to see!',
-        html: `<h2>Hello ${username}!</h2><p>${friend} commented: ${comment} <br> rating: ${rating}
+        html: `<h2>Hello ${username}!</h2><p>${friend} commented: ${comment}
         <br><br><a href="http://localhost:3000/feed">See the comment here!</a></p>`
     };
 
@@ -41,16 +41,8 @@ function pushRateCommentNotif(postOwnerUsername, commentUsername) {
     notifier.notify({
         appName: 'Tune Talk',
         title: '!TIME TO TUNE IN!',
-        message: `${commentUsername} commented and rated your post!`,
-        icon: path.join('http://localhost:3000/static/media/TuneTalkLogoBlack.16d0f5c9352a06b53052641b8fab2fac.svg'),
-        wait: true,
-        actions: ['Open']
-    });
-
-    notifier.on('click', function(notifierObject, options, event) {
-        const url = 'http://localhost:3000/feed';
-        const { exec } = require('child_process');
-        exec(`start "" "${url}"`);
+        message: `${commentUsername} commented on your post!`,
+        icon: path.join('http://localhost:3000/static/media/TuneTalkLogoBlack.16d0f5c9352a06b53052641b8fab2fac.svg')
     });
 }
 

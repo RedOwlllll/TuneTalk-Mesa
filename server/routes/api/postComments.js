@@ -19,7 +19,7 @@ router.post('/postsongs/comment', async (req, res) => {
 
         //If the comment is made by someone other than the post owner
         if (commentusername !== userPostSong.postusername) {
-            rateComNotifEmail(userPostSong.email, userPostSong.postusername, commentusername, commentbody, commentrating);
+            rateComNotifEmail(userPostSong.email, userPostSong.postusername, commentusername, commentbody);
             pushRateCommentNotif(userPostSong.postusername, commentusername);
         } else {
             console.log('No notification needed as the commenter is the post owner');
