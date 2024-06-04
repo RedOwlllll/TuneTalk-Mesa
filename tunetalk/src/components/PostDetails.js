@@ -186,7 +186,7 @@ const PostDetails = ({post}) => {
                 <br />
                 <div className="post-comments-container">
                     <div className="toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
-                        <strong>{comment.commentusername}</strong> <h5>View {isVisible ? 'less' : 'more'} comments <FontAwesomeIcon icon={faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
+                        <strong>{comment.commentusername}</strong> <h5>{isVisible ? 'Hide' : 'Show'} comments <FontAwesomeIcon icon={faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
                     </div>
                     <div className={`collapsible-content ${isVisible ? 'open' : ''}`}>
                         {isVisible && (
