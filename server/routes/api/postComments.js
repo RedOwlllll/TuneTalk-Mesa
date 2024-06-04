@@ -24,6 +24,15 @@ router.post('/postsongs/comment', async (req, res) => {
         // } else {
         //     console.log('No notification needed as the commenter is the post owner');
         // }
+        
+        // Emit event to notify the post owner
+        req.io.emit('comment', {
+            postId: postId,
+            commentusername: commentusername,
+            commentbody: commentbody,
+            commentrating: commentrating,
+            postOwner: userPostSong.postusername
+        });
 
         res.json(userPostSong);
     } catch (error) {

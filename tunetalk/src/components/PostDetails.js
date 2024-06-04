@@ -4,9 +4,9 @@ import "../css/PostDetails.css";
 import axios from "axios";
 import { useUser } from "../authentication/UserState";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import io from 'socket.io-client';
 import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -66,8 +66,6 @@ const PostDetails = ({post}) => {
             return;
         }
         try {
-          
-
             console.log(comment)
             console.log("chan")
             const commentData = {
@@ -106,7 +104,24 @@ const PostDetails = ({post}) => {
         return <div>{stars}</div>;
       }
 
-    
+    useEffect(() => {
+      const socket = io("http://localhost:3000", {transports: ["websocket"]})
+
+      socket.on("connection", () => {
+        console.log("Connected to Socket io")
+      })
+
+      socket.on("comment", (data) => {
+        console.log("New comment added: ", data);
+        toast.info(`New comment from ${data.commentusername}: ${data.commentbody}`, {
+            position: toast.POSITION.TOP_RIGHT
+        });
+    });
+
+    return () => {
+        socket.disconnect();
+    };
+    }, []);
     
     const [newComment, setNewComment] = useState('');
     
@@ -121,7 +136,6 @@ const PostDetails = ({post}) => {
         const newComments = [...comments, { text: newComment, user: user.username }];
         setComments(newComments);
         setNewComment('');
-
     };
 
     // Function to toggle audio playback
@@ -147,6 +161,7 @@ const PostDetails = ({post}) => {
 
     return (
         <div className="post-details-container">
+          <ToastContainer />
             <div className="post-details">
                 <h4>Username: {post.postusername}</h4>
                 <h4>Email: {post.email}</h4>

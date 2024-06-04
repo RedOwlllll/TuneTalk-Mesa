@@ -56,14 +56,14 @@ app.use("/api", commentRouter);
 io.on('connection', (socket) => {
     console.log('A user connected');
 
-    socket.on('comment', (data) => {
-        console.log('Comment received:', data);
-        // io.emit('notification', {
-        //     message: `New comment from ${data.username}: ${data.comment}`,
-        //     user: data.friendUsername
-        // });
-        socket.broadcast.emit('notification', data)
-    });
+    // socket.on('comment', (data) => {
+    //     console.log('Comment received:', data);
+    //     // io.emit('notification', {
+    //     //     message: `New comment from ${data.username}: ${data.comment}`,
+    //     //     user: data.friendUsername
+    //     // });
+    //     socket.broadcast.emit('notification', data)
+    // });
 
     socket.on('disconnect', () => {
         console.log('A user disconnected');
