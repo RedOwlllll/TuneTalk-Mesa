@@ -163,7 +163,7 @@ const PostDetails = ({post}) => {
                             {/* Implement graphical star display soon  */}
                             
                             {post.spotifyURL && (
-                                <a href={post.spotifyURL || "#"} target="_blank" rel="noopener noreferrer" className="spotify-button">
+                                <a href={post.spotifyURL || "#"} target="_blank" rel="noopener noreferrer" className="spotify-play-button">
                                     Listen on Spotify
                                 </a>
                             )}
@@ -174,27 +174,26 @@ const PostDetails = ({post}) => {
                 <div className = "star-feed"><StarRating rating={post.rating} /></div>
                 <h5>{formatDate(post.createdAt)}</h5>  
                 {/* Comment form */}
-                <form onSubmit={handleNewCommentSubmit}>
-                    <input
-                        type="text"
-                        className="comment-input"
-                        placeholder="Add a comment..."
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                    />
-                    <button type="submit" className="submit-comment">Comment</button>
-                </form>
+
+
+                <form onSubmit={handleSubmit}>
+          <input class="post-comment-input" type = "text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
+          
+          <button class="post-comment-btn" type="submit">Post Comment</button>
+        </form>
+
+
                 <br />
                 <div className="post-comments-container">
                     <div className="toggleText" onClick={toggleVisibility} style={{ cursor: 'pointer' }}>
-                        <strong>{comment.commentusername}</strong> <h5>View {isVisible ? 'less' : 'more'} comments <FontAwesomeIcon icon={faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
+                        <strong>{comment.commentusername}</strong> <h5>{isVisible ? 'Hide' : 'Show'} comments <FontAwesomeIcon icon={faChevronCircleDown} className={`icon ${isVisible ? 'up' : 'down'}`} /></h5>
                     </div>
                     <div className={`collapsible-content ${isVisible ? 'open' : ''}`}>
                         {isVisible && (
                             <div>
                                 {comments.map((comment, index) => (
                                     <div key={index} className="comment">
-                                        <p><strong>{comment.commentusername}</strong></p> : <span>{comment.commentbody}</span>
+                                        <p><strong>{comment.commentusername}</strong> : <span>{comment.commentbody}</span></p>
                                     </div>
                                 ))}
                             </div>

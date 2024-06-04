@@ -312,15 +312,15 @@ function Pop() {
               <div className="track-artist">{featuredTrack.artists.map(artist => artist.name).join(', ')}</div>
               <div>
                 <br></br>
-                <a href={featuredTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">
-                  Listen on Spotify
-                </a>
-                <br></br><br></br>
                 {previewURL && (
                   <audio controls src={previewURL}>
                     Your browser does not support the audio element.
                   </audio>
                 )}
+                <br></br><br></br>
+                <a href={featuredTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">
+                  Listen on Spotify
+                </a>
               </div>
             </div>
           </div>
