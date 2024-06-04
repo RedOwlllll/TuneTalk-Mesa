@@ -59,14 +59,14 @@ const PostDetails = ({post}) => {
     };
     
     const runEvent = () => {
-      const socket = io("http://localhost:3003", { transports: ["websocket"] });
+      const socket = io("http://localhost:8082", { transports: ["websocket"] });
 
       console.log("ran 1st");
       socket.emit("new_user_comment", { message: "User has commented" })
     }
 
     useEffect(() => {
-      const socket = io("http://localhost:3003", { transports: ["websocket"] }); 
+      const socket = io("http://localhost:8082", { transports: ["websocket"] }); 
       socket.on("connection", () => {
         console.log("Connected to Socket io");
       });
