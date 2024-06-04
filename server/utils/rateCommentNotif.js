@@ -2,7 +2,6 @@ const sgMail = require('@sendgrid/mail');
 const notifier = require('node-notifier');
 const path = require('path');
 const dotenv = require('dotenv');
-const io = require('socket.io-client');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -34,25 +33,25 @@ function rateComNotifEmail(userEmail, username, friend, comment, rating) {
 }
 
 //To push a notification to the user's device 
-// function pushRateCommentNotif(postOwnerUsername, commentUsername, comment) {
-//     if (postOwnerUsername === commentUsername) {
-//         return;
-//     } 
+function pushRateCommentNotif(postOwnerUsername, commentUsername) {
+    if (postOwnerUsername === commentUsername) {
+        return;
+    } 
     
-//     // notifier.notify({
-//     //     appName: 'Tune Talk',
-//     //     title: '!TIME TO TUNE IN!',
-//     //     message: `${commentUsername} commented and rated your post!`,
-//     //     icon: path.join('http://localhost:3000/static/media/TuneTalkLogoBlack.16d0f5c9352a06b53052641b8fab2fac.svg'),
-//     //     wait: true,
-//     //     actions: ['Open']
-//     // });
+    notifier.notify({
+        appName: 'Tune Talk',
+        title: '!TIME TO TUNE IN!',
+        message: `${commentUsername} commented and rated your post!`,
+        icon: path.join('http://localhost:3000/static/media/TuneTalkLogoBlack.16d0f5c9352a06b53052641b8fab2fac.svg'),
+        wait: true,
+        actions: ['Open']
+    });
 
-//     // notifier.on('click', function(notifierObject, options, event) {
-//     //     const url = 'http://localhost:3000/feed';
-//     //     const { exec } = require('child_process');
-//     //     exec(`start "" "${url}"`);
-//     // });
-// }
+    notifier.on('click', function(notifierObject, options, event) {
+        const url = 'http://localhost:3000/feed';
+        const { exec } = require('child_process');
+        exec(`start "" "${url}"`);
+    });
+}
 
 module.exports = { rateComNotifEmail, pushRateCommentNotif };

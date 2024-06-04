@@ -4,9 +4,6 @@ import "../css/PostDetails.css";
 import axios from "axios";
 import { useUser } from "../authentication/UserState";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import io from 'socket.io-client';
 import { faChevronCircleDown, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -103,28 +100,6 @@ const PostDetails = ({post}) => {
     
         return <div>{stars}</div>;
       }
-
-    const runEvent = () => {
-      const socket = io("http://localhost:3000", {transports: ["websocket"]});
-      
-      socket.emit("comment", { message: "New comment!"})
-    }
-
-    useEffect(() => {
-      const socket = io("http://localhost:8082", {transports: ["websocket"]});
-
-      socket.on("connection", () => {
-        console.log("Connected to Socket io")
-      })
-
-      socket.on("comment", (data) => {
-        console.log("New comment added: ", data.message);
-        //fetchComments(post._id);
-        toast.info(`New comment from ${data.commentusername}: ${data.commentbody}`, {
-            position: toast.POSITION.TOP_RIGHT
-        });
-      });
-    }, []);
     
     const [newComment, setNewComment] = useState('');
     
@@ -164,20 +139,6 @@ const PostDetails = ({post}) => {
 
     return (
         <div className="post-details-container">
-          <ToastContainer
-          position="top-center"
-          autoClose={300000}
-          limit={1}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-
-          />
             <div className="post-details">
                 <h4>Username: {post.postusername}</h4>
                 <h4>Email: {post.email}</h4>
@@ -219,7 +180,7 @@ const PostDetails = ({post}) => {
                 </label>
               ))}
             </div>
-          <button class="post-comment-btn" type="submit" onClick={runEvent}>Post Comment and Rating</button>
+          <button class="post-comment-btn" type="submit">Post Comment and Rating</button>
         </form>
 
 
