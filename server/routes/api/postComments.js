@@ -1,7 +1,7 @@
 const express = require('express') 
 const router = express.Router()
 const Post = require('../../models/post')
-const { rateComNotifEmail, pushRateCommentNotif} = require('../../utils/rateCommentNotif');
+//const { rateComNotifEmail, pushRateCommentNotif} = require('../../utils/rateCommentNotif');
 
 // Endpoint to comment an existing post
 
@@ -18,12 +18,12 @@ router.post('/postsongs/comment', async (req, res) => {
         await userPostSong.save(); // Save the updated song document
 
         //If the comment is made by someone other than the post owner
-        if (commentusername !== userPostSong.postusername) {
-            console.log('Sending notification to post owner');
-            pushRateCommentNotif(userPostSong.postusername, commentusername);
-        } else {
-            console.log('No notification needed as the commenter is the post owner');
-        }
+        // if (commentusername !== userPostSong.postusername) {
+        //     console.log('Sending notification to post owner');
+        //     pushRateCommentNotif(userPostSong.postusername, commentusername, commentbody);
+        // } else {
+        //     console.log('No notification needed as the commenter is the post owner');
+        // }
 
         res.json(userPostSong);
     } catch (error) {

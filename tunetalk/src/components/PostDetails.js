@@ -121,6 +121,7 @@ const PostDetails = ({post}) => {
         const newComments = [...comments, { text: newComment, user: user.username }];
         setComments(newComments);
         setNewComment('');
+
     };
 
     // Function to toggle audio playback

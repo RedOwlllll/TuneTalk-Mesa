@@ -1,5 +1,7 @@
 const express = require("express");
 const app = express();
+const http = require("http");
+const socketIo = require("socket.io");
 const connectDB = require("./config/db");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -18,7 +20,8 @@ const commentRouter = require('./routes/api/postComments'); // Adjust the path a
 
 // routes / api
 //const registerRouter = require("./routes/register");
-
+const server = http.createServer(app); // Create HTTP server
+const io = socketIo(server); // Attach Socket.io to the server
 
 connectDB(); // Call connectDB import so mongoDB is connected
 console.log("DB connected")
@@ -47,6 +50,25 @@ app.use("/api/userprofile", profileRouter);
 app.use("/api", commentRouter);
 
 
+// Your existing middleware and routes setup
+
+//To send real-time notification for rating and comments
+io.on('connection', (socket) => {
+    console.log('A user connected');
+
+    socket.on('comment', (data) => {
+        console.log('Comment received:', data);
+        // io.emit('notification', {
+        //     message: `New comment from ${data.username}: ${data.comment}`,
+        //     user: data.friendUsername
+        // });
+        socket.broadcast.emit('notification', data)
+    });
+
+    socket.on('disconnect', () => {
+        console.log('A user disconnected');
+    });
+});
 
 
 // print server is running when starting server - nodemon app

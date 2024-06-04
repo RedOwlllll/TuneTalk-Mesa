@@ -3,7 +3,7 @@ import axios from 'axios';
 import "../css/App.css"; // NOTE: put 2 . ("..") since this file is in it's own folder too. 
 import "../css/Post.css";
 import StarRating from "./StarRating";
-import { useUser } from "../authentication/UserState";
+import { useUser } from "../authentication/UserState";;
 
 function UserPost() {
 
@@ -30,7 +30,7 @@ function UserPost() {
         setSelectedRating(rate);
     };
 
-    const token = localStorage.getItem("access_token");
+    const token = localStorage.getItem("access_token"); 
 
     const getRecentTrack = () => {
 
@@ -206,6 +206,7 @@ function UserPost() {
                     </div>
                 </div>
             )}
+            <ToastContainer />
         </div> 
     );
 }
