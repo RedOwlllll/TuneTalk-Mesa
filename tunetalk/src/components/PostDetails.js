@@ -179,7 +179,7 @@ const PostDetails = ({post}) => {
                 <form onSubmit={handleSubmit}>
           <input class="post-comment-input" type = "text" value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." required />
           
-          <button class="post-comment-btn" type="submit">Post Comment and Rating</button>
+          <button class="post-comment-btn" type="submit">Post Comment</button>
         </form>
 
 
