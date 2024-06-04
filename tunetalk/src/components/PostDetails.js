@@ -163,7 +163,7 @@ const PostDetails = ({post}) => {
                             {/* Implement graphical star display soon  */}
                             
                             {post.spotifyURL && (
-                                <a href={post.spotifyURL || "#"} target="_blank" rel="noopener noreferrer" className="spotify-button">
+                                <a href={post.spotifyURL || "#"} target="_blank" rel="noopener noreferrer" className="spotify-play-button">
                                     Listen on Spotify
                                 </a>
                             )}
@@ -181,14 +181,6 @@ const PostDetails = ({post}) => {
           
           <button class="post-comment-btn" type="submit">Post Comment</button>
         </form>
-
-
-
-
-
-
-
-                
 
 
                 <br />
