@@ -193,7 +193,7 @@ const PostDetails = ({post}) => {
                             <div>
                                 {comments.map((comment, index) => (
                                     <div key={index} className="comment">
-                                        <p><strong>{comment.commentusername}</strong></p> : <span>{comment.commentbody}</span>
+                                        <p><strong>{comment.commentusername}</strong> : <span>{comment.commentbody}</span></p>
                                     </div>
                                 ))}
                             </div>
