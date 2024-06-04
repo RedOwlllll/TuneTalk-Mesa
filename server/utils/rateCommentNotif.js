@@ -9,7 +9,7 @@ dotenv.config();
 sgMail.setApiKey(process.env.API_KEY);
 
 //To the send the email notification to the user
-function rateComNotifEmail(userEmail, username, friend, comment, rating) {
+function rateComNotifEmail(userEmail, username, friend, comment) {
     const notification = {
         to: userEmail,
         from: {
