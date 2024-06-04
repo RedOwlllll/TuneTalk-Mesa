@@ -188,6 +188,7 @@ const PostDetails = ({post}) => {
                     <div className={`collapsible-content ${isVisible ? 'open' : ''}`}>
                         {isVisible && (
                             <div>
+                                <br></br>
                                 {comments.map((comment, index) => (
                                     <div key={index} className="comment">
                                         <p><strong>{comment.commentusername}</strong> : <span>{comment.commentbody}</span></p>
@@ -198,6 +199,7 @@ const PostDetails = ({post}) => {
                     </div>
                 </div>
         </div>
+        
     );
 }
 

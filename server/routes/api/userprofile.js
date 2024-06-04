@@ -42,7 +42,7 @@ router.put('/edit-profile', upload.single('profileImage'), async (req, res) => {
         // Update user details; only update if provided
         userprofile.username = username || userprofile.username;
         userprofile.email = email || userprofile.email;
-        userprofile.bio = bio !== "" ? bio : userprofile.bio;
+        userprofile.bio = bio !== undefined ? bio : userprofile.bio;
 
         // Update the profile image if a new one was uploaded
         if (req.file) {
