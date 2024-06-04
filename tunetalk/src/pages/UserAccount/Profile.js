@@ -169,10 +169,12 @@ export const Profile = () => {
                                             <br /><br />
                                             <a href={featuredTrack.external_urls.spotify} target="_blank" rel="noopener noreferrer" className="spotify-play-button">Listen on Spotify</a>
                                         </div>
+                                        
                                     </div>
                                 ) : (
                                     <center><h5>To have songs recommended, follow a community!</h5></center>
                                 )}
+                                <br/>
                             </div>
                         </div>
                     </>
